@@ -54,7 +54,7 @@ const CounseleePage: React.FC<DataTableProps> = ({ data }) => {
           className={`min-w-full border ${
             state.theme.theme === "LIGHT"
               ? "bg-white  border-gray-200"
-              : "bg-stone-950 border-stone-700"
+              : "bg-stone-950 border-stone-800"
           }`}
         >
           <thead
@@ -64,155 +64,155 @@ const CounseleePage: React.FC<DataTableProps> = ({ data }) => {
           >
             <tr>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 firstName
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 lastName
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 initiatedName
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 phoneNumber
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 gender
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 age
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 email
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 maritalStatus
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 address
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 profession
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 yourInitiatingSpiritualMaster
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 harinamInitiationDate
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 harinamInitiationPlace
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 recommendedBy
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 currentCounselor
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 connectedToCounselorSinceYear
               </th>
               <th
-                className={`py-2 px-4 border-b ${
+                className={`py-2 px-4 border-b text-sm font-bold ${
                   state.theme.theme === "LIGHT"
                     ? "border-gray-200 text-gray-500"
-                    : "border-stone-600 text-white"
-                } text-left text-xs font-medium  uppercase`}
+                    : "border-stone-800 text-white"
+                } text-left font-medium  uppercase`}
               >
                 husband
               </th>

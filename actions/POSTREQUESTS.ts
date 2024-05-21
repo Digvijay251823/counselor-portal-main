@@ -8,16 +8,16 @@ export async function POST(formData: FormData, url: string) {
       headers: header,
       body: JSON.stringify(formData),
     });
+    console.log(response);
     if (response.ok) {
       const responseData = await response.json();
-      console.log(responseData);
       return { message: responseData.content.message };
     } else {
       if (response.status === 409) {
         throw new Error("devotee already exists");
       }
       const errorData = await response.json();
-
+      console.log(errorData);
       throw new Error(errorData.message || errorData.title);
     }
   } catch (error: any) {

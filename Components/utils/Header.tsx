@@ -3,15 +3,17 @@ import React from "react";
 import { useGlobalState } from "../context/state";
 import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 function Header() {
+  const pathname = usePathname();
   const { state, dispatch } = useGlobalState();
   return (
     <header
       className={`w-full shadow-lg ${
         state.theme.theme === "LIGHT"
           ? "bg-white"
-          : "bg-stone-900 shadow-stone-950 bg-opacity-30"
+          : "bg-stone-900 shadow-stone-950 bg-opacity-20"
       }  px-4 py-1.5`}
     >
       <div className="flex items-center justify-between">
@@ -26,16 +28,72 @@ function Header() {
           </span>
         </div>
         <nav className="flex items-center gap-5">
-          <p className="font-semibold">Analytics</p>
+          <p
+            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              state.theme.theme === "LIGHT"
+                ? "hover:bg-gray-100"
+                : "hover:bg-stone-800"
+            }`}
+          >
+            Analytics
+          </p>
           <Link href="/counselor/counselee">
-            <p className="font-semibold">counselee</p>
+            <p
+              className={`font-semibold px-1.5 py-1.5 rounded-lg ${pathname} ${
+                state.theme.theme === "LIGHT"
+                  ? "hover:bg-gray-100"
+                  : "hover:bg-stone-800"
+              }`}
+            >
+              counselee
+            </p>
           </Link>
-          <p className="font-semibold">sessions</p>
-          <p className="font-semibold">activities</p>
-          <p className="font-semibold">attendance</p>
-          <p className="font-semibold">sadhana</p>
+          <p
+            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              state.theme.theme === "LIGHT"
+                ? "hover:bg-gray-100"
+                : "hover:bg-stone-800"
+            }`}
+          >
+            sessions
+          </p>
+          <p
+            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              state.theme.theme === "LIGHT"
+                ? "hover:bg-gray-100"
+                : "hover:bg-stone-800"
+            }`}
+          >
+            activities
+          </p>
+          <p
+            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              state.theme.theme === "LIGHT"
+                ? "hover:bg-gray-100"
+                : "hover:bg-stone-800"
+            }`}
+          >
+            attendance
+          </p>
+          <p
+            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              state.theme.theme === "LIGHT"
+                ? "hover:bg-gray-100"
+                : "hover:bg-stone-800"
+            }`}
+          >
+            sadhana
+          </p>
           <Link href={"/counselor/scan"}>
-            <p className="font-semibold">scan</p>
+            <p
+              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                state.theme.theme === "LIGHT"
+                  ? "hover:bg-gray-100"
+                  : "hover:bg-stone-800"
+              }`}
+            >
+              scan
+            </p>
           </Link>
         </nav>
         <div className="flex items-center gap-5">
