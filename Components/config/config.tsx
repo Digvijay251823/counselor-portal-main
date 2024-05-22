@@ -1,1 +1,1 @@
-export const SERVER_URL = "https://counselor-portal-main-nine.vercel.app/";
+export const SERVER_URL = "https://counselor-portal-main-tau.vercel.app/";
