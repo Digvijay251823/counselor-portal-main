@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { useGlobalState } from "../context/state";
+import { ChevronDownIcon } from "@heroicons/react/16/solid";
 
 interface Child {
   name: string;
@@ -27,6 +28,8 @@ interface Data {
   connectedToCounselorSinceYear: Date;
   husband: string;
   children: Child[];
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 interface DataTableProps {
@@ -34,316 +37,309 @@ interface DataTableProps {
 }
 
 const CounseleePage: React.FC<DataTableProps> = ({ data }) => {
-  const [expandedRows, setExpandedRows] = useState<Set<number>>(new Set());
   const { state } = useGlobalState();
+  const [expandedRow, setExpandedRow] = useState<number>(-1);
 
   const toggleRow = (index: number) => {
-    const newExpandedRows = new Set(expandedRows);
-    if (newExpandedRows.has(index)) {
-      newExpandedRows.delete(index);
+    if (expandedRow === index) {
+      setExpandedRow(-1); // Collapse the row if it's already expanded
     } else {
-      newExpandedRows.add(index);
+      setExpandedRow(index); // Expand the clicked row
     }
-    setExpandedRows(newExpandedRows);
   };
 
   return (
-    <div className="px-10">
-      <div className="overflow-x-auto">
-        <table
-          className={`min-w-full border ${
-            state.theme.theme === "LIGHT"
-              ? "bg-white  border-gray-200"
-              : "bg-stone-950 border-stone-800"
-          }`}
-        >
-          <thead
-            className={
-              state.theme.theme === "LIGHT" ? `bg-gray-50` : "bg-stone-950"
-            }
-          >
-            <tr>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                firstName
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                lastName
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                initiatedName
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                phoneNumber
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                gender
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                age
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                email
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                maritalStatus
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                address
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                profession
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                yourInitiatingSpiritualMaster
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                harinamInitiationDate
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                harinamInitiationPlace
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                recommendedBy
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                currentCounselor
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                connectedToCounselorSinceYear
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                husband
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {data?.map((item) => (
-              <tr key={item.id}>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.firstName ? (
-                    <div>{item.firstName}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.lastName ? (
-                    <div>{item.lastName}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.initiatedName ? (
-                    <div>{item.initiatedName}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.phoneNumber ? (
-                    <div>{item.phoneNumber}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.gender ? (
-                    <div>{item.gender}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.age ? (
-                    <div>{item.age}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.email ? (
-                    <div>{item.email}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.maritalStatus ? (
-                    <div>{item.maritalStatus}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.address ? (
-                    <div>{item.address}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.profession ? (
-                    <div>{item.profession}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.yourInitiatingSpiritualMaster ? (
-                    <div>{item.yourInitiatingSpiritualMaster}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.harinamInitiationDate ? (
-                    <div>{item.harinamInitiationDate.toString()}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.harinamInitiationPlace ? (
-                    <div>{item.harinamInitiationPlace}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.recommendedBy ? (
-                    <div>{item.recommendedBy}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.currentCounselor ? (
-                    <div>{item.currentCounselor}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.connectedToCounselorSinceYear ? (
-                    <div>{item.connectedToCounselorSinceYear.toString()}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
-                <td className="py-2 px-4 border-b border-gray-200">
-                  {item.husband ? (
-                    <div>{item.husband}</div>
-                  ) : (
-                    <div className="text-gray-400">null</div>
-                  )}
-                </td>
+    <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
+      <div
+        className={`p-5 rounded-xl ${
+          state.theme.theme === "LIGHT"
+            ? "bg-gray-50  border-gray-200"
+            : "bg-stone-900 bg-opacity-50 border-stone-800"
+        }`}
+      >
+        <div className={`overflow-x-auto`}>
+          <table className={``}>
+            <thead
+              className={
+                state.theme.theme === "LIGHT" ? `bg-gray-50` : "bg-stone-950"
+              }
+            >
+              <tr>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  firstName
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  lastName
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Contact Number
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Marital Status
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Joining Date
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Email
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Address
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Gender
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Age
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  address
+                </th>
+                <th
+                  className={`py-2 px-4 border-b text-sm font-[800] ${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-200 text-black"
+                      : "border-stone-800 text-white"
+                  } text-left font-medium  uppercase`}
+                >
+                  Details
+                </th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {data?.map((item, index) => (
+                <React.Fragment key={index}>
+                  <tr
+                    className={`border-b ${
+                      state.theme.theme === "LIGHT"
+                        ? "border-gray-300"
+                        : "border-stone-800"
+                    }`}
+                  >
+                    <td
+                      className={`border-r border-l px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.firstName ? (
+                        <div>{item.firstName}</div>
+                      ) : (
+                        <p>null</p>
+                      )}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.lastName ? <div>{item.lastName}</div> : <p>null</p>}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.phoneNumber ? (
+                        <div>{item.phoneNumber}</div>
+                      ) : (
+                        <p>null</p>
+                      )}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.maritalStatus ? (
+                        <div>
+                          {item.maritalStatus === "MARRIED" ? (
+                            <p
+                              className={` py-1.5 min-w-[100px] px-2 rounded-lg ${
+                                state.theme.theme === "LIGHT"
+                                  ? "bg-yellow-500 text-white"
+                                  : "bg-yellow-900"
+                              }`}
+                            >
+                              MARRIED
+                            </p>
+                          ) : (
+                            <p
+                              className={` py-1.5 min-w-[100px] px-2 rounded-lg ${
+                                state.theme.theme === "LIGHT"
+                                  ? "bg-emerald-500 text-white"
+                                  : "bg-emerald-900"
+                              }`}
+                            >
+                              UNMARRIED
+                            </p>
+                          )}
+                        </div>
+                      ) : (
+                        <p>null</p>
+                      )}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.createdAt ? (
+                        <div>{item.createdAt.toString()}</div>
+                      ) : (
+                        <p>null</p>
+                      )}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.email ? <div>{item.email}</div> : <p>null</p>}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.address ? <div>{item.address}</div> : <p>null</p>}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.gender ? <div>{item.gender}</div> : <p>null</p>}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.age ? <div>{item.age}</div> : <p>null</p>}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      {item.address ? <div>{item.address}</div> : <p>null</p>}
+                    </td>
+                    <td
+                      className={`border-r px-3 ${
+                        state.theme.theme === "LIGHT"
+                          ? "border-gray-300"
+                          : "border-stone-800"
+                      }`}
+                    >
+                      <div
+                        className="flex items-center"
+                        onClick={() => toggleRow(index)}
+                      >
+                        <p>Details</p>
+                        <p>
+                          <ChevronDownIcon
+                            className={`h-5 w-5 transition-all duration-300 ${
+                              expandedRow === index
+                                ? " rotate-180"
+                                : "-rotate-90"
+                            }`}
+                          />
+                        </p>
+                      </div>
+                    </td>
+                  </tr>
+                  {expandedRow === index && (
+                    <tr>
+                      <td className="border-b" colSpan={10}>
+                        <div>something</div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   );

@@ -24,7 +24,6 @@ function ChildrenGlobalState({ children }: { children: React.ReactNode }) {
         : "LIGHT";
     const storedTheme = localStorage.getItem("THEME");
     const initialTheme = storedTheme || prefersDarkMode;
-
     localStorage.setItem("THEME", initialTheme);
     dispatch({ type: initialTheme });
   }, [dispatch]);

@@ -9,17 +9,16 @@ import React, {
   useState,
 } from "react";
 import { SERVER_URL } from "./config/config";
-import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import {
+  ChevronDownIcon,
+  MagnifyingGlassIcon,
+  UserIcon,
+} from "@heroicons/react/16/solid";
 import { POST } from "@/actions/POSTREQUESTS";
+import { HiUsers } from "react-icons/hi";
+import { PencilSquareIcon } from "@heroicons/react/16/solid";
 
-interface Props {
-  PrabhujiName: string;
-  PrabhujiPhone: number;
-  MatajiName: string;
-  MatajiPhone: number;
-}
-
-function ChangeForm({ counselors }: { counselors: Props[] }) {
+function ChangeForm({ counselors }: { counselors: counselor[] }) {
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
   const [formState, setFormState] = useState({
@@ -46,6 +45,9 @@ function ChangeForm({ counselors }: { counselors: Props[] }) {
   });
   const [onFocusPhone, setOnFocusPhone] = useState(false);
   const [counseleeObject, setCounseleeObject] = useState<counselee | any>({});
+  const [counselorPreference1, setCounselorPreference1] = useState("");
+  const [counselorPreference2, setCounselorPreference2] = useState("");
+  const [counselorPreference3, setCounselorPreference3] = useState("");
   const [isLoadingCounseleeRequest, setIsLoadingCounseleeRequest] =
     useState(false);
   const [currentStep, setCurrentStep] = useState(1);
@@ -73,6 +75,7 @@ function ChangeForm({ counselors }: { counselors: Props[] }) {
         setCounseleeObject(responseData.content.content);
       } else {
         if (response.status === 404) {
+          localStorage.setItem("PHONE_NUMBER", phonenumber.toString());
           router.push("/counselee/registeration");
         }
         const errorData = await response.json();
@@ -90,7 +93,6 @@ function ChangeForm({ counselors }: { counselors: Props[] }) {
       setIsLoadingCounseleeRequest(false);
     }
   }
-
   return (
     <div>
       <div className="md:px-10 md:pt-20 md:pb-10 px-5 pt-10 pb-5">
@@ -110,10 +112,18 @@ function ChangeForm({ counselors }: { counselors: Props[] }) {
             Phone Number
           </label>
           <div
-            className={`flex items-center gap-5 w-full border rounded-xl transition-all duration-500 ${
+            className={`flex items-center w-full border transition-all duration-500 ${
               onFocusPhone
-                ? "border-purple-700 ring-4 ring-purple-200"
-                : "border-gray-400"
+                ? `${
+                    state.theme.theme === "LIGHT"
+                      ? "ring-4 border-purple-700 ring-purple-100"
+                      : "ring-4 border-purple-300 ring-purple-950"
+                  }`
+                : `${
+                    state.theme.theme === "LIGHT"
+                      ? "border-gray-300"
+                      : "border-stone-800"
+                  }`
             }`}
             onFocus={() => setOnFocusPhone(true)}
             onBlur={() => setOnFocusPhone(false)}
@@ -123,101 +133,179 @@ function ChangeForm({ counselors }: { counselors: Props[] }) {
               id="phonenumber"
               name="phonenumber"
               placeholder="7879859267"
-              className="w-full rounded-xl px-4 py-3 outline-none"
+              className={`w-full px-4 py-3 outline-none ${
+                state.theme.theme === "LIGHT" ? "bg-white " : "bg-stone-950 "
+              }`}
             />
             <button
-              className="bg-purple-600 rounded-lg font-bold text-lg px-4 py-1.5 mr-1 text-white"
+              className="bg-purple-600 rounded font-bold text-lg px-4 py-1.5 mr-1 text-white flex items-center gap-2"
               type="submit"
               disabled={isLoadingCounseleeRequest}
             >
-              {isLoadingCounseleeRequest ? "...Searching" : "Submit"}
+              <MagnifyingGlassIcon className="h-5 w-5" />
+              {isLoadingCounseleeRequest ? "...Searching" : "Search"}
             </button>
           </div>
         </form>
       </div>
       {Object.keys(counseleeObject).length > 0 && (
-        <div>
-          <div className="flex items-center justify-evenly gap-2 px-2">
-            <div>
+        <>
+          <div className="flex flex-col items-center my-5">
+            <h1 className="font-bold text-3xl">Hare Krishna!!</h1>
+            <div className="flex items-center gap-2">
               <p
-                className={`px-4 py-1 font-bold ${
-                  currentStep === 1
-                    ? "bg-black text-white rounded-full"
-                    : "bg-white text-black border-2 border-black rounded-full"
+                className={`rounded-full p-1.5 ${
+                  state.theme.theme === "LIGHT"
+                    ? "bg-gray-100 "
+                    : "bg-stone-900"
                 }`}
               >
-                1
+                <UserIcon className="h-5 w-5" />
               </p>
+              {counseleeObject?.initiatedName ? (
+                <p className="text-gray-500 text-xl font-bold">
+                  {counseleeObject?.initiatedName}
+                </p>
+              ) : (
+                <p className="text-purple-500 text-xl font-bold">{`${counseleeObject.firstName} ${counseleeObject.lastName}`}</p>
+              )}
             </div>
-            <div className="border w-[300px] border-gray-300"></div>
-            <div>
-              <p
-                className={`px-4 py-1 font-bold ${
-                  currentStep === 2
-                    ? "bg-black text-white rounded-full"
-                    : "bg-white text-black border-2 border-black rounded-full"
-                }`}
-              >
-                2
-              </p>
-            </div>
-            <div className="border w-[300px] border-gray-300"></div>
-            <div>
-              <p
-                className={`px-4 py-1 font-bold ${
-                  currentStep === 3
-                    ? "bg-black text-white rounded-full"
-                    : "bg-white text-black border-2 border-black rounded-full"
-                }`}
-              >
-                3
-              </p>
-            </div>
-            <div className="border w-[300px] border-gray-300"></div>
-            <div>
-              <p
-                className={`px-4 py-1 font-bold ${
-                  currentStep === 4
-                    ? "bg-black text-white rounded-full"
-                    : "bg-white text-black border-2 border-black rounded-full"
-                }`}
-              >
-                4
-              </p>
-            </div>
+            <button
+              className={`flex items-center gap-2 mt-5 ${
+                state.theme.theme === "LIGHT" ? "bg-gray-100" : "bg-stone-900"
+              } px-4 py-2`}
+            >
+              <PencilSquareIcon className="h-5 w-5" />
+              update
+            </button>
           </div>
-          <div>
-            <form action="" className="lg:mx-20 md:mx-14 mx-2">
-              <div>
-                {currentStep === 1 ? (
-                  <>
-                    <Step1 nextStep={nextStep} formData={counseleeObject} />
-                  </>
-                ) : currentStep === 2 ? (
-                  <>
-                    <Step2
-                      nextStep={nextStep}
-                      prevStep={prevStep}
-                      formData={counseleeObject}
+        </>
+      )}
+      {Object.keys(counseleeObject).length > 0 && (
+        <div className="flex justify-center w-full">
+          <div
+            className={`md:mx-10 mx-3 mb-20 md:w-[80vw] w-[90vw] p-5 rounded-2xl shadow-xl ${
+              state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
+            }`}
+          >
+            <form action="">
+              <div className="flex flex-col gap-5 ">
+                <div className="flex flex-col gap-5">
+                  {counseleeObject?.currentCounselor ? (
+                    <h1 className="text-lg font-bold text-red-500 text-center">
+                      Note: Since you you have not been allotted a counselor
+                      Fill The Form Below
+                    </h1>
+                  ) : (
+                    <div className="flex md:flex-row flex-col items-center md:gap-5">
+                      <div className="flex items-center gap-4">
+                        <p
+                          className={`w-max p-2 rounded-full ${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-gray-50"
+                              : "bg-stone-800"
+                          }`}
+                        >
+                          <HiUsers />
+                        </p>
+                        <p className="font-bold text-xl">Current Counselor:</p>
+                      </div>
+                      <p className="font-semibold text-lg">
+                        Rasamrita Gaur Das
+                      </p>
+                    </div>
+                  )}
+                  <div>
+                    <h1 className="font-bold text-lg">Give three preference</h1>
+                    <p>
+                      you have three preferences to choose the counselor if you
+                      dont have any you can keep it unchanged
+                    </p>
+                  </div>
+                  <div className="flex flex-col gap-5">
+                    <MenuIconAndDropDown
+                      DataArr={counselors}
+                      defaultVal="Let temple decide"
+                      setSelected={(value: string) =>
+                        setCounselorPreference1(value)
+                      }
                     />
-                  </>
-                ) : currentStep === 3 ? (
-                  <>
-                    <Step3
-                      nextStep={nextStep}
-                      prevStep={prevStep}
-                      formData={counseleeObject}
+                    <MenuIconAndDropDown
+                      DataArr={counselors}
+                      defaultVal="Let temple decide"
+                      setSelected={(value: string) =>
+                        setCounselorPreference2(value)
+                      }
+                      disabled={counselorPreference1.length === 0}
                     />
-                  </>
-                ) : (
-                  <>
-                    <Step4
-                      prevStep={prevStep}
-                      counselors={counselors}
-                      formData={counseleeObject}
+                    <MenuIconAndDropDown
+                      DataArr={counselors}
+                      defaultVal="Let temple decide"
+                      setSelected={(value: string) =>
+                        setCounselorPreference3(value)
+                      }
+                      disabled={
+                        counselorPreference2.length === 0 ||
+                        counselorPreference1.length === 0
+                      }
                     />
-                  </>
-                )}
+                  </div>
+                </div>
+                <div
+                  className={`flex flex-col gap-2 ${
+                    counseleeObject?.currentCounselee ? "flex " : "hidden"
+                  }`}
+                >
+                  <label htmlFor="" className="font-bold">
+                    Reason for change
+                  </label>
+                  <input
+                    type="text"
+                    className={`text-lg border px-4 py-1.5 font-normal outline-none ${
+                      state.theme.theme === "LIGHT"
+                        ? "border-gray-300 bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+                        : "border-stone-700 bg-stone-900 focus:border-purple-300 focus:ring-4 focus:ring-purple-950"
+                    }`}
+                    placeholder="why you want to change counselor?"
+                  />
+                </div>
+                <div
+                  className={`flex flex-col gap-2 ${
+                    counseleeObject?.currentCounselee ? "flex " : "hidden"
+                  }`}
+                >
+                  <label htmlFor="" className="font-bold">
+                    Have you already spoken to the existing counselor?
+                  </label>
+                  <MenuOthersDropDown
+                    setSelected={(value) => console.log(value)}
+                  />
+                </div>
+                <div
+                  className={`flex flex-col gap-2 ${
+                    counseleeObject?.currentCounselee ? "flex " : "hidden"
+                  }`}
+                >
+                  <label htmlFor="" className="font-bold">
+                    Have you already spoken to the new counselor or attended
+                    some of the meetings?
+                  </label>
+                  <MenuOthersDropDown
+                    setSelected={(value) => console.log(value)}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-end p-5 gap-5">
+                <button
+                  type="submit"
+                  className={`font-bold px-5 py-2 ${
+                    state.theme.theme === "LIGHT"
+                      ? "bg-purple-500 text-white"
+                      : "bg-purple-600"
+                  }`}
+                >
+                  Submit
+                </button>
               </div>
             </form>
           </div>
@@ -229,660 +317,23 @@ function ChangeForm({ counselors }: { counselors: Props[] }) {
 
 export default ChangeForm;
 
-function Step1({
-  nextStep,
-  formData,
-}: {
-  nextStep: () => void;
-  formData: counselee;
-}) {
-  return (
-    <div className="border-b mb-10 rounded-b-xl shadow-2xl">
-      <h1 className="text-center font-bold text-xl bg-purple-600 text-white py-2 my-5 rounded-t-xl">
-        General Information
-      </h1>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mx-2">
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            First Name
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="John"
-            id="firstName"
-            defaultValue={formData.firstName}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="lastName" className="font-bold">
-            Last Name
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Doe"
-            id="lastName"
-            defaultValue={formData.lastName}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="initiatedName" className="font-bold">
-            Initiated Name
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Rasamrita Gaur Dasa"
-            name="initiatedName"
-            defaultValue={formData.initiatedName}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="gender" className="font-bold">
-            Gender
-          </label>
-          <select
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            id="gender"
-            defaultValue={formData.gender}
-            disabled
-          >
-            <option value="Male">Male</option>
-            <option value="FeMale">FeMale</option>
-          </select>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="age" className="font-bold">
-            Age
-          </label>
-          <input
-            type="text"
-            id="age"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Enter your age"
-            defaultValue={formData.age}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="maritalStatus" className="font-bold">
-            Marital Status
-          </label>
-          <input
-            id="maritalStatus"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            defaultValue={formData.maritalStatus}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="mobile" className="font-bold">
-            Mobile
-          </label>
-          <input
-            type="text"
-            id="mobile"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="9796737895"
-            defaultValue={formData.phoneNumber}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="email" className="font-bold">
-            Email
-          </label>
-          <input
-            type="text"
-            id="email"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="xyz@example.com"
-            defaultValue={formData.email}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="address" className="font-bold">
-            Address
-          </label>
-          <input
-            type="text"
-            id="address"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Pune-30"
-            defaultValue={formData.address}
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="profession" className="font-bold">
-            Profession
-          </label>
-          <input
-            type="text"
-            id="profession"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Teacher"
-            defaultValue={formData.profession}
-            disabled
-          />
-        </div>
-      </div>
-      <div className="flex items-center gap-5 justify-end m-5">
-        <button
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl text-purple-300 border-purple-300"
-          disabled
-        >
-          Prev
-        </button>
-        <button
-          type="button"
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl bg-purple-700 text-white"
-          onClick={nextStep}
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
-}
-function Step2({
-  nextStep,
-  prevStep,
-  formData,
-}: {
-  nextStep: () => void;
-  prevStep: () => void;
-  formData: counselee;
-}) {
-  const [spouceDetails, setSpouceDetails] = useState<any>({
-    firstName: "",
-    lastName: "",
-    initiatedName: "",
-  });
-  const { dispatch } = useGlobalState();
-  useEffect(() => {
-    if (formData.maritalStatus === "MARRIED") {
-      (async () => {
-        try {
-          const response = await fetch(
-            `api/counslee/spouce/${formData.phoneNumber}`
-          );
-          if (response.ok) {
-            const responseData = await response.json();
-
-            setSpouceDetails(responseData.content.content);
-          } else {
-            const errorData = await response.json();
-            dispatch({
-              type: "SHOW_TOAST",
-              payload: { type: "ERROR", message: errorData.message },
-            });
-          }
-        } catch (error: any) {
-          dispatch({
-            type: "SHOW_TOAST",
-            payload: { type: "ERROR", message: error.message },
-          });
-        }
-      })();
-    }
-  }, [formData.maritalStatus, formData.phoneNumber, dispatch]);
-  return (
-    <div className="border-b mb-10 rounded-b-xl shadow-2xl">
-      <h1 className="text-center font-bold text-xl bg-purple-600 text-white py-2 my-5 rounded-t-xl">
-        Family Information
-      </h1>
-
-      <div
-        className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mx-2 ${
-          formData.maritalStatus === "UNMARRIED" ? " opacity-45" : ""
-        }`}
-        aria-readonly
-      >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            First Name of Spouce
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Ragina"
-            id="firstNamespouce"
-            disabled
-            defaultValue={spouceDetails.firstName}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Last Name of Spouce
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Doe"
-            id="lastNamespouce"
-            defaultValue={spouceDetails.lastName}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Initiated Name of Spouce
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Shakuntala Gopi"
-            id="initiatedNamespouce"
-            defaultValue={spouceDetails.initiatedName}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="age" className="font-bold">
-            Children Name & Age
-          </label>
-          <div>
-            {spouceDetails?.children
-              ? spouceDetails?.children?.map((item: any, index: number) => (
-                  <div key={index} className="flex gap-2 items-center">
-                    <div>
-                      <p className="h-2 w-2 bg-black rounded-full"></p>
-                    </div>
-                    <div className="flex gap-1 border rounded-full border-gray-400 px-1.5">
-                      <p>Name :</p>
-                      <p className="">{item.name}</p>
-                    </div>
-                    <div className="flex gap-1 border rounded-full border-gray-400 px-1.5">
-                      <p>Age :</p>
-                      <p className="">{item.age}</p>
-                    </div>
-                  </div>
-                ))
-              : null}
-          </div>
-        </div>
-      </div>
-      {formData.maritalStatus === "UNMARRIED" && (
-        <p className="text-center text-red-600">please click on next</p>
-      )}
-      <div className="flex items-center gap-5 justify-end m-5">
-        <button
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl text-purple-600 border-purple-600"
-          type="button"
-          onClick={prevStep}
-        >
-          Prev
-        </button>
-        <button
-          type="button"
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl bg-purple-700 text-white"
-          onClick={nextStep}
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
-}
-function Step3({
-  nextStep,
-  prevStep,
-  formData,
-}: {
-  nextStep: () => void;
-  prevStep: () => void;
-  formData: counselee;
-}) {
-  return (
-    <div className="border-b mb-10 rounded-b-xl shadow-2xl">
-      <h1 className="text-center font-bold text-xl bg-purple-600 text-white py-2 my-5 rounded-t-xl">
-        Spiritual Information
-      </h1>
-      <div
-        className={`grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mx-2 ${
-          formData.initiatedName ? "" : "opacity-40"
-        }`}
-      >
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Your Initiating/inspired spiritual master
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Shila Prabhupada"
-            id="firstName"
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Year Of Harinam initiation
-          </label>
-          <input
-            type="date"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Shila Prabhupada"
-            id="firstName"
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Place
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Pune"
-            id="firstName"
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Recommended by
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Friend/family/etc."
-            id="firstName"
-            disabled
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Your spouse’s Initiating or Aspired Spiritual master
-          </label>
-          <input
-            type="text"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Shila Prabhupada"
-            id="firstName"
-            disabled
-          />
-        </div>
-      </div>
-      {!formData.initiatedName && (
-        <p className="text-center text-red-500">please click on next</p>
-      )}
-      <div className="flex items-center gap-5 justify-end m-5">
-        <button
-          type="button"
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl text-purple-600 border-purple-600"
-          onClick={prevStep}
-        >
-          Prev
-        </button>
-        <button
-          type="button"
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl bg-purple-700 text-white"
-          onClick={nextStep}
-        >
-          Next
-        </button>
-      </div>
-    </div>
-  );
-}
-function Step4({
-  prevStep,
-  counselors,
-  formData,
-}: {
-  prevStep: () => void;
-  counselors: Props[];
-  formData: counselee;
-}) {
-  const { dispatch } = useGlobalState();
-  const [selecteFirstPreference, setSelectedFirstPreference] =
-    useState("Let Temple Decide");
-  const [selecteSecondPreference, setSelectedSecondPreference] =
-    useState("Let Temple Decide");
-  const [selecteThirdPreference, setSelectedThirdPreference] =
-    useState("Let Temple Decide");
-  const [reasonForChange, setReasonForChange] = useState("");
-  const [alreadySpokenToExisting, setAlreadySpokenToExisting] = useState(false);
-  const [alreadySpokenToNew, setAlreadySpokenToNew] = useState(false);
-  const [
-    checkedInformationCorrectConsent,
-    setCheckedInformationCorrectConsent,
-  ] = useState(false);
-
-  async function handleSubmit(e: any) {
-    const formDataToSubmit = {
-      counselee: formData.id,
-      preferedCounselor1:
-        selecteFirstPreference !== "Let Temple Decide"
-          ? selecteFirstPreference
-          : "",
-      preferedCounselor2:
-        selecteSecondPreference !== "Let Temple Decide"
-          ? selecteSecondPreference
-          : "",
-      preferedCounselor3:
-        selecteThirdPreference !== "Let Temple Decide"
-          ? selecteThirdPreference
-          : "",
-      reasonForCounselorChange: reasonForChange,
-      alreadySpokenToExistingCounselor: alreadySpokenToExisting,
-      alreadySpokenToNewCounselor: alreadySpokenToNew,
-    };
-    const filteredFormData: any = Object.fromEntries(
-      Object.entries(formDataToSubmit).filter(
-        ([key, value]) => value !== "" && value !== null && value !== undefined
-      )
-    );
-    console.log(filteredFormData);
-    try {
-      const response = await POST(
-        filteredFormData,
-        `${SERVER_URL}/counselorprovider/create`
-      );
-      dispatch({
-        type: "SHOW_TOAST",
-        payload: { type: "ERROR", message: response.message },
-      });
-    } catch (error: any) {
-      dispatch({
-        type: "SHOW_TOAST",
-        payload: { type: "ERROR", message: error.message },
-      });
-    }
-  }
-
-  return (
-    <div className="border-b mb-10 rounded-b-xl shadow-2xl">
-      <h1 className="text-center font-bold text-xl bg-purple-600 text-white py-2 my-5 rounded-t-xl">
-        Counselor Change related information
-      </h1>
-      <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 mx-2">
-        {formData.currentCounselor && (
-          <div className="flex flex-col gap-2">
-            <label htmlFor="firstName" className="font-bold">
-              Current Counselor
-            </label>
-            <input
-              type="text"
-              className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-              placeholder="Rasamrita Gaur Dasa"
-              id="firstName"
-              defaultValue={
-                formData?.currentCounselor
-                  ? formData?.currentCounselor.initiatedName
-                    ? formData?.currentCounselor.initiatedName
-                    : `${formData.currentCounselor.firstName} ${formData.currentCounselor.lastName}`
-                  : ""
-              }
-            />
-          </div>
-        )}
-        {formData.currentCounselor && (
-          <div className="flex flex-col gap-2">
-            <label htmlFor="firstName" className="font-bold">
-              Connected To Counselor Since (year)
-            </label>
-            <input
-              type="text"
-              className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-              placeholder="Rasamrita Gaur Dasa"
-              id="firstName"
-              defaultValue={
-                formData?.connectedToCounselorSince?.toString().split("T")[0]
-              }
-              readOnly
-            />
-          </div>
-        )}
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            New Counselor(give 3 preference)
-          </label>
-          <div className="flex flex-col gap-5">
-            <MenuIconAndDropDownDevotees
-              DataArr={counselors}
-              setSelected={(value: string) => setSelectedFirstPreference(value)}
-              defaultVal="Let Temple Decide"
-            />
-            {selecteFirstPreference !== "Let Temple Decide" ? (
-              <>
-                <MenuIconAndDropDownDevotees
-                  DataArr={counselors}
-                  setSelected={(value: string) =>
-                    setSelectedSecondPreference(value)
-                  }
-                  defaultVal="Let Temple Decide"
-                />
-                <MenuIconAndDropDownDevotees
-                  DataArr={counselors}
-                  setSelected={(value: string) =>
-                    setSelectedThirdPreference(value)
-                  }
-                  defaultVal="Let Temple Decide"
-                />
-              </>
-            ) : (
-              <>
-                <input
-                  type="text"
-                  className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-                  placeholder="Rasamrita Gaur Dasa"
-                  id="firstName"
-                  disabled
-                />
-                <input
-                  type="text"
-                  className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-                  placeholder="Rasamrita Gaur Dasa"
-                  id="firstName"
-                  disabled
-                />
-              </>
-            )}
-          </div>
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="reason" className="font-bold">
-            Reason for the change of counselor
-          </label>
-          <textarea
-            id="reason"
-            className="border-b px-5 py-2 text-lg rounded-xl focus:ring focus:ring-purple-100 outline-none focus:border-purple-700 focus:border-t focus:border-l focus:border-r border-b-gray-300 transition-all duration-500"
-            placeholder="Reason for the change of counselor"
-            value={reasonForChange}
-            onChange={(e) => setReasonForChange(e.target.value)}
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Have you already spoken to the existing counselor for proposed
-            change?
-          </label>
-          <MenuOthersDropDown
-            setSelected={(item: string) =>
-              setAlreadySpokenToExisting(item === "YES" ? true : false)
-            }
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <label htmlFor="firstName" className="font-bold">
-            Have you already spoken to the new counselor or attended some of the
-            meetings?
-          </label>
-          <MenuOthersDropDown
-            setSelected={(item: string) =>
-              setAlreadySpokenToNew(item === "YES" ? true : false)
-            }
-          />
-        </div>
-      </div>
-      <div className="mt-6 w-full flex justify-center">
-        <label className="flex items-center gap-2" htmlFor="checkedConcent">
-          <input
-            type="checkbox"
-            id="checkedConcent"
-            name="All the above information is correct to the best of my knowledge"
-            className="h-5 w-5"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => {
-              if (e.target.checked) {
-                setCheckedInformationCorrectConsent(false);
-              } else {
-                setCheckedInformationCorrectConsent(true);
-              }
-            }}
-          />
-          <p className="text-gray-500">
-            All the above information is correct to the best of my knowledge
-          </p>
-        </label>
-      </div>
-      <div className="flex items-center gap-5 justify-end m-5">
-        <button
-          type="button"
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl text-purple-600 border-purple-600"
-          onClick={prevStep}
-        >
-          Prev
-        </button>
-        <button
-          type="button"
-          className="text-lg font-bold border-2 px-6 py-1.5 rounded-xl bg-purple-700 text-white"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-      </div>
-    </div>
-  );
-}
-
-type PropsMenu = {
-  setSelected: (value: any) => void;
-  DataArr: any[];
+interface PropsMenu<T> {
+  setSelected: (state: string) => void;
+  DataArr: T[];
   defaultVal?: string;
   position?: string;
-};
+  disabled?: boolean;
+}
 
-function MenuIconAndDropDownDevotees({
+function MenuIconAndDropDown<T>({
   setSelected,
   DataArr,
   defaultVal,
   position,
-}: PropsMenu) {
+  disabled = false,
+}: PropsMenu<T>) {
   const [isSelectionOpen, toggleSelection] = useState(false);
-  const [QueriedArr, setQueriedArr] = useState<Props[]>([
-    {
-      PrabhujiName: "",
-      PrabhujiPhone: 0,
-      MatajiName: "",
-      MatajiPhone: 0,
-    },
-  ]);
+  const { state } = useGlobalState();
   const menuRef: any = useRef();
   const [selectedOption, setSelectedOption] = useState("");
   const [modalStyle, setModalStyle] = useState({
@@ -934,55 +385,33 @@ function MenuIconAndDropDownDevotees({
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [toggleSelection, closeModal]);
-  const router = useRouter();
-
-  function onChange(e: ChangeEvent<HTMLInputElement>) {
-    toggleSelection(true);
-    setSelectedOption(e.target.value);
-    const results: Props[] = DataArr.filter((item: any) => {
-      for (const key in item) {
-        const value = item[key];
-        if (typeof value === "string") {
-          if (
-            value
-              .toLowerCase()
-              .includes(e.target.value?.toString().toLowerCase())
-          ) {
-            return true;
-          }
-        } else if (typeof value === "number") {
-          if (
-            value
-              .toString()
-              .toLowerCase()
-              .includes(e.target.value?.toString().toLowerCase())
-          ) {
-            return true;
-          }
-        }
-      }
-      return false;
-    });
-    setQueriedArr(results.length > 0 ? results : DataArr);
-  }
   return (
-    <div className="relative inline-block text-left" ref={menuRef}>
-      <div
-        className={`border-b px-5 py-2 text-lg rounded-xl  outline-none focus:ring focus:ring-purple-100 focus:border-purple-700 border-b-gray-300 focus:border-t focus:border-l focus:border-r transition-all duration-500`}
+    <div className="relative inline-block text-left w-full" ref={menuRef}>
+      <button
+        type="button"
+        className={`flex items-center justify-between border px-2 py-2 rounded gap-5 w-full focus:ring-4 outline-none focus:border font-semibold ${
+          state.theme.theme === "LIGHT"
+            ? "border-gray-300 bg-white focus:ring-purple-100 focus:border-purple-600"
+            : "border-stone-700 bg-stone-950 focus:ring-purple-950 focus:border-purple-600"
+        }`}
+        id="options-menu"
+        aria-haspopup="true"
+        aria-expanded="true"
+        onClick={() => toggleSelection(!isSelectionOpen)}
+        disabled={disabled}
       >
-        <input
-          type="text"
-          onChange={onChange}
-          className="outline-none"
-          value={selectedOption}
-          placeholder="Search . . . "
-        />
-      </div>
+        {selectedOption === "" ? "Select" : selectedOption}
+        <ChevronDownIcon className="h-4 w-4" />
+      </button>
       {isSelectionOpen && (
         <div
-          className={`origin-top-left absolute ${
+          className={`origin-top-left absolute font-semibold text-lg z-[10000] ${
             position === "up" ? "bottom-0 mb-12" : "mt-2 right-0"
-          } w-full rounded-lg shadow-lg z-[1000] bg-white border-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none py-1 px-1`}
+          } w-full rounded-lg shadow-lg ${
+            state.theme.theme === "LIGHT"
+              ? "bg-white border-gray-300"
+              : "bg-stone-900 border border-stone-700"
+          } ring-1 ring-black ring-opacity-5 focus:outline-none py-1 px-1`}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
@@ -992,30 +421,52 @@ function MenuIconAndDropDownDevotees({
           }}
           onClick={(e) => e.stopPropagation()}
         >
-          {QueriedArr?.length > 0 ? (
+          <li
+            className={`px-2 py-1.5 rounded-lg list-none ${
+              state.theme.theme === "LIGHT"
+                ? "hover:bg-gray-100 "
+                : "hover:bg-stone-700"
+            }`}
+            onClick={() => {
+              setSelectedOption("Let Temple Decide");
+              setSelected("");
+              closeModal();
+            }}
+          >
+            Let Temple Decide
+          </li>
+          {DataArr?.length > 0 ? (
             <ul
               className={`flex flex-col gap-3 overflow-y-auto ${
-                DataArr.length > 10 ? "md:h-[60vh] h-[80vh]" : "h-full"
+                DataArr.length > 10
+                  ? "md:h-[40vh] h-[60vh]"
+                  : "h-[40vh] custom-scrollbar"
               }`}
               role="none"
             >
-              {QueriedArr?.map((item, index) => (
+              {DataArr?.map((item: any, index: number) => (
                 <li
                   key={index}
                   onClick={() => {
                     setSelectedOption(
-                      item.PrabhujiName && item.MatajiName
-                        ? `${item.PrabhujiName} & ${item.MatajiName}`
-                        : `${item.PrabhujiName} ${item.MatajiName}`
+                      item.initiatedName
+                        ? item.initiatedName
+                        : `${item.firstName} ${item.lastName}`
                     );
-                    setSelected(item);
+                    setSelected(item.id);
                     toggleSelection(false);
                   }}
-                  className={`px-2 py-1.5 rounded-lg  hover:bg-gray-100`}
+                  className={`px-2 py-1.5 rounded-lg ${
+                    item.name === selectedOption && "bg-blue-300"
+                  } ${
+                    state.theme.theme === "LIGHT"
+                      ? "hover:bg-gray-100 "
+                      : "hover:bg-stone-700"
+                  }`}
                 >
-                  {item.PrabhujiName && item.MatajiName
-                    ? `${item.PrabhujiName} & ${item.MatajiName}`
-                    : `${item.PrabhujiName} ${item.MatajiName}`}
+                  {item.initiatedName
+                    ? item.initiatedName
+                    : `${item.firstName} ${item.lastName}`}
                 </li>
               ))}
             </ul>
@@ -1089,7 +540,11 @@ function MenuOthersDropDown({
     <div className="relative inline-block text-left w-full" ref={menuRef}>
       <button
         type="button"
-        className={`flex items-center justify-between border px-2 py-2 rounded-xl gap-5 w-full focus:ring-4 outline-none focus:border font-semibold border-gray-300 bg-white focus:ring-purple-100 focus:border-purple-600`}
+        className={`text-lg border px-4 py-1.5 font-normal outline-none w-full flex items-center justify-between ${
+          state.theme.theme === "LIGHT"
+            ? "border-gray-300 bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
+            : "border-stone-700 bg-stone-900 focus:border-purple-300 focus:ring-4 focus:ring-purple-950"
+        }`}
         id="options-menu"
         aria-haspopup="true"
         aria-expanded="true"

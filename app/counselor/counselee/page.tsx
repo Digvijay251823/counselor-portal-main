@@ -17,7 +17,6 @@ async function getCounselees() {
 
 async function page() {
   const response = await getCounselees();
-  console.log(response);
   return (
     <div>
       <CounseleePage data={response.content} />

@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect } from "react";
 import { useGlobalState } from "../context/state";
 import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
@@ -48,42 +48,50 @@ function Header() {
               counselee
             </p>
           </Link>
-          <p
-            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
-              state.theme.theme === "LIGHT"
-                ? "hover:bg-gray-100"
-                : "hover:bg-stone-800"
-            }`}
-          >
-            sessions
-          </p>
-          <p
-            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
-              state.theme.theme === "LIGHT"
-                ? "hover:bg-gray-100"
-                : "hover:bg-stone-800"
-            }`}
-          >
-            activities
-          </p>
-          <p
-            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
-              state.theme.theme === "LIGHT"
-                ? "hover:bg-gray-100"
-                : "hover:bg-stone-800"
-            }`}
-          >
-            attendance
-          </p>
-          <p
-            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
-              state.theme.theme === "LIGHT"
-                ? "hover:bg-gray-100"
-                : "hover:bg-stone-800"
-            }`}
-          >
-            sadhana
-          </p>
+          <Link href={"/counselor/sessions"}>
+            <p
+              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                state.theme.theme === "LIGHT"
+                  ? "hover:bg-gray-100"
+                  : "hover:bg-stone-800"
+              }`}
+            >
+              sessions
+            </p>
+          </Link>
+          <Link href={"/counselor/activities"}>
+            <p
+              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                state.theme.theme === "LIGHT"
+                  ? "hover:bg-gray-100"
+                  : "hover:bg-stone-800"
+              }`}
+            >
+              activities
+            </p>
+          </Link>
+          <Link href={"/counselor/attendance"}>
+            <p
+              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                state.theme.theme === "LIGHT"
+                  ? "hover:bg-gray-100"
+                  : "hover:bg-stone-800"
+              }`}
+            >
+              attendance
+            </p>
+          </Link>
+          <Link href={"/counselor/sadhana"}>
+            <p
+              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                state.theme.theme === "LIGHT"
+                  ? "hover:bg-gray-100"
+                  : "hover:bg-stone-800"
+              }`}
+            >
+              sadhana
+            </p>
+          </Link>
           <Link href={"/counselor/scan"}>
             <p
               className={`font-semibold px-1.5 py-1.5 rounded-lg ${
@@ -99,14 +107,20 @@ function Header() {
         <div className="flex items-center gap-5">
           {state.theme.theme === "LIGHT" ? (
             <button
-              onClick={() => dispatch({ type: "DARK" })}
+              onClick={() => {
+                dispatch({ type: "DARK" });
+                localStorage.setItem("THEME", "DARK");
+              }}
               className={`p-2.5 rounded-lg bg-gray-50`}
             >
               <MoonIcon className="h-5 w-5" />
             </button>
           ) : (
             <button
-              onClick={() => dispatch({ type: "LIGHT" })}
+              onClick={() => {
+                dispatch({ type: "LIGHT" });
+                localStorage.setItem("THEME", "LIGHT");
+              }}
               className={`p-2.5 rounded-lg bg-yellow-950 bg-opacity-40`}
             >
               <SunIcon className="h-5 w-5" />

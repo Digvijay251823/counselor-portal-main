@@ -1,10 +1,10 @@
-import Scanner from "@/Components/cct/scan/Scanner";
+import SadhanaPage from "@/Components/counselor/sadhana/SadhanaPage";
 import React from "react";
 
 function page() {
   return (
     <div>
-      <Scanner />
+      <SadhanaPage />
     </div>
   );
 }

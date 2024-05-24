@@ -1,10 +1,10 @@
-import Scanner from "@/Components/cct/scan/Scanner";
+import AttendancePage from "@/Components/counselor/attendance/AttendancePage";
 import React from "react";
 
 function page() {
   return (
     <div>
-      <Scanner />
+      <AttendancePage />
     </div>
   );
 }

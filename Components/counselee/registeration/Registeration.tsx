@@ -79,6 +79,17 @@ function Registeration({
       },
     ],
   });
+
+  useEffect(() => {
+    const phonenumber = localStorage.getItem("PHONE_NUMBER");
+    if (phonenumber) {
+      setFormState((prev: any) => {
+        const previous = { ...prev };
+        previous.phoneNumber = phonenumber;
+        return previous;
+      });
+    }
+  }, []);
   async function handleSubmit(e: FormData) {
     function getExistingFields(obj: any) {
       let result: any = {};
@@ -266,7 +277,7 @@ function Registeration({
           )}
         </div>
       </div>
-      <form action={handleSubmit} className="lg:mx-20 md:mx-14 mx-2">
+      <form action={handleSubmit} className="lg:mx-20 md:mx-14 mx-2 mb-10">
         <div>
           {currentStep === 1 ? (
             <>
@@ -320,9 +331,9 @@ function Step1({
     <div
       className={`${
         state.theme.theme === "LIGHT"
-          ? "bg-purple-50"
+          ? "bg-white"
           : "bg-stone-900 bg-opacity-40"
-      } md:p-8 p-5 rounded-[40px] md:pb-5`}
+      } md:p-8 p-5 rounded-lg md:pb-5 shadow-lg`}
     >
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 ">
         <div className="flex flex-col gap-2">
@@ -335,7 +346,7 @@ function Step1({
             id="firstName"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="John"
@@ -353,11 +364,29 @@ function Step1({
             id="lastName"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="Doe"
             value={formData.lastName}
+            onChange={handleChange}
+          />
+        </div>
+        <div className="flex flex-col gap-2">
+          <label className="font-bold" htmlFor="initiatedName">
+            Initiated Name
+          </label>
+          <input
+            type="text"
+            name="initiatedName"
+            id="initiatedName"
+            className={`${
+              state.theme.theme === "LIGHT"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
+            }`}
+            placeholder="Hrinam Das"
+            value={formData.initiatedName}
             onChange={handleChange}
           />
         </div>
@@ -371,7 +400,7 @@ function Step1({
             id="phoneNumber"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="7972858976"
@@ -406,7 +435,7 @@ function Step1({
             id="age"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="23"
@@ -424,7 +453,7 @@ function Step1({
             id="email"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="xyz@email.com"
@@ -442,7 +471,7 @@ function Step1({
             id="profession"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="Student"
@@ -495,9 +524,9 @@ function Step2({
     <div
       className={`${
         state.theme.theme === "LIGHT"
-          ? "bg-purple-50"
+          ? "bg-white"
           : "bg-stone-900 bg-opacity-40"
-      } md:p-8 p-5 rounded-[40px] md:pb-5`}
+      } md:p-8 p-5 rounded-lg md:pb-5 shadow-lg`}
     >
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 ">
         <div className="flex flex-col gap-2">
@@ -527,7 +556,7 @@ function Step2({
             id="address"
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="Pune City"
@@ -548,7 +577,7 @@ function Step2({
                 id="husband"
                 className={`${
                   state.theme.theme === "LIGHT"
-                    ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                    ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                     : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
                 }`}
                 placeholder="Pune City"
@@ -596,7 +625,7 @@ function Step2({
                     }
                     className={`${
                       state.theme.theme === "LIGHT"
-                        ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                        ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                         : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
                     }`}
                     required
@@ -616,7 +645,7 @@ function Step2({
                     }
                     className={`${
                       state.theme.theme === "LIGHT"
-                        ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                        ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                         : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
                     }`}
                     required
@@ -677,9 +706,9 @@ function Step3({
     <div
       className={`${
         state.theme.theme === "LIGHT"
-          ? "bg-purple-50"
+          ? "bg-white"
           : "bg-stone-900 bg-opacity-40"
-      } md:p-8 p-5 rounded-[40px] md:pb-5`}
+      } md:p-8 p-5 rounded-lg md:pb-5 shadow-lg`}
     >
       <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 ">
         <div className="flex flex-col gap-2">
@@ -694,7 +723,7 @@ function Step3({
             onChange={handleChange}
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="HG Radheshyam Pr"
@@ -706,6 +735,8 @@ function Step3({
           </label>
           <DatePicker
             selected={harinamInitiationDate}
+            dateFormat="MMMM yyyy"
+            showMonthYearPicker
             onChange={(date) => {
               const e: any = {
                 target: { name: "connectedToCounselorSinceYear", value: date },
@@ -733,7 +764,7 @@ function Step3({
             onChange={handleChange}
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="Pune City"
@@ -764,8 +795,8 @@ function Step3({
           </label>
           <DatePicker
             selected={connectedToCounselorSinceYear}
-            showMonthDropdown
-            showYearDropdown
+            dateFormat="MMMM yyyy"
+            showMonthYearPicker
             onChange={(date) => {
               const e: any = {
                 target: { name: "connectedToCounselorSinceYear", value: date },
@@ -793,7 +824,7 @@ function Step3({
             onChange={handleChange}
             className={`${
               state.theme.theme === "LIGHT"
-                ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                 : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
             }`}
             placeholder="Friend/Collegue/SocialMedia"
@@ -1084,7 +1115,7 @@ function MenuIconAndDropDownDevotees({
                   }}
                   className={`${
                     state.theme.theme === "LIGHT"
-                      ? "bg-purple-100 px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
+                      ? "bg-white px-4 py-2 border border-purple-200 text-lg rounded-xl focus:ring-4 focus:ring-purple-200 outline-none focus:border-purple-700"
                       : "bg-stone-950 px-4 py-2 border border-stone-800 text-lg rounded-xl focus:ring-4 focus:ring-purple-950 outline-none focus:border-purple-400"
                   }`}
                 >
