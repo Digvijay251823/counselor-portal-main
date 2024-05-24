@@ -55,7 +55,7 @@ function Registeration({
 }) {
   const { state, dispatch } = useGlobalState();
   const [currentStep, setCurrentStep] = useState(1);
-  const [isSuccess, setIsSuccess] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);
   const [formState, setFormState] = useState<any>({
     firstName: "",
     lastName: "",
