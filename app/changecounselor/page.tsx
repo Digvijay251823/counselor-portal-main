@@ -1,6 +1,5 @@
-import ChangeForm from "@/Components/ChangeForm";
+import ChangeForm from "@/Components/counselee/ChangeForm";
 import React from "react";
-import counselor from "@/Counselors.json";
 import { SERVER_URL } from "@/Components/config/config";
 
 async function getCounselors() {

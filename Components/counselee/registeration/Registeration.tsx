@@ -46,6 +46,7 @@ import React, {
 } from "react";
 import { POST } from "@/actions/POSTREQUESTS";
 import { SERVER_URL } from "@/Components/config/config";
+import SuccessPage from "../SuccessPage";
 
 function Registeration({
   counselorList,
@@ -54,6 +55,7 @@ function Registeration({
 }) {
   const { state, dispatch } = useGlobalState();
   const [currentStep, setCurrentStep] = useState(1);
+  const [isSuccess, setIsSuccess] = useState(true);
   const [formState, setFormState] = useState<any>({
     firstName: "",
     lastName: "",
@@ -311,6 +313,7 @@ function Registeration({
           )}
         </div>
       </form>
+      <SuccessPage isOpen={isSuccess} onClose={() => setIsSuccess(false)} />
     </div>
   );
 }

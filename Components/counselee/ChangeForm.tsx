@@ -8,7 +8,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import { SERVER_URL } from "./config/config";
+import { SERVER_URL } from "../config/config";
 import {
   ChevronDownIcon,
   MagnifyingGlassIcon,
@@ -17,6 +17,7 @@ import {
 import { POST } from "@/actions/POSTREQUESTS";
 import { HiUsers } from "react-icons/hi";
 import { PencilSquareIcon } from "@heroicons/react/16/solid";
+import SuccessPage from "./SuccessPage";
 
 function ChangeForm({ counselors }: { counselors: counselor[] }) {
   const router = useRouter();
@@ -47,16 +48,15 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
   const [counseleeObject, setCounseleeObject] = useState<counselee | any>({});
   const [counselorPreference1, setCounselorPreference1] = useState("");
   const [counselorPreference2, setCounselorPreference2] = useState("");
+  const [isSuccess, setIsSuccess] = useState(false);
   const [counselorPreference3, setCounselorPreference3] = useState("");
+  const [reasonForCounselorChange, setReasonForCounselorChange] = useState("");
+  const [alreadyAskedToExistingCounselor, setAlreadyAskedToExistingCounselor] =
+    useState(false);
+  const [alreadyAttendingNewCounselor, setAlreadyAttendingNewCounselor] =
+    useState(false);
   const [isLoadingCounseleeRequest, setIsLoadingCounseleeRequest] =
     useState(false);
-  const [currentStep, setCurrentStep] = useState(1);
-  function nextStep() {
-    setCurrentStep((prev) => prev + 1);
-  }
-  function prevStep() {
-    setCurrentStep((prev) => prev - 1);
-  }
 
   async function handleSubmitCounselor(e: FormData) {
     const phonenumber = e.get("phonenumber")?.valueOf();
@@ -91,6 +91,43 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
       });
     } finally {
       setIsLoadingCounseleeRequest(false);
+    }
+  }
+
+  async function handleSubmitChangeCounselor(e: FormData) {
+    const formData = {
+      counselee: counseleeObject?.id,
+      preferedCounselor1: counselorPreference1,
+      preferedCounselor2: counselorPreference2,
+      preferedCounselor3: counselorPreference3,
+      reasonForCounselorChange: reasonForCounselorChange,
+      alreadySpokenToExistingCounselor: alreadyAskedToExistingCounselor,
+      alreadySpokenToNewCounselor: alreadyAttendingNewCounselor,
+    };
+    function filterFormData(data: any) {
+      const filteredData: any = {};
+      for (const key in data) {
+        if (data[key] !== "" && data[key] !== undefined) {
+          filteredData[key] = data[key];
+        }
+      }
+      return filteredData;
+    }
+    const filteredFormData = filterFormData(formData);
+    try {
+      const response = await POST(
+        filteredFormData,
+        `${SERVER_URL}/counselorprovider/create`
+      );
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "SUCCESS", message: response.message },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "ERROR", message: error.message },
+      });
     }
   }
   return (
@@ -176,7 +213,7 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
               } px-4 py-2`}
             >
               <PencilSquareIcon className="h-5 w-5" />
-              update
+              update details
             </button>
           </div>
         </>
@@ -188,10 +225,10 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
               state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
             }`}
           >
-            <form action="">
+            <form action={handleSubmitChangeCounselor}>
               <div className="flex flex-col gap-5 ">
                 <div className="flex flex-col gap-5">
-                  {counseleeObject?.currentCounselor ? (
+                  {!counseleeObject?.currentCounselor ? (
                     <h1 className="text-lg font-bold text-red-500 text-center">
                       Note: Since you you have not been allotted a counselor
                       Fill The Form Below
@@ -211,7 +248,9 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
                         <p className="font-bold text-xl">Current Counselor:</p>
                       </div>
                       <p className="font-semibold text-lg">
-                        Rasamrita Gaur Das
+                        {counseleeObject?.currentCounselor?.initiatedName
+                          ? counseleeObject?.currentCounselor?.initiatedName
+                          : `${counseleeObject?.currentCounselor?.firstName} ${counseleeObject?.currentCounselor?.lastName}`}
                       </p>
                     </div>
                   )}
@@ -226,9 +265,13 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
                     <MenuIconAndDropDown
                       DataArr={counselors}
                       defaultVal="Let temple decide"
-                      setSelected={(value: string) =>
-                        setCounselorPreference1(value)
-                      }
+                      setSelected={(value: string) => {
+                        setCounselorPreference1(value);
+                        if (value === "") {
+                          setCounselorPreference2("");
+                          setCounselorPreference3("");
+                        }
+                      }}
                     />
                     <MenuIconAndDropDown
                       DataArr={counselors}
@@ -256,11 +299,19 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
                     counseleeObject?.currentCounselee ? "flex " : "hidden"
                   }`}
                 >
-                  <label htmlFor="" className="font-bold">
+                  <label
+                    htmlFor="reasonForCounselorChange"
+                    className="font-bold"
+                  >
                     Reason for change
                   </label>
                   <input
                     type="text"
+                    name="reasonForCounselorChange"
+                    value={reasonForCounselorChange}
+                    onChange={(e) =>
+                      setReasonForCounselorChange(e.target.value)
+                    }
                     className={`text-lg border px-4 py-1.5 font-normal outline-none ${
                       state.theme.theme === "LIGHT"
                         ? "border-gray-300 bg-white focus:border-purple-600 focus:ring-4 focus:ring-purple-100"
@@ -271,19 +322,26 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
                 </div>
                 <div
                   className={`flex flex-col gap-2 ${
-                    counseleeObject?.currentCounselee ? "flex " : "hidden"
+                    counseleeObject?.currentCounselor ? "flex " : "hidden"
                   }`}
                 >
-                  <label htmlFor="" className="font-bold">
+                  <label
+                    htmlFor="alreadySpokenToExistingCounselor"
+                    className="font-bold"
+                  >
                     Have you already spoken to the existing counselor?
                   </label>
                   <MenuOthersDropDown
-                    setSelected={(value) => console.log(value)}
+                    setSelected={(value: string) =>
+                      setAlreadyAskedToExistingCounselor(
+                        value === "YES" ? true : false
+                      )
+                    }
                   />
                 </div>
                 <div
                   className={`flex flex-col gap-2 ${
-                    counseleeObject?.currentCounselee ? "flex " : "hidden"
+                    counseleeObject?.currentCounselor ? "flex " : "hidden"
                   }`}
                 >
                   <label htmlFor="" className="font-bold">
@@ -291,7 +349,11 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
                     some of the meetings?
                   </label>
                   <MenuOthersDropDown
-                    setSelected={(value) => console.log(value)}
+                    setSelected={(value) =>
+                      setAlreadyAttendingNewCounselor(
+                        value === "YES" ? true : false
+                      )
+                    }
                   />
                 </div>
               </div>
@@ -311,6 +373,7 @@ function ChangeForm({ counselors }: { counselors: counselor[] }) {
           </div>
         </div>
       )}
+      <SuccessPage isOpen={isSuccess} onClose={() => setIsSuccess(false)} />
     </div>
   );
 }
