@@ -13,11 +13,7 @@ async function getCounselors() {
   }
 }
 
-async function page({
-  searchParams,
-}: {
-  searchParams: { phonenumber: string };
-}) {
+async function page() {
   const response = await getCounselors();
   return (
     <div className="w-full">

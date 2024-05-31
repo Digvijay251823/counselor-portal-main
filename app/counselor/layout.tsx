@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/Components/utils/Header";
 import LocationComponent from "@/Components/utils/LocationComponent";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -13,10 +14,12 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const authcontent = cookies().get("AUTH")?.value;
+  const authparsed = authcontent && JSON.parse(authcontent);
   return (
     <section className="w-screen">
       <Header />
-      <LocationComponent />
+      <LocationComponent response={authparsed && authparsed.counselor} />
       {children}
     </section>
   );

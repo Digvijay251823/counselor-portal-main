@@ -1,12 +1,84 @@
 "use client";
+import { SERVER_URL } from "@/Components/config/config";
 import { useGlobalState } from "@/Components/context/state";
+import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
+import { PROTECTED_POST } from "@/actions/ADMINREQUESTS";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
+import { useRouter } from "next/navigation";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
 
-function ScheduleSession() {
-  const { state } = useGlobalState();
+function ScheduleSession({
+  counselorId,
+  response,
+}: {
+  counselorId: string;
+  response: courses[];
+}) {
+  const router = useRouter();
+  const { state, dispatch } = useGlobalState();
+  const [ModeofAttendance, setModeofAttendance] = useState("");
+  const [startTimeDate, setStartTimeDate] = useState<any>("");
+  const [startTime, setStartTime] = useState("");
+  const [selectedCourse, setSelectedCourse] = useState("");
+  const handleDateTimeConcat = () => {
+    if (startTimeDate !== "" && startTime !== "") {
+      const selectedDate = new Date(startTimeDate);
+      const [hours, minutes] = startTime.split(":").map(Number);
+      selectedDate.setHours(hours);
+      selectedDate.setMinutes(minutes);
+
+      return selectedDate.toISOString();
+    } else {
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "ERROR", message: "please select date and time" },
+      });
+      return null;
+    }
+  };
+  async function handleSubmit(e: FormData) {
+    const datetimeConcatenated = handleDateTimeConcat();
+    const courseId = selectedCourse;
+    const name = e.get("name")?.toString();
+    const description = e.get("description")?.toString();
+    if (
+      courseId === "" ||
+      !name ||
+      !description ||
+      ModeofAttendance === "" ||
+      !datetimeConcatenated
+    ) {
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "ERROR", message: "please fill all the details" },
+      });
+    }
+    const formData: any = {
+      name: name,
+      description: description,
+      startTime: datetimeConcatenated,
+      modeOfAttendance: ModeofAttendance,
+      courseId: courseId,
+      counselorId: counselorId,
+    };
+    try {
+      const response = await PROTECTED_POST(
+        formData,
+        `${SERVER_URL}/session/create`
+      );
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "SUCCESS", message: response.message },
+      });
+    } catch (error: any) {
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "ERROR", message: error.message },
+      });
+    }
+  }
   return (
     <div className="w-full">
       <div>
@@ -16,30 +88,29 @@ function ScheduleSession() {
         </p>
         <div>
           <form
-            action=""
+            action={handleSubmit}
             className={`mb-20 shadow-xl ${
               state.theme.theme === "LIGHT" ? "bg-stone-50" : "bg-stone-900"
             } bg-opacity-50 md:mx-10 mx-2`}
           >
-            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 md:p-5 p-2">
-              {/* <div className={`flex flex-col gap-3 `}>
+            <div className="grid lg:grid-cols-3 md:grid-cols-2 grid-cols-1 gap-5 md:p-5 p-2 justify-center">
+              <div className={`flex flex-col gap-3 `}>
                 <label htmlFor="" className="font-bold text-lg">
                   Select Course
                 </label>
-                <DropDownMenu setSelected={(value) => console.log(value)} />
+                <DropDownMenu
+                  dataArr={response}
+                  setSelected={(value) => setSelectedCourse(value)}
+                />
               </div>
-              <div className={`flex flex-col gap-3 `}>
-                <label htmlFor="" className="font-bold text-lg">
-                  Select Session
-                </label>
-                <DropDownMenu setSelected={(value) => console.log(value)} />
-              </div> */}
               <div className={`flex flex-col gap-3`}>
-                <label htmlFor="" className="font-bold text-lg">
+                <label htmlFor="name" className="font-bold text-lg">
                   Session Name
                 </label>
                 <input
-                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] ${
+                  name="name"
+                  id="name"
+                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] rounded-lg ${
                     state.theme.theme === "LIGHT"
                       ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
                       : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
@@ -47,23 +118,13 @@ function ScheduleSession() {
                 />
               </div>
               <div className={`flex flex-col gap-3`}>
-                <label htmlFor="" className="font-bold text-lg">
+                <label htmlFor="description" className="font-bold text-lg">
                   Session Description
                 </label>
                 <textarea
-                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] ${
-                    state.theme.theme === "LIGHT"
-                      ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
-                      : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
-                  }`}
-                />
-              </div>
-              <div className={`flex flex-col gap-3`}>
-                <label htmlFor="" className="font-bold text-lg">
-                  Session Duration In Minutes
-                </label>
-                <input
-                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] ${
+                  name="description"
+                  id="description"
+                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] rounded-lg ${
                     state.theme.theme === "LIGHT"
                       ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
                       : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
@@ -77,54 +138,87 @@ function ScheduleSession() {
                 >
                   Mode Of Attendance
                 </label>
-                <div className="flex items-center gap-5">
+                <div className="flex flex-col gap-5">
                   <div className="flex items-center gap-3">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={ModeofAttendance === "ONLINE"}
+                      onChange={() => setModeofAttendance("ONLINE")}
+                    />
                     <label className="font-bold text-lg">ONLINE</label>
                   </div>
                   <div className="flex items-center gap-3">
-                    <input type="checkbox" />
+                    <input
+                      type="checkbox"
+                      checked={ModeofAttendance === "OFFLINE"}
+                      onChange={() => setModeofAttendance("OFFLINE")}
+                    />
                     <label className="text-lg font-bold">OFFLINE</label>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <input
+                      type="checkbox"
+                      checked={ModeofAttendance === "HYBRID"}
+                      onChange={() => setModeofAttendance("HYBRID")}
+                    />
+                    <div className="text-lg font-bold flex items-center">
+                      HYBRID
+                      <p className="text-xs text-gray-400">
+                        (ONLINE & OFFLINE)
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
-            </div>
-            <div className="flex justify-center mt-5">
               <div className={`flex flex-col gap-3`}>
                 <label htmlFor="" className="font-bold text-lg">
                   Schedule At
                 </label>
                 <div className={`text-black font-bold`}>
                   <Calendar
-                    onChange={(e) => console.log(e)}
+                    onChange={(e) => setStartTimeDate(e?.toString())}
                     className={` rounded-lg ${
                       state.theme.theme === "LIGHT"
-                        ? "bg-white border"
-                        : "bg-stone-900 text-white border border-stone-800"
+                        ? "bg-white border-2 focus:ring-4"
+                        : "bg-stone-900 text-white border-2 border-stone-800 focus:ring-4"
                     }`}
+                    value={startTimeDate}
                   />
                 </div>
               </div>
+              <div className="flex items-center gap-5">
+                <label htmlFor="Time" className="text-lg font-bold">
+                  Time
+                </label>
+                <input
+                  type="time"
+                  id="Time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between  ${
+                    state.theme.theme === "LIGHT"
+                      ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
+                      : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
+                  }`}
+                />
+              </div>
             </div>
+
             <div className="flex justify-end p-5 gap-5">
               <button
-                className={`font-bold px-5 py-2 border ${
+                onClick={() => router.back()}
+                type="button"
+                className={`font-bold px-5 py-2 border rounded-lg focus:ring-4  ${
                   state.theme.theme === "LIGHT"
-                    ? "bg-white border-gray-300"
-                    : "bg-stone-800 border-stone-600"
+                    ? "bg-white border-gray-300 focus:ring-gray-300 hover:bg-gray-100"
+                    : "bg-stone-800 border-stone-600 focus:ring-gray-600 hover:bg-stone-700"
                 }`}
               >
                 Cancel
               </button>
-              <button
-                className={`font-bold px-5 py-2 ${
-                  state.theme.theme === "LIGHT"
-                    ? "bg-purple-500 text-white"
-                    : "bg-purple-600"
-                }`}
-              >
-                Submit
-              </button>
+              <SubmitHandlerButton
+                btnStyles={`font-bold bg-purple-600 text-white px-5 rounded-lg focus:ring-4 focus:ring-purple-500 hover:bg-purple-500`}
+              />
             </div>
           </form>
         </div>
@@ -136,7 +230,6 @@ function ScheduleSession() {
 export default ScheduleSession;
 
 function DropDownMenu({
-  defaultValue,
   dataArr,
   setSelected,
   position,
@@ -144,7 +237,7 @@ function DropDownMenu({
   setSelected: (value: any) => void;
   position?: string;
   dataArr: any;
-  defaultValue: any;
+  defaultValue?: any;
 }) {
   const [isSelectionOpen, toggleSelection] = useState(false);
   const { state } = useGlobalState();
@@ -198,7 +291,7 @@ function DropDownMenu({
     <div className="relative inline-block text-left w-full" ref={menuRef}>
       <button
         type="button"
-        className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] ${
+        className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between w-full lg:w-[400px] rounded-lg ${
           state.theme.theme === "LIGHT"
             ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300"
             : "focus:ring-purple-950 focus:border-purple-300 border-stone-700"
@@ -215,7 +308,11 @@ function DropDownMenu({
         <div
           className={`origin-top-left absolute font-semibold text-lg z-[10000] ${
             position === "up" ? "bottom-0 mb-12" : "mt-2 right-0"
-          } w-full rounded-lg shadow-lg bg-white border-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none py-1 px-1`}
+          } w-full rounded-lg shadow-lg ${
+            state.theme.theme === "LIGHT"
+              ? "bg-white"
+              : "bg-stone-950 shadow-black"
+          } ring-opacity-5 focus:outline-none py-1 px-1`}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
@@ -226,8 +323,17 @@ function DropDownMenu({
           onClick={(e) => e.stopPropagation()}
         >
           <ul className={`flex flex-col gap-3 overflow-y-auto `} role="none">
-            {dataArr?.map((item: any, index: number) => (
-              <p key={index}>{item}</p>
+            {dataArr?.map((item: courses, index: number) => (
+              <li
+                key={index}
+                onClick={() => {
+                  setSelected(item.id);
+                  setSelectedOption(item.name);
+                  closeModal();
+                }}
+              >
+                {item.name}
+              </li>
             ))}
           </ul>
         </div>

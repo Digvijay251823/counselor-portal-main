@@ -51,7 +51,7 @@ const Modal = ({
         state.theme.theme === "LIGHT"
           ? "bg-white bg-opacity-10"
           : "bg-white bg-opacity-10"
-      } transition-opacity z-[2000] ${
+      } transition-opacity z-[1000] ${
         isOpen
           ? "opacity-100 pointer-events-auto"
           : "opacity-0 pointer-events-none"

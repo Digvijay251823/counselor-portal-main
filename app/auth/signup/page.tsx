@@ -1,10 +1,10 @@
-import SignupComp from "@/Components/auth/signin/Signup";
+import Signup from "@/Components/auth/signup/Signup";
 import React from "react";
 
 function page() {
   return (
-    <div>
-      <SignupComp />
+    <div className="w-full">
+      <Signup />
     </div>
   );
 }

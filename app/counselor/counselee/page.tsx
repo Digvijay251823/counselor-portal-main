@@ -1,5 +1,5 @@
 import { SERVER_URL } from "@/Components/config/config";
-import CounseleePage from "@/Components/counselor/CounseleePage";
+import CounseleePage from "@/Components/counselor/counselee/CounseleePage";
 import { unstable_noStore } from "next/cache";
 import React from "react";
 

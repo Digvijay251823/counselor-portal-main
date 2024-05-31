@@ -1,13 +1,16 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useGlobalState } from "../context/state";
-import { MoonIcon, SunIcon } from "@heroicons/react/16/solid";
+import { Bars3Icon, MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { VscThreeBars } from "react-icons/vsc";
+import Drawer from "./MenuDrawer";
 
 function Header() {
   const pathname = usePathname();
   const { state, dispatch } = useGlobalState();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   return (
     <header
       className={`w-full shadow-lg ${
@@ -27,7 +30,7 @@ function Header() {
             Counselor
           </span>
         </div>
-        <nav className="flex items-center gap-5">
+        <nav className="md:flex items-center gap-5  hidden">
           <p
             className={`font-semibold px-1.5 py-1.5 rounded-lg ${
               state.theme.theme === "LIGHT"
@@ -126,9 +129,111 @@ function Header() {
               <SunIcon className="h-5 w-5" />
             </button>
           )}
-          <p className="font-bold text-purple-500 bg-purple-100 px-2 py-1.5 rounded-lg">
-            login
-          </p>
+          <div className="md:hidden block">
+            <button className="" onClick={() => setIsOpenDrawer(true)}>
+              <Bars3Icon className="h-5 w-5" />
+            </button>
+            <Drawer
+              isOpen={isOpenDrawer}
+              onClose={() => setIsOpenDrawer(false)}
+            >
+              <nav className="flex flex-col gap-5">
+                <p
+                  className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                    state.theme.theme === "LIGHT"
+                      ? "hover:bg-gray-100"
+                      : "hover:bg-stone-800"
+                  }`}
+                >
+                  Analytics
+                </p>
+                <Link
+                  href="/counselor/counselee"
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${pathname} ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    counselee
+                  </p>
+                </Link>
+                <Link
+                  href={"/counselor/sessions"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    sessions
+                  </p>
+                </Link>
+                <Link
+                  href={"/counselor/activities"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    activities
+                  </p>
+                </Link>
+                <Link
+                  href={"/counselor/attendance"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    attendance
+                  </p>
+                </Link>
+                <Link
+                  href={"/counselor/sadhana"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    sadhana
+                  </p>
+                </Link>
+                <Link
+                  href={"/counselor/scan"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    scan
+                  </p>
+                </Link>
+              </nav>
+            </Drawer>
+          </div>
         </div>
       </div>
     </header>
