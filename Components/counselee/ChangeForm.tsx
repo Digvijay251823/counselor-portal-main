@@ -20,7 +20,7 @@ import { PencilSquareIcon } from "@heroicons/react/16/solid";
 import SuccessPage from "./SuccessPage";
 import { useFormStatus } from "react-dom";
 
-function ChangeForm({ counselors }: { counselors: counselor[] }) {
+function ChangeForm({ counselors }: { counselors?: counselor[] }) {
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
   const [formState, setFormState] = useState({
@@ -369,7 +369,7 @@ export default ChangeForm;
 
 interface PropsMenu<T> {
   setSelected: (state: string) => void;
-  DataArr: T[];
+  DataArr?: T[];
   defaultVal?: string;
   position?: string;
   disabled?: boolean;
@@ -485,7 +485,7 @@ function MenuIconAndDropDown<T>({
           >
             Let Temple Decide
           </li>
-          {DataArr?.length > 0 ? (
+          {DataArr && DataArr?.length > 0 ? (
             <ul
               className={`flex flex-col gap-3 overflow-y-auto ${
                 DataArr.length > 10

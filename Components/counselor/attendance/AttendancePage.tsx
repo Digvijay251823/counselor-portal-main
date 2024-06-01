@@ -10,7 +10,7 @@ function AttendancePage({
   counselorData,
   response,
 }: {
-  counselorData: any;
+  counselorData?: any;
   response: Attendance[];
 }) {
   const { state } = useGlobalState();

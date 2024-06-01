@@ -29,7 +29,7 @@ async function page() {
   const response = await getAttendance(authparsed.counselor.id);
   return (
     <div>
-      <AttendancePage response={response.content} />
+      <AttendancePage response={response.content} counselorData={authparsed} />
     </div>
   );
 }

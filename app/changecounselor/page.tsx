@@ -17,7 +17,7 @@ async function page() {
   const response = await getCounselors();
   return (
     <div className="w-full">
-      <ChangeForm counselors={response.content} />
+      <ChangeForm counselors={response?.content} />
     </div>
   );
 }
