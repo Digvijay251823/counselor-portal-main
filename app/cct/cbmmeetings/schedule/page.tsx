@@ -1,12 +1,12 @@
-import MeetingsPage from "@/Components/cct/CBMMeetings/MeetingsPage";
+import ScheduleMeeting from "@/Components/cct/CBMMeetings/ScheduleMeeting";
 import { SERVER_URL } from "@/Components/config/config";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
-import React from "react";
-async function getCBMMeetings(id: string) {
+
+async function getCourses() {
   unstable_noStore();
   try {
-    const response = await fetch(`${SERVER_URL}/cbm-meetings`);
+    const response = await fetch(`${SERVER_URL}/course`);
     if (response.ok) {
       const responseData = await response.json();
       return responseData;
@@ -18,19 +18,17 @@ async function getCBMMeetings(id: string) {
     throw error;
   }
 }
-async function page() {
+
+export default async function page() {
+  const response = await getCourses();
   const auth = cookies().get("AUTH")?.value;
   const parsedauth = auth && JSON.parse(auth);
   if (!parsedauth) {
     throw new Error("please authenticate to access");
   }
-  const response = await getCBMMeetings(parsedauth?.counselor?.id);
-
   return (
     <div>
-      <MeetingsPage response={response.content} />
+      <ScheduleMeeting counselorId={parsedauth?.counselor?.id} />
     </div>
   );
 }
-
-export default page;

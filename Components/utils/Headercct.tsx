@@ -162,7 +162,7 @@ function MenuCBM() {
                   : "hover:bg-stone-950"
               } rounded-[30px]`}
             >
-              <Link href="/cbm-meeting">
+              <Link href="/cct/cbmmeetings">
                 <div>
                   <div className="flex items-center gap-3">
                     <p
@@ -189,7 +189,7 @@ function MenuCBM() {
                   : "hover:bg-stone-950"
               } rounded-[30px]`}
             >
-              <Link href="/cbm-attendance">
+              <Link href="/cct/cbmattendance">
                 <div>
                   <div className="flex items-center gap-3">
                     <p
@@ -219,7 +219,7 @@ function MenuCBM() {
                   : "hover:bg-stone-950"
               } rounded-[30px]`}
             >
-              <Link href="/cbm-activities">
+              <Link href="/cct/cbmactivities">
                 <div>
                   <div className="flex items-center gap-3">
                     <p
