@@ -14,10 +14,10 @@ async function getAttendance() {
       return responseData;
     } else {
       const errorData = await response.json();
-      return <ErrorPage message={errorData.message} />;
+      throw new Error(errorData.message);
     }
   } catch (error: any) {
-    return <ErrorPage message={error.message} />;
+    throw new Error(error.message);
   }
 }
 

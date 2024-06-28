@@ -13,7 +13,7 @@ async function getCounselors() {
       throw new Error(errorData);
     }
   } catch (error: any) {
-    throw error;
+    throw new Error(error);
   }
 }
 

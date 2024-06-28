@@ -1,15 +1,21 @@
 import CbmSevas from "@/Components/cct/CBMSevas/CBMSevas";
 import { SERVER_URL } from "@/Components/config/config";
+import { unstable_noStore } from "next/cache";
 import React from "react";
 
 async function cbmSevas(queryString: string) {
-  const response = await fetch(`${SERVER_URL}/cbm-seva?${queryString}`);
-  if (response.ok) {
-    const responseData = await response.json();
-    return responseData;
-  } else {
-    const errorData = await response.json();
-    return errorData;
+  unstable_noStore();
+  try {
+    const response = await fetch(`${SERVER_URL}/cbm-seva?${queryString}`);
+    if (response.ok) {
+      const responseData = await response.json();
+      return responseData;
+    } else {
+      const errorData = await response.json();
+      throw new Error(errorData.message);
+    }
+  } catch (error: any) {
+    throw new Error(error);
   }
 }
 

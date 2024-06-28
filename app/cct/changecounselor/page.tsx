@@ -12,10 +12,10 @@ async function getChangeCounselor(queryString: string) {
       return responseData;
     } else {
       const errorData = await response.json();
-      return <ErrorPage message={errorData.message} />;
+      throw new Error(errorData.message);
     }
   } catch (error: any) {
-    return <ErrorPage message={error.message} />;
+    console.log(error);
   }
 }
 

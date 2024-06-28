@@ -3,13 +3,17 @@ import Registeration from "@/Components/counselee/registeration/Registeration";
 import React from "react";
 
 async function getCounselorList() {
-  const counselorList = await fetch(`${SERVER_URL}/Counselor?limit=100`);
-  if (counselorList.ok) {
-    const counselorData = await counselorList.json();
-    return counselorData;
-  } else {
-    const errorData = await counselorList.json();
-    return errorData;
+  try {
+    const counselorList = await fetch(`${SERVER_URL}/Counselor?limit=100`);
+    if (counselorList.ok) {
+      const counselorData = await counselorList.json();
+      return counselorData;
+    } else {
+      const errorData = await counselorList.json();
+      return errorData;
+    }
+  } catch (error: any) {
+    throw new Error(error.message);
   }
 }
 

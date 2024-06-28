@@ -13,10 +13,10 @@ async function getCBMMeetings(id: string) {
       return responseData;
     } else {
       const errorData = await response.json();
-      return <ErrorPage message={errorData.message} />;
+      return new Error(errorData.message);
     }
   } catch (error: any) {
-    return <ErrorPage message={error.message || error.title} />;
+    throw new Error(error);
   }
 }
 async function page() {

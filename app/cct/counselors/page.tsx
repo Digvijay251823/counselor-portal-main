@@ -15,8 +15,8 @@ async function getCounselors() {
       const errorData = await response.json();
       throw errorData;
     }
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    throw new Error(error);
   }
 }
 
