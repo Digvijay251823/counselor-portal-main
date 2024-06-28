@@ -16,6 +16,7 @@ export default function RootLayout({
 }>) {
   const authcontent = cookies().get("AUTH")?.value;
   const authparsed = authcontent && JSON.parse(authcontent);
+
   return (
     <section className="w-screen">
       <Header />

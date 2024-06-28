@@ -1,4 +1,4 @@
-import Signin from "@/Components/auth/signin/Signin";
+import Signin from "@/Components/auth/signin/SignIn2";
 import { cookies } from "next/headers";
 import React from "react";
 

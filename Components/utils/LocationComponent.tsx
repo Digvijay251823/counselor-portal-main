@@ -175,7 +175,7 @@ function MenuCBM({ response }: { response: Props }) {
                 Change Password
               </li>
             </Link>
-            <Link href={"/updatedetails"}>
+            <Link href={`/updatedetails/${response.id}`}>
               <li
                 className={`flex items-center gap-5 py-3 px-1.5 rounded-lg whitespace-nowrap ${
                   state.theme.theme === "LIGHT"
