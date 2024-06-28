@@ -3,8 +3,6 @@ import { useGlobalState } from "@/Components/context/state";
 import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
 // components/UpdateCounselor.tsx
 import React, { useState, useEffect } from "react";
-import { useFormState } from "react-dom";
-
 interface updateDetails {
   firstName: string;
   lastName: string;
@@ -75,7 +73,7 @@ const UpdateCounselor: React.FC<{ counselor: counselor }> = ({ counselor }) => {
       ...prev,
       ...counselor,
     }));
-  }, [counselor]);
+  }, []);
 
   return (
     <form

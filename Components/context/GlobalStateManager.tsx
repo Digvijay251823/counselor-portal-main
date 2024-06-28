@@ -1,8 +1,6 @@
 "use client";
 import React, { useEffect } from "react";
 import { GlobalStateProvider, useGlobalState } from "./state";
-import { cookies } from "next/headers";
-import Toast from "./Toast";
 function GlobalStateManager({ children }: { children: React.ReactNode }) {
   return (
     <GlobalStateProvider>

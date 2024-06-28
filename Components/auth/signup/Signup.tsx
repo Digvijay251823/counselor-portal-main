@@ -9,7 +9,6 @@ import PasswordToggleComp from "./PasswordToggle";
 const Signup: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [remembered, setRemembered] = useState(false);
   const { state, dispatch } = useGlobalState();
 
   const handleSubmit = async (e: FormData) => {

@@ -12,7 +12,7 @@ async function getCounselee() {
       return responseData;
     } else {
       const errorData = await response.json();
-      throw errorData;
+      throw new Error(errorData);
     }
   } catch (error: any) {
     throw new Error(error);

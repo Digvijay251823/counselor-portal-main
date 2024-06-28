@@ -1,9 +1,9 @@
 import MeetingsPage from "@/Components/cct/CBMMeetings/MeetingsPage";
 import { SERVER_URL } from "@/Components/config/config";
-import ErrorPage from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import React from "react";
+
 async function getCBMMeetings(id: string) {
   unstable_noStore();
   try {
@@ -12,8 +12,11 @@ async function getCBMMeetings(id: string) {
       const responseData = await response.json();
       return responseData;
     } else {
+      if (response.status === 404) {
+        throw new Error("CBM Meeting Not Found");
+      }
       const errorData = await response.json();
-      return new Error(errorData.message);
+      throw new Error(errorData.message);
     }
   } catch (error: any) {
     throw new Error(error);

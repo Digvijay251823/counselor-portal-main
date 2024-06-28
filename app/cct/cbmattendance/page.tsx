@@ -24,13 +24,14 @@ async function getAttendance() {
 async function page() {
   const authcontent = cookies().get("AUTH")?.value;
   const authparsed = authcontent && JSON.parse(authcontent);
+
   if (!authparsed) {
     throw new Error("Sign in to access the resource");
   }
   const response = await getAttendance();
   return (
     <div>
-      <CBMAttendance response={response.content} />
+      <CBMAttendance response={response?.content} />
     </div>
   );
 }

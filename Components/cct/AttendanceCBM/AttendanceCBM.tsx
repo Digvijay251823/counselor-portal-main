@@ -4,7 +4,6 @@ import DateFormatter from "@/Components/utils/DateFormatter";
 import React from "react";
 
 function CBMAttendance({ response }: { response: Attendance[] }) {
-  console.log(response);
   const { state } = useGlobalState();
   return (
     <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">

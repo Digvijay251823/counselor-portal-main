@@ -7,11 +7,17 @@ import React, { useState } from "react";
 import { useFormStatus } from "react-dom";
 import SuccessPage from "./SuccessPage";
 
+const url = LinksActivator();
+
 function ForgetPassword() {
   const { state, dispatch } = useGlobalState();
   const [isSuccess, setIsSuccess] = useState(false);
-  const url = LinksActivator().toString();
+
   async function handleresetToken(e: FormData) {
+    if (!url) {
+      return null;
+    }
+
     const email = e.get("email")?.toString();
     const formData: any = {
       email,
@@ -27,7 +33,6 @@ function ForgetPassword() {
         type: "SHOW_TOAST",
         payload: { type: "SUCCESS", message: response.message },
       });
-      console.log(response);
     } catch (error: any) {
       dispatch({
         type: "SHOW_TOAST",

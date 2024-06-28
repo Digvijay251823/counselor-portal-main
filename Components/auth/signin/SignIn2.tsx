@@ -10,8 +10,11 @@ const Signin: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [remembered, setRemembered] = useState(false);
+
   const router = useRouter();
+
   const { state, dispatch } = useGlobalState();
+
   const handleSubmit = async (e: FormData) => {
     // const email = e.get("email")?.toString();
     // const passwordInput = e.get("password")?.toString();
@@ -28,10 +31,10 @@ const Signin: React.FC = () => {
       });
       if (response.ok) {
         const responseData = await response.json();
-        if (responseData.counselor.role === "counselor") {
-          router.push("/counselor/counselee");
-        } else {
+        if (responseData.counselor.role === "cct") {
           router.push("/cct/counselee");
+        } else {
+          router.push("/counselor/counselee");
         }
         dispatch({
           type: "SHOW_TOAST",
