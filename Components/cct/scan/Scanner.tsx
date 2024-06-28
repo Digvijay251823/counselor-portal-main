@@ -15,6 +15,7 @@ import QRCodeOverlay from "@/Components/utils/QRCodeOverlay";
 
 function Scanner() {
   const { state } = useGlobalState();
+  const linkActivator = LinksActivator().toString();
   return (
     <div className="px-10">
       <div className="flex flex-wrap gap-5">
@@ -28,7 +29,7 @@ function Scanner() {
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1">
                 <CopyClipBoard
-                  url={`${LinksActivator().toString()}/activities`}
+                  url={`${linkActivator}/seva/cct`}
                   whenCopied={
                     <div className="flex items-center">
                       <i>Copy</i>
@@ -47,7 +48,7 @@ function Scanner() {
                   }
                 />
               </div>
-              <Link href={"/counselee/activities"}>
+              <Link href={`${linkActivator}/seva/cct`}>
                 <p className="flex items-center gap-1">
                   <LinkIcon className="h-5 w-5" />
                   Link
@@ -56,11 +57,11 @@ function Scanner() {
             </div>
           </div>
           <QRCodeOverlay
-            url={`${LinksActivator().toString()}/counselee/activities`}
+            url={`${linkActivator}/seva/cct`}
             content="ActivitiesQrCode"
           />
         </div>
-        <div
+        {/* <div
           className={`flex items-center gap-5 w-max p-5 rounded-xl ${
             state.theme.theme === "LIGHT" ? "bg-gray-50" : "bg-stone-900"
           }`}
@@ -70,7 +71,7 @@ function Scanner() {
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1">
                 <CopyClipBoard
-                  url={`${LinksActivator().toString()}/sadhana`}
+                  url={`${linkActivator}/sadhana`}
                   whenCopied={
                     <div className="flex items-center">
                       <i>Copy</i>
@@ -98,7 +99,7 @@ function Scanner() {
             </div>
           </div>
           <QRCodeOverlay url="" content="SadhanaQrCode" />
-        </div>
+        </div> */}
         <div
           className={`flex items-center gap-5 w-max p-5 rounded-xl ${
             state.theme.theme === "LIGHT" ? "bg-gray-50" : "bg-stone-900"
@@ -109,7 +110,7 @@ function Scanner() {
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1">
                 <CopyClipBoard
-                  url={`${LinksActivator().toString()}/changecounselor`}
+                  url={`${linkActivator}/changecounselor`}
                   whenCopied={
                     <div className="flex items-center">
                       <i>Copy</i>
@@ -137,7 +138,7 @@ function Scanner() {
             </div>
           </div>
           <QRCodeOverlay
-            url={`${LinksActivator().toString()}/changecounselor`}
+            url={`${linkActivator}/changecounselor`}
             content="ChangeCounselorQrCode"
           />
         </div>

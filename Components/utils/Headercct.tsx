@@ -7,10 +7,13 @@ import Link from "next/link";
 import { FaUserFriends } from "react-icons/fa";
 import { GrTask } from "react-icons/gr";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { Bars3Icon } from "@heroicons/react/24/outline";
+import Drawer from "./MenuDrawer";
 
 function Headercct() {
-  const pathname = usePathname();
   const { state, dispatch } = useGlobalState();
+  const [isOpenDrawer, setIsOpenDrawer] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header
@@ -34,7 +37,7 @@ function Headercct() {
               CCT
             </p>
           </div>
-          <div>
+          <div className="md:block hidden">
             <nav
               className={`flex items-center gap-5 ${
                 state.theme.theme === "LIGHT"
@@ -55,7 +58,10 @@ function Headercct() {
                 <MenuCBM />
               </div>
               <Link href="/cct/scan">
-                <p className="font-bold text-lg">scan</p>
+                <p className="font-bold text-lg">Scan</p>
+              </Link>
+              <Link href="/cct/changecounselor">
+                <p className="font-bold text-lg">ChangeCounselor</p>
               </Link>
             </nav>
           </div>
@@ -76,9 +82,123 @@ function Headercct() {
               <SunIcon className="h-5 w-5" />
             </button>
           )}
-          <p className="font-bold text-purple-500 bg-purple-100 px-2 py-1.5 rounded-lg">
-            login
-          </p>
+          <div className="md:hidden block">
+            <button className="" onClick={() => setIsOpenDrawer(true)}>
+              <Bars3Icon className="h-5 w-5" />
+            </button>
+            <Drawer
+              isOpen={isOpenDrawer}
+              onClose={() => setIsOpenDrawer(false)}
+            >
+              <nav className="flex flex-col gap-5">
+                <p
+                  className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                    state.theme.theme === "LIGHT"
+                      ? "hover:bg-gray-100"
+                      : "hover:bg-stone-800"
+                  }`}
+                >
+                  Analytics
+                </p>
+                <Link
+                  href="/cct/counselee"
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${pathname} ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    counselee
+                  </p>
+                </Link>
+                <Link
+                  href={"/cct/counselors"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    counselor
+                  </p>
+                </Link>
+                <Link
+                  href={"/cct/sevas"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    sevas
+                  </p>
+                </Link>
+                <Link
+                  href={"/cct/cbmmeetings"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    CBM Meetings
+                  </p>
+                </Link>
+                <Link
+                  href={"/cct/cbmattendance"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    CBMattendance
+                  </p>
+                </Link>
+
+                <Link
+                  href={"/cct/changecounselor"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    Change Counselor
+                  </p>
+                </Link>
+                <Link href={"/cct/scan"} onClick={() => setIsOpenDrawer(false)}>
+                  <p
+                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-stone-800"
+                    }`}
+                  >
+                    scan
+                  </p>
+                </Link>
+              </nav>
+            </Drawer>
+          </div>
         </div>
       </div>
     </header>
@@ -128,7 +248,7 @@ function MenuCBM() {
   return (
     <nav className="relative" onMouseLeave={handleMouseLeave}>
       <div
-        className="cursor-pointer"
+        className="cursor-pointer "
         onMouseEnter={handleMouseEnter}
         ref={menuRef}
       >
@@ -142,7 +262,7 @@ function MenuCBM() {
           />
         </span>
         <div
-          className={`absolute top-full w-[400px] lg:left-0 right-0 mt-2 ${
+          className={`absolute top-full w-[400px] lg:left-0 right-0 mt-2  ${
             state.theme.theme === "LIGHT"
               ? "bg-white text-black"
               : "bg-stone-900 text-white"
@@ -154,7 +274,7 @@ function MenuCBM() {
           onMouseEnter={handleMouseEnterMenu}
           onMouseLeave={handleMouseLeave}
         >
-          <ul className="p-5 ">
+          <ul className="p-5 z-[2500]">
             <li
               className={`px-4 py-2 ${
                 state.theme.theme === "LIGHT"
@@ -219,7 +339,7 @@ function MenuCBM() {
                   : "hover:bg-stone-950"
               } rounded-[30px]`}
             >
-              <Link href="/cct/cbmactivities">
+              <Link href="/cct/sevas">
                 <div>
                   <div className="flex items-center gap-3">
                     <p

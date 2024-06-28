@@ -99,9 +99,31 @@ interface Attendance {
   approved: boolean;
   createdAt: string;
   updatedAt: string;
-  scheduledSession: sessions;
   counselee: counselee;
   counselor: counselor;
+  modeOfAttendance: string;
+  cbmMeeting: cbmMeeting;
+  scheduledSession: scheduledSession;
+}
+
+interface scheduledSession {
+  name: string;
+  description: string;
+  startTime: string;
+  modeOfAttendance: string;
+  course: courses;
+  counselor: counselor;
+}
+
+interface cbmMeeting {
+  id: string;
+  name: string;
+  description: string;
+  startTime: string;
+  expired: boolean;
+  modeOfAttendance: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 interface Sadhana {
@@ -126,4 +148,85 @@ interface Sadhana {
   updatedAt: string;
   counselee: counselee;
   counselor: counselor;
+}
+
+interface attendanceCBM {
+  id: string;
+  reasonForCounselorChange: string;
+  alreadySpokenToExistingCounselor: true;
+  alreadySpokenToNewCounselor: true;
+  statusOfChange: string;
+  createdAt: string;
+  updatedAt: string;
+  modeOfAttendance: string;
+  counselee: counselee;
+  preferedCounselor1: counselor;
+  preferedCounselor2: counselor;
+  preferedCounselor3: counselor;
+}
+
+interface counselee {
+  id: string;
+  reasonForCounselorChange: string;
+  alreadySpokenToExistingCounselor: true;
+  alreadySpokenToNewCounselor: true;
+  statusOfChange: string;
+  createdAt: string;
+  updatedAt: string;
+  counselee: counselee;
+  preferedCounselor1: counselor;
+  preferedCounselor2: counselor;
+  preferedCounselor3: counselor;
+}
+
+interface counselor {
+  id: string;
+  firstName: string;
+  lastName: string;
+  initiatedName: string;
+  phoneNumber: string;
+  gender: string;
+  age: number;
+  email: string;
+  password: string;
+  maritalStatus: string;
+  husband: string;
+  address: string;
+  profession: string;
+  chantingRounds: Number;
+  chantingStartedThisRoundsDate: string;
+  yourInitiatingSpiritualMaster: string;
+  harinamInitiationDate: string;
+  children?: [
+    {
+      name: string;
+      age: 0;
+    }
+  ];
+}
+
+interface counselor {
+  id: string;
+  firstName: string;
+  lastName: string;
+  initiatedName: string;
+  phoneNumber: string;
+  gender: string;
+  age: number;
+  email: string;
+  password: string;
+  maritalStatus: string;
+  husband: string;
+  address: string;
+  profession: string;
+  chantingRounds: Number;
+  chantingStartedThisRoundsDate: string;
+  yourInitiatingSpiritualMaster: string;
+  harinamInitiationDate: string;
+  children?: [
+    {
+      name: string;
+      age: 0;
+    }
+  ];
 }

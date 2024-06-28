@@ -14,6 +14,7 @@ import { AiFillSchedule } from "react-icons/ai";
 
 function MeetingsPage({ response }: { response: sessions[] }) {
   const { state } = useGlobalState();
+  const linksActivator = LinksActivator().toString();
   return (
     <div>
       <div>
@@ -29,7 +30,7 @@ function MeetingsPage({ response }: { response: sessions[] }) {
         </div>
         <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
           <div>
-            <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
+            <div className="overflow-x-auto shadow-md sm:rounded-lg">
               <table
                 className={`w-full text-left rtl:text-right ${
                   state.theme.theme === "LIGHT"
@@ -94,7 +95,9 @@ function MeetingsPage({ response }: { response: sessions[] }) {
                       </td>
                       <td className={`px-4 py-1.5`}>
                         <div className="p-2 flex justify-center underline text-blue-500">
-                          <Link href={`${LinksActivator().toString()}/`}>
+                          <Link
+                            href={`${linksActivator}/markattendance/cct/${session.id}`}
+                          >
                             Attendance
                           </Link>
                         </div>

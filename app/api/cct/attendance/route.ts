@@ -2,15 +2,16 @@ import { SERVER_URL } from "@/Components/config/config";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest, res: NextResponse) {
-  const { cbmmeetingId, counselorId } = await req.json();
-  console.log(cbmmeetingId.counselorId);
+  const { cbmmeetingId, counselorId, modeOfAttendance } = await req.json();
   const formData: any = {
     cbmmeetingId,
     counselorId,
+    modeOfAttendance,
   };
   const header = new Headers();
   header.append("Content-Type", "application/json");
   try {
+    console.log(formData);
     const response = await fetch(`${SERVER_URL}/cbmattendance/mark`, {
       method: "POST",
       headers: header,

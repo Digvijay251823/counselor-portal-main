@@ -47,278 +47,166 @@ const CounselorPage: React.FC<DataTableProps> = ({ data }) => {
 
   return (
     <div className="px-10 w-full">
-      <div className="overflow-x-auto">
+      <div className="overflow-x-auto shadow-md sm:rounded-lg">
         <table
-          className={`border ${
-            state.theme.theme === "LIGHT"
-              ? "bg-white  border-gray-200"
-              : "bg-stone-950 border-stone-800"
+          className={`w-full text-left rtl:text-right ${
+            state.theme.theme === "LIGHT" ? `text-black` : `text-stone-200`
           }`}
         >
           <thead
-            className={
-              state.theme.theme === "LIGHT" ? `bg-gray-50` : "bg-stone-950"
-            }
+            className={`text-md uppercase ${
+              state.theme.theme === "LIGHT"
+                ? " bg-stone-100 text-stone-700  "
+                : "bg-stone-900 text-stone-400"
+            }`}
           >
-            <tr>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                firstName
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                lastName
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                initiatedName
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                phoneNumber
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                gender
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                age
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                email
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                maritalStatus
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                address
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                profession
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                yourInitiatingSpiritualMaster
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                harinamInitiationDate
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                harinamInitiationPlace
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                recommendedBy
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                currentCounselor
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                connectedToCounselorSinceYear
-              </th>
-              <th
-                className={`py-2 px-4 border-b text-sm font-bold ${
-                  state.theme.theme === "LIGHT"
-                    ? "border-gray-200 text-gray-500"
-                    : "border-stone-800 text-white"
-                } text-left font-medium  uppercase`}
-              >
-                husband
-              </th>
+            <tr className="border-b border-b-stone-400">
+              <th className={`px-6 py-3`}>firstName</th>
+              <th className={`px-6 py-3`}>lastName</th>
+              <th className={`px-6 py-3`}>initiatedName</th>
+              <th className={`px-6 py-3`}>phoneNumber</th>
+              <th className={`px-6 py-3`}>gender</th>
+              <th className={`px-6 py-3`}>age</th>
+              <th className={`px-6 py-3`}>email</th>
+              <th className={`px-6 py-3`}>maritalStatus</th>
+              <th className={`px-6 py-3`}>address</th>
+              <th className={`px-6 py-3`}>profession</th>
+              <th className={`px-6 py-3`}>yourInitiatingSpiritualMaster</th>
+              <th className={`px-6 py-3`}>harinamInitiationDate</th>
+              <th className={`px-6 py-3`}>harinamInitiationPlace</th>
+              <th className={`px-6 py-3`}>recommendedBy</th>
+              <th className={`px-6 py-3`}>currentCounselor</th>
+              <th className={`px-6 py-3`}>connectedToCounselorSinceYear</th>
+              <th className={`px-6 py-3`}>husband</th>
             </tr>
           </thead>
           <tbody>
             {data?.map((item, index) => (
               <React.Fragment key={index}>
-                <tr>
-                  <td>
+                <tr
+                  className={
+                    state.theme.theme === "LIGHT"
+                      ? `bg-white border-b  hover:bg-stone-50`
+                      : `border-b hover:bg-stone-600 bg-stone-800 border-stone-700`
+                  }
+                >
+                  <td className={`px-4 py-1.5`}>
                     {item.firstName ? (
                       <div>{item.firstName}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.lastName ? (
                       <div>{item.lastName}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.initiatedName ? (
                       <div>{item.initiatedName}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.phoneNumber ? (
                       <div>{item.phoneNumber}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
-                    {item.gender ? <div>{item.gender}</div> : <div>null</div>}
+                    {item.gender ? (
+                      <div>{item.gender}</div>
+                    ) : (
+                      <div className="text-gray-400 px-4">Not Found</div>
+                    )}
                   </td>
-                  <td>{item.age ? <div>{item.age}</div> : <div>null</div>}</td>
                   <td>
-                    {item.email ? <div>{item.email}</div> : <div>null</div>}
+                    {item.age ? (
+                      <div>{item.age}</div>
+                    ) : (
+                      <div className="text-gray-400 px-4">Not Found</div>
+                    )}
+                  </td>
+                  <td>
+                    {item.email ? (
+                      <div>{item.email}</div>
+                    ) : (
+                      <div className="text-gray-400 px-4">Not Found</div>
+                    )}
                   </td>
                   <td>
                     {item.maritalStatus ? (
                       <div>{item.maritalStatus}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
-                    {item.address ? <div>{item.address}</div> : <div>null</div>}
+                    {item.address ? (
+                      <div>{item.address}</div>
+                    ) : (
+                      <div className="text-gray-400 px-4">Not Found</div>
+                    )}
                   </td>
                   <td>
                     {item.profession ? (
                       <div>{item.profession}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.yourInitiatingSpiritualMaster ? (
                       <div>{item.yourInitiatingSpiritualMaster}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.harinamInitiationDate ? (
                       <div>{item.harinamInitiationDate.toString()}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.harinamInitiationPlace ? (
                       <div>{item.harinamInitiationPlace}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.recommendedBy ? (
                       <div>{item.recommendedBy}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.currentCounselor ? (
                       <div>{item.currentCounselor.initiatedName}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.connectedToCounselorSinceYear ? (
                       <div>{item.connectedToCounselorSinceYear.toString()}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                   <td>
                     {item.husband ? (
                       <div>{item.husband.initiatedName}</div>
                     ) : (
-                      <div>null</div>
+                      <div className="text-gray-400 px-4">Not Found</div>
                     )}
                   </td>
                 </tr>

@@ -1,21 +1,15 @@
 "use client";
 import { useGlobalState } from "@/Components/context/state";
 import DateFormatter from "@/Components/utils/DateFormatter";
-import { CheckCircleIcon, ClockIcon } from "@heroicons/react/16/solid";
 import React from "react";
 
-function CBMAttendance({
-  counselorData,
-  response,
-}: {
-  counselorData?: any;
-  response: Attendance[];
-}) {
+function CBMAttendance({ response }: { response: Attendance[] }) {
+  console.log(response);
   const { state } = useGlobalState();
   return (
     <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
       <div>
-        <div className="relative overflow-x-auto shadow-md rounded">
+        <div className="overflow-x-auto shadow-md rounded">
           <table
             className={`w-full text-left border  ${
               state.theme.theme === "LIGHT"
@@ -38,11 +32,11 @@ function CBMAttendance({
                 }`}
               >
                 <th className={`px-6 py-3`}>MODE OF ATTENDANCE</th>
-                <th className={`px-6 py-3`}>STATUS</th>
                 <th className={`px-6 py-3`}>NAME</th>
                 <th className={`px-6 py-3`}>CONTACT NUMBER</th>
                 <th className={`px-6 py-3`}>SESSION NAME</th>
                 <th className={`px-6 py-3`}>DESCRIPTION</th>
+                <th className={`px-6 py-3`}>ATTENDED ON</th>
                 <th className={`px-6 py-3`}>START TIME</th>
               </tr>
             </thead>
@@ -57,10 +51,9 @@ function CBMAttendance({
                   }
                 >
                   <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.modeOfAttendance === "ONLINE" ? (
+                    {item?.modeOfAttendance === "ONLINE" ? (
                       <div className="text-red-500">ONLINE</div>
-                    ) : item?.scheduledSession?.modeOfAttendance ==
-                      "OFFLINE" ? (
+                    ) : item?.modeOfAttendance == "OFFLINE" ? (
                       <div className="text-green-600 border border-green-600 rounded-lg w-max px-3 py-1">
                         OFFLINE
                       </div>
@@ -73,21 +66,30 @@ function CBMAttendance({
 
                   <td
                     className={`px-6 py-4`}
-                  >{`${item?.counselee.firstName} ${item?.counselee.lastName}`}</td>
+                  >{`${item?.counselor.firstName} ${item?.counselor.lastName}`}</td>
                   <td className={`px-6 py-4`}>
-                    {item?.counselee?.phoneNumber}
+                    {item?.counselor?.phoneNumber}
+                  </td>
+                  <td className={`px-6 py-4`}>{item?.cbmMeeting?.name}</td>
+                  <td className={`px-6 py-4`}>
+                    {item?.cbmMeeting?.description}
                   </td>
                   <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.name}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.description}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.startTime ? (
+                    {item?.cbmMeeting?.startTime ? (
                       <div>
                         <DateFormatter
-                          dateString={item?.scheduledSession?.startTime}
+                          dateString={item?.cbmMeeting?.startTime}
+                        />
+                      </div>
+                    ) : (
+                      <p>null</p>
+                    )}
+                  </td>
+                  <td className={`px-6 py-4`}>
+                    {item?.cbmMeeting?.startTime ? (
+                      <div>
+                        <DateFormatter
+                          dateString={item?.cbmMeeting?.startTime}
                         />
                       </div>
                     ) : (

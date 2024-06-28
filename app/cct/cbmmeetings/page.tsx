@@ -1,5 +1,6 @@
 import MeetingsPage from "@/Components/cct/CBMMeetings/MeetingsPage";
 import { SERVER_URL } from "@/Components/config/config";
+import ErrorPage from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import React from "react";
@@ -12,10 +13,10 @@ async function getCBMMeetings(id: string) {
       return responseData;
     } else {
       const errorData = await response.json();
-      throw errorData;
+      return <ErrorPage message={errorData.message} />;
     }
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    return <ErrorPage message={error.message || error.title} />;
   }
 }
 async function page() {
