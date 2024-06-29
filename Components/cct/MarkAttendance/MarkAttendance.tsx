@@ -59,6 +59,9 @@ function MarkCBMAttendance({ response }: { response: sessions }) {
   }, [phoneNumber]);
 
   async function handleSubmitAttendance(e: FormData) {
+    if (!response) {
+      return;
+    }
     const formData: any = {
       cbmmeetingId: response.id,
       counselorId: counseleeDetails.id,
@@ -179,12 +182,14 @@ function MarkCBMAttendance({ response }: { response: sessions }) {
                         : "border-white"
                     }`}
                   >
-                    {response.name}
+                    {response?.name}
                   </p>
                   <div className="flex items-center gap-2 font-bold">
                     <p>Scheduled At - </p>
                     <div>
-                      <DateFormatter dateString={response.startTime} />
+                      {response && (
+                        <DateFormatter dateString={response.startTime} />
+                      )}
                     </div>
                   </div>
                   <div>

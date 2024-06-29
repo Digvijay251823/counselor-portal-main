@@ -25,11 +25,7 @@ import {
   AA as AAComponent,
   MIU as MIUComponent,
 } from "@/Components/counselor/sadhana/configure/ConfigSadhanaForm";
-import CopyClipBoard from "@/Components/utils/CopyToClipBoard";
-import {
-  ClipboardDocumentCheckIcon,
-  ClipboardDocumentListIcon,
-} from "@heroicons/react/16/solid";
+
 import { HiUsers } from "react-icons/hi";
 import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
 import { POST } from "@/actions/POSTREQUESTS";

@@ -1,5 +1,7 @@
 import { SERVER_URL } from "@/Components/config/config";
 import SessionPage from "@/Components/counselor/session/SessionPage";
+import ErrorComponent from "@/Components/utils/ErrorPage";
+import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import React from "react";
@@ -21,17 +23,21 @@ async function getScheduledSessions(id: string) {
 }
 
 async function page() {
-  const auth = cookies().get("AUTH")?.value;
-  const parsedauth = auth && JSON.parse(auth);
-  if (!parsedauth) {
-    throw new Error("please authenticate to access");
+  try {
+    const auth = cookies().get("AUTH")?.value;
+    const parsedauth = auth && JSON.parse(auth);
+    if (!parsedauth) {
+      throw new Error("please authenticate to access");
+    }
+    const response = await getScheduledSessions(parsedauth?.counselor?.id);
+    return (
+      <div>
+        <SessionPage response={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
   }
-  const response = await getScheduledSessions(parsedauth?.counselor?.id);
-  return (
-    <div>
-      <SessionPage response={response.content} />
-    </div>
-  );
 }
 
 export default page;

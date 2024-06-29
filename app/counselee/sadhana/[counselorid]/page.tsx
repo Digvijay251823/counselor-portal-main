@@ -1,5 +1,6 @@
 import { SERVER_URL } from "@/Components/config/config";
 import SadhanaForm from "@/Components/counselee/Sadhana/SadhanaForm";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
 
 import { unstable_noStore } from "next/cache";
@@ -25,18 +26,22 @@ async function getSadhana(id: string) {
 }
 
 async function page({ params }: { params: { counselorid: string } }) {
-  const response = await getSadhana(params.counselorid);
-  if (!response) {
-    return <NotExistsResource message="Sadhana Form Not Configured Yet" />;
+  try {
+    const response = await getSadhana(params.counselorid);
+    if (!response) {
+      return <NotExistsResource message="Sadhana Form Not Configured Yet" />;
+    }
+    return (
+      <div className="w-full">
+        <SadhanaForm
+          counselorId={params.counselorid}
+          sadhanaForm={response?.content[0]}
+        />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
   }
-  return (
-    <div className="w-full">
-      <SadhanaForm
-        counselorId={params.counselorid}
-        sadhanaForm={response.content[0]}
-      />
-    </div>
-  );
 }
 
 export default page;

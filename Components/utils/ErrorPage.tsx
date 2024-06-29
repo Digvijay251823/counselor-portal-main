@@ -14,7 +14,7 @@ function ErrorComponent({ message }: { message: string }) {
         <ExclamationCircleIcon className="h-10 w-10" />
       </p>
       <p className="font-bold text-4xl text-center">{message}</p>
-      <p className="text-lg">please contact your counselor</p>
+      <p className="text-lg">Please Check Your Internet Connection</p>
     </div>
   );
 }

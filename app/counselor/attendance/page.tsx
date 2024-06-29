@@ -1,5 +1,7 @@
 import { SERVER_URL } from "@/Components/config/config";
 import AttendancePage from "@/Components/counselor/attendance/AttendancePage";
+import ErrorComponent from "@/Components/utils/ErrorPage";
+import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import React from "react";
@@ -21,17 +23,24 @@ async function getAttendance(id: string) {
   }
 }
 async function page() {
-  const authcontent = cookies().get("AUTH")?.value;
-  const authparsed = authcontent && JSON.parse(authcontent);
-  if (!authparsed) {
-    throw new Error("Sign in to access the resource");
+  try {
+    const authcontent = cookies().get("AUTH")?.value;
+    const authparsed = authcontent && JSON.parse(authcontent);
+    if (!authparsed) {
+      throw new Error("Sign in to access the resource");
+    }
+    const response = await getAttendance(authparsed?.counselor.id);
+    if (!response || response?.content?.length === 0) {
+      return <NotExistsResource message="Nobody marked their attendance yet" />;
+    }
+    return (
+      <div>
+        <AttendancePage response={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
   }
-  const response = await getAttendance(authparsed.counselor.id);
-  return (
-    <div>
-      <AttendancePage response={response.content} counselorData={authparsed} />
-    </div>
-  );
 }
 
 export default page;

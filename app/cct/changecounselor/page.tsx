@@ -1,8 +1,10 @@
 import ChangeCounselor from "@/Components/cct/ChangeCounselor/ChangeCounselor";
 import { SERVER_URL } from "@/Components/config/config";
-import ErrorPage from "@/Components/utils/ErrorPage";
+import ErrorComponent from "@/Components/utils/ErrorPage";
+import { unstable_noStore } from "next/cache";
 
 async function getChangeCounselor(queryString: string) {
+  unstable_noStore();
   try {
     const response = await fetch(
       `${SERVER_URL}/counselorprovider?${queryString}`
@@ -15,7 +17,7 @@ async function getChangeCounselor(queryString: string) {
       throw new Error(errorData.message);
     }
   } catch (error: any) {
-    console.log(error);
+    throw new Error(error.message);
   }
 }
 
@@ -24,14 +26,17 @@ export default async function page({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  const queryString = new URLSearchParams(searchParams).toString();
-  const response = await getChangeCounselor(queryString);
-
-  return (
-    <div>
+  try {
+    const queryString = new URLSearchParams(searchParams).toString();
+    const response = await getChangeCounselor(queryString);
+    return (
       <div>
-        <ChangeCounselor response={response.content} />
+        <div>
+          <ChangeCounselor response={response.content} />
+        </div>
       </div>
-    </div>
-  );
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
+  }
 }

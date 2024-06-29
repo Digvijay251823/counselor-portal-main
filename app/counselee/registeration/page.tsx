@@ -1,5 +1,6 @@
 import { SERVER_URL } from "@/Components/config/config";
 import Registeration from "@/Components/counselee/registeration/Registeration";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import React from "react";
 
 async function getCounselorList() {
@@ -18,12 +19,16 @@ async function getCounselorList() {
 }
 
 async function page() {
-  const counselorList = await getCounselorList();
-  return (
-    <div className="w-full">
-      <Registeration counselorList={counselorList} />
-    </div>
-  );
+  try {
+    const counselorList = await getCounselorList();
+    return (
+      <div className="w-full">
+        <Registeration counselorList={counselorList} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
+  }
 }
 
 export default page;

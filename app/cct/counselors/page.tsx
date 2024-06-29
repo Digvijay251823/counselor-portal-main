@@ -1,6 +1,7 @@
 import CounselorPage from "@/Components/cct/counselor/CounselorPage";
 import { SERVER_URL } from "@/Components/config/config";
 import Filter from "@/Components/counselor/counselee/Filter";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import React from "react";
 
@@ -21,13 +22,17 @@ async function getCounselors() {
 }
 
 async function page() {
-  const response = await getCounselors();
-  return (
-    <div className="w-screen">
-      <Filter />
-      <CounselorPage data={response.content} />
-    </div>
-  );
+  try {
+    const response = await getCounselors();
+    return (
+      <div className="w-screen">
+        <Filter />
+        <CounselorPage data={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
+  }
 }
 
 export default page;

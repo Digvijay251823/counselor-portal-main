@@ -1,5 +1,6 @@
 import CbmSevas from "@/Components/cct/CBMSevas/CBMSevas";
 import { SERVER_URL } from "@/Components/config/config";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import React from "react";
 
@@ -24,17 +25,21 @@ async function page({
 }: {
   searchParams: { [key: string]: string };
 }) {
-  if (!searchParams.sort) {
-    searchParams.sortField = "id";
-    searchParams.sortOrder = "desc";
+  try {
+    if (!searchParams.sort) {
+      searchParams.sortField = "id";
+      searchParams.sortOrder = "desc";
+    }
+    const queryString = new URLSearchParams(searchParams).toString();
+    const responseData = await cbmSevas(queryString);
+    return (
+      <div>
+        <CbmSevas response={responseData.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
   }
-  const queryString = new URLSearchParams(searchParams).toString();
-  const responseData = await cbmSevas(queryString);
-  return (
-    <div>
-      <CbmSevas response={responseData.content} />
-    </div>
-  );
 }
 
 export default page;

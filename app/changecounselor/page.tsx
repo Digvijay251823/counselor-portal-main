@@ -1,6 +1,7 @@
 import ChangeForm from "@/Components/counselee/ChangeForm";
 import React from "react";
 import { SERVER_URL } from "@/Components/config/config";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 
 async function getCounselors() {
   const response = await fetch(`${SERVER_URL}/counselor`);
@@ -18,13 +19,17 @@ async function getCounselors() {
 }
 
 async function page() {
-  const response = await getCounselors();
-  if (response)
-    return (
-      <div className="w-full">
-        <ChangeForm counselors={response?.content} />
-      </div>
-    );
+  try {
+    const response = await getCounselors();
+    if (response)
+      return (
+        <div className="w-full">
+          <ChangeForm counselors={response?.content} />
+        </div>
+      );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
+  }
 }
 
 export default page;

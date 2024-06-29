@@ -2,9 +2,11 @@ import { SERVER_URL } from "@/Components/config/config";
 import SadhanaPage from "@/Components/counselor/sadhana/SadhanaPage";
 import ErrorComponent from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
+import { unstable_noStore } from "next/cache";
 import React from "react";
 
 async function getSadhanaEntries() {
+  unstable_noStore();
   try {
     const response = await fetch(`${SERVER_URL}/counselee-sadhana`);
     if (response.ok) {
@@ -25,8 +27,8 @@ async function getSadhanaEntries() {
 async function page() {
   try {
     const response = await getSadhanaEntries();
-    if (!response || response.content === 0) {
-      return <NotExistsResource message="Error occured in server component" />;
+    if (!response || response.content.length === 0) {
+      return <NotExistsResource message="Nobody entered sadhana yet" />;
     }
     return (
       <div>

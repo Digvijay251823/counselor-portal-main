@@ -1,5 +1,6 @@
 import Counselees from "@/Components/cct/Counselees/CounseleesPage";
 import { SERVER_URL } from "@/Components/config/config";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import React from "react";
 
@@ -20,13 +21,17 @@ async function getCounselee() {
 }
 
 async function page() {
-  const response = await getCounselee();
+  try {
+    const response = await getCounselee();
 
-  return (
-    <div>
-      <Counselees response={response.content} />
-    </div>
-  );
+    return (
+      <div>
+        <Counselees response={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
+  }
 }
 
 export default page;

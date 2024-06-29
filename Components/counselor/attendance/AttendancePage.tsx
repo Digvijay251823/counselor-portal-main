@@ -6,19 +6,13 @@ import React from "react";
 import ApproveAttendance from "./ApproveAttendance";
 import AutoApprove from "./AutoApprove";
 
-function AttendancePage({
-  counselorData,
-  response,
-}: {
-  counselorData?: any;
-  response: Attendance[];
-}) {
+function AttendancePage({ response }: { response: Attendance[] }) {
   const { state } = useGlobalState();
   return (
     <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
       <div className="flex justify-between">
         <div></div>
-        <AutoApprove counselorData={counselorData} />
+        <AutoApprove />
       </div>
       <div>
         <div className="relative overflow-x-auto shadow-md rounded">

@@ -11,7 +11,7 @@ interface Props {
   autoApprove: boolean;
 }
 
-function AutoApprove({ counselorData }: { counselorData: Props }) {
+function AutoApprove() {
   const [autoApprove, setAutoApprove] = useState(false);
   useEffect(() => {
     const autoapprove = localStorage.getItem("autoApprove");

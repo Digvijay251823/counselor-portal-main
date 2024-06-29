@@ -1,5 +1,6 @@
 import CBMAttendance from "@/Components/cct/AttendanceCBM/AttendanceCBM";
 import { SERVER_URL } from "@/Components/config/config";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import ErrorPage from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
@@ -13,6 +14,9 @@ async function getAttendance() {
       const responseData = await response.json();
       return responseData;
     } else {
+      if (response.status === 404) {
+        return;
+      }
       const errorData = await response.json();
       throw new Error(errorData.message);
     }
@@ -22,18 +26,22 @@ async function getAttendance() {
 }
 
 async function page() {
-  const authcontent = cookies().get("AUTH")?.value;
-  const authparsed = authcontent && JSON.parse(authcontent);
+  try {
+    const authcontent = cookies().get("AUTH")?.value;
+    const authparsed = authcontent && JSON.parse(authcontent);
 
-  if (!authparsed) {
-    throw new Error("Sign in to access the resource");
+    if (!authparsed) {
+      throw new Error("Sign in to access the resource");
+    }
+    const response = await getAttendance();
+    return (
+      <div>
+        <CBMAttendance response={response?.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
   }
-  const response = await getAttendance();
-  return (
-    <div>
-      <CBMAttendance response={response?.content} />
-    </div>
-  );
 }
 
 export default page;

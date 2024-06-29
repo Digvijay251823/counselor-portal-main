@@ -1,5 +1,6 @@
 import { SERVER_URL } from "@/Components/config/config";
 import CounseleeAttendance from "@/Components/counselee/attendance/CounseleeAttendance";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
 import React from "react";
@@ -26,18 +27,22 @@ async function getScheduledSessions(counselorid: string) {
 }
 
 async function page({ params }: { params: { counselorid: string } }) {
-  const response = await getScheduledSessions(params.counselorid);
-  if (!response) {
-    return <NotExistsResource message="Counselor Might Not Exist" />;
+  try {
+    const response = await getScheduledSessions(params.counselorid);
+    if (!response) {
+      return <NotExistsResource message="Counselor Might Not Exist" />;
+    }
+    if (response.content.length === 0) {
+      return <NotExistsResource message="NO Sessions To Show" />;
+    }
+    return (
+      <div className="w-full">
+        <CounseleeAttendance response={response?.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
   }
-  if (response.content.length === 0) {
-    return <NotExistsResource message="NO Sessions To Show" />;
-  }
-  return (
-    <div className="w-full">
-      <CounseleeAttendance response={response.content} />
-    </div>
-  );
 }
 
 export default page;

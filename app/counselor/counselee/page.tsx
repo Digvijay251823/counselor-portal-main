@@ -1,5 +1,7 @@
 import { SERVER_URL } from "@/Components/config/config";
 import CounseleePage from "@/Components/counselor/counselee/CounseleePage";
+import ErrorComponent from "@/Components/utils/ErrorPage";
+import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
 import React from "react";
 
@@ -16,12 +18,19 @@ async function getCounselees() {
 }
 
 async function page() {
-  const response = await getCounselees();
-  return (
-    <div>
-      <CounseleePage data={response.content} />
-    </div>
-  );
+  try {
+    const response = await getCounselees();
+    if (!response || response.content.length === 0) {
+      return <NotExistsResource message="No counselee to show" />;
+    }
+    return (
+      <div>
+        <CounseleePage data={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message} />;
+  }
 }
 
 export default page;

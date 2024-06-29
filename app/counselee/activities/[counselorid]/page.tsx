@@ -1,5 +1,7 @@
 import { SERVER_URL } from "@/Components/config/config";
 import CounseleeActivities from "@/Components/counselee/CounseleeActivities";
+import ErrorComponent from "@/Components/utils/ErrorPage";
+import { errorMonitor } from "events";
 import React from "react";
 
 async function getActivities() {
@@ -18,12 +20,16 @@ async function getActivities() {
 }
 
 async function page() {
-  const response = await getActivities();
-  return (
-    <div className="w-full">
-      <CounseleeActivities activities={response.content} />
-    </div>
-  );
+  try {
+    const response = await getActivities();
+    return (
+      <div className="w-full">
+        <CounseleeActivities activities={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message} />;
+  }
 }
 
 export default page;

@@ -1,5 +1,6 @@
 import MeetingsPage from "@/Components/cct/CBMMeetings/MeetingsPage";
 import { SERVER_URL } from "@/Components/config/config";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import { unstable_noStore } from "next/cache";
 import { cookies } from "next/headers";
 import React from "react";
@@ -13,7 +14,7 @@ async function getCBMMeetings(id: string) {
       return responseData;
     } else {
       if (response.status === 404) {
-        throw new Error("CBM Meeting Not Found");
+        return;
       }
       const errorData = await response.json();
       throw new Error(errorData.message);
@@ -23,18 +24,22 @@ async function getCBMMeetings(id: string) {
   }
 }
 async function page() {
-  const auth = cookies().get("AUTH")?.value;
-  const parsedauth = auth && JSON.parse(auth);
-  if (!parsedauth) {
-    throw new Error("please authenticate to access");
-  }
-  const response = await getCBMMeetings(parsedauth?.counselor?.id);
+  try {
+    const auth = cookies().get("AUTH")?.value;
+    const parsedauth = auth && JSON.parse(auth);
+    if (!parsedauth) {
+      return <ErrorComponent message="please authenticate to access" />;
+    }
+    const response = await getCBMMeetings(parsedauth?.counselor?.id);
 
-  return (
-    <div>
-      <MeetingsPage response={response.content} />
-    </div>
-  );
+    return (
+      <div>
+        <MeetingsPage response={response?.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message || error.title} />;
+  }
 }
 
 export default page;
