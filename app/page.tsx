@@ -1,3 +1,12 @@
-export default async function Home() {
-  return <div>frontpage</div>;
+"use client";
+
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+
+export default function Home() {
+  const router = useRouter();
+  useEffect(() => {
+    router.push("/auth/signin");
+  }, []);
+  return <div></div>;
 }

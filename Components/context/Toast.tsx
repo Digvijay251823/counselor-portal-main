@@ -2,30 +2,22 @@
 import React, { useEffect } from "react";
 import { useGlobalState } from "./state";
 import { CheckIcon, XMarkIcon } from "@heroicons/react/16/solid";
+import Modal from "../utils/Modal";
 
 function Toast() {
   const { state, dispatch } = useGlobalState();
-  useEffect(() => {
-    if (state.toast.toast.isVisible) {
-      setTimeout(() => {
-        dispatch({ type: "HIDE_TOAST" });
-      }, 3000);
-    }
-  }, [state.toast.toast.isVisible, dispatch]);
+  // useEffect(() => {
+  //   if (state.toast.toast.isVisible) {
+  //     setTimeout(() => {
+  //       dispatch({ type: "HIDE_TOAST" });
+  //     }, 3000);
+  //   }
+  // }, [state.toast.toast.isVisible, dispatch]);
 
   return (
-    <div
-      className={`fixed z-[10000] -top-10 transition-all duration-700 mx-auto lg:left-[35vw] md:left-[30vw] left-[5vw] ${
-        state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
-      } border md:w-[400px] w-[90vw] rounded-xl px-3.5 py-1.5 text-lg ${
-        state.toast.toast.isVisible
-          ? "translate-y-full"
-          : " -translate-y-full scale-75"
-      } ${
-        state.theme.theme === "LIGHT"
-          ? "border-gray-200 shadow-xl"
-          : "border-stone-700 shadow-2xl"
-      }`}
+    <Modal
+      isOpen={state.toast.toast.isVisible}
+      onClose={() => dispatch({ type: "HIDE_TOAST" })}
     >
       {state.toast.toast.type === "LOADING" ? (
         <div className="flex items-center">
@@ -33,21 +25,50 @@ function Toast() {
           <div className="flex items-center">{state.toast.toast.message}</div>
         </div>
       ) : state.toast.toast.type === "SUCCESS" ? (
-        <div className="flex items-center md:gap-5 gap-3 py-1.5">
+        <div
+          className={`flex flex-col items-center md:gap-5 gap-3 shadow-lg px-10 py-5 rounded-[30px] ${
+            state.theme.theme === "LIGHT"
+              ? "bg-white"
+              : "bg-stone-900 shadow-black"
+          }`}
+        >
           <i className="bg-green-600 p-1 rounded-full text-white">
-            <CheckIcon className="h-5 w-5" />
+            <CheckIcon className="h-12 w-12" />
           </i>
-          <div className="flex items-center">{state.toast.toast.message}</div>
+          <div className="flex items-center text-2xl font-bold">
+            {state.toast.toast.message}
+          </div>
+
+          <button
+            className="w-[100px] bg-orange-600 text-white py-2 rounded-lg"
+            onClick={() => dispatch({ type: "HIDE_TOAST" })}
+          >
+            OK
+          </button>
         </div>
       ) : (
-        <div className="flex items-center md:gap-5 gap-3 py-1.5">
-          <i className="bg-red-600 p-1 rounded-full text-white">
-            <XMarkIcon className="h-5 w-5" />
+        <div
+          className={`flex flex-col items-center md:gap-5 gap-3 shadow-lg px-10 py-5 rounded-[30px] ${
+            state.theme.theme === "LIGHT"
+              ? "bg-white"
+              : "bg-stone-900 shadow-black"
+          }`}
+        >
+          <i className="bg-red-600 p-2 rounded-full text-white">
+            <XMarkIcon className="h-8 w-8" />
           </i>
-          <div className="flex items-center">{state.toast.toast.message}</div>
+          <div className="flex items-center text-2xl font-bold">
+            {state.toast.toast.message}
+          </div>
+          <button
+            className="w-[100px] bg-orange-600 text-white py-2 rounded-lg"
+            onClick={() => dispatch({ type: "HIDE_TOAST" })}
+          >
+            OK
+          </button>
         </div>
       )}
-    </div>
+    </Modal>
   );
 }
 
