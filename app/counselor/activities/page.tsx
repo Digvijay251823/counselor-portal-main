@@ -1,7 +1,9 @@
 import { SERVER_URL } from "@/Components/config/config";
 import ActivitiesPage from "@/Components/counselor/activities/ActivitiesPage";
+import { unstable_noStore } from "next/cache";
 import React from "react";
 async function getActivities() {
+  unstable_noStore();
   try {
     const response = await fetch(`${SERVER_URL}/counselee-activity`);
     if (response.ok) {
