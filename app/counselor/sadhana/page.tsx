@@ -1,5 +1,6 @@
 import { SERVER_URL } from "@/Components/config/config";
 import SadhanaPage from "@/Components/counselor/sadhana/SadhanaPage";
+import ErrorComponent from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import React from "react";
 
@@ -22,15 +23,19 @@ async function getSadhanaEntries() {
 }
 
 async function page() {
-  const response = await getSadhanaEntries();
-  if (!response || response.content === 0) {
-    return <NotExistsResource message="Error occured in server component" />;
+  try {
+    const response = await getSadhanaEntries();
+    if (!response || response.content === 0) {
+      return <NotExistsResource message="Error occured in server component" />;
+    }
+    return (
+      <div>
+        <SadhanaPage response={response.content} />
+      </div>
+    );
+  } catch (error: any) {
+    return <ErrorComponent message={error.message} />;
   }
-  return (
-    <div>
-      <SadhanaPage response={response.content} />
-    </div>
-  );
 }
 
 export default page;
