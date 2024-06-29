@@ -441,8 +441,12 @@ function MenuIconAndDropDown<T>({
         type="button"
         className={`flex items-center justify-between border px-2 py-2 rounded gap-5 w-full focus:ring-4 outline-none focus:border font-semibold ${
           state.theme.theme === "LIGHT"
-            ? "border-gray-300 bg-white focus:ring-purple-100 focus:border-purple-600"
-            : "border-stone-700 bg-stone-950 focus:ring-purple-950 focus:border-purple-600"
+            ? `border-gray-300 bg-white focus:ring-purple-100 focus:border-purple-600 ${
+                disabled ? "text-gray-400" : "text-black"
+              }`
+            : `border-stone-700 bg-stone-950 focus:ring-purple-950 focus:border-purple-600 ${
+                disabled ? "text-gray-400" : "text-while"
+              }`
         }`}
         id="options-menu"
         aria-haspopup="true"

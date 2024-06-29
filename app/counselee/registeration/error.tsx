@@ -11,10 +11,6 @@ export default function Error({
   reset: () => void;
 }) {
   const { state } = useGlobalState();
-  useEffect(() => {
-    // Log the error to an error reporting service
-    console.error(error);
-  }, [error]);
 
   return (
     <div
@@ -25,11 +21,9 @@ export default function Error({
       <div className="flex flex-col items-center gap-5">
         <h1 className="text-[70px] font-bold">OOPS!</h1>
         <h2 className="font-bold text-xl">Something went wrong!</h2>
-        {error?.message && (
-          <p className="px-5 py-1.5 bg-red-400 text-white font-semibold text-lg rounded-full">
-            MESSAGE : {error.message}
-          </p>
-        )}
+        <p className="px-5 py-1.5 bg-red-400 text-white font-semibold text-lg rounded-full">
+          MESSAGE : {error.message}
+        </p>
         <button
           onClick={
             // Attempt to recover by trying to re-render the segment

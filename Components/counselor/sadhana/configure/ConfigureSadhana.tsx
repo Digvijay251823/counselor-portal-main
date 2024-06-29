@@ -23,8 +23,16 @@ import {
 import { usePathname, useRouter } from "next/navigation";
 import { ChevronLeftIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { useGlobalState } from "@/Components/context/state";
+import { PROTECTED_POST } from "@/actions/ADMINREQUESTS";
+import { SERVER_URL } from "@/Components/config/config";
 
-function ConfigureSadhana({ sadhanaResponse }: { sadhanaResponse?: any }) {
+function ConfigureSadhana({
+  sadhanaResponse,
+  counselorData,
+}: {
+  sadhanaResponse?: any;
+  counselorData: counselor;
+}) {
   const pathname = usePathname();
   const { state, dispatch } = useGlobalState();
   const [isLoading, setIsLoading] = useState(false);
@@ -110,47 +118,48 @@ function ConfigureSadhana({ sadhanaResponse }: { sadhanaResponse?: any }) {
   }, [checkedItems]);
 
   async function handleSubmit() {
-    //     if (Object.keys(checkedItemsObj).length <= 1) {
-    //       dispatch({
-    //         type: "SHOW_TOAST",
-    //         payload: { type: "ERROR", message: "you haven't selected any field" },
-    //       });
-    //       return;
-    //     }
-    //     if (response.sadhanaForm > 0) {
-    //       checkedItemsObj.id = response.sadhanaForm;
-    //       try {
-    //         const response = await POSTADMIN(
-    //           checkedItemsObj,
-    //           `${SERVER_ENDPOINT}/sadhana-form/update`
-    //         );
-    //         dispatch({
-    //           type: "SHOW_TOAST",
-    //           payload: { type: "SUCCESS", message: response.message },
-    //         });
-    //       } catch (error: any) {
-    //         dispatch({
-    //           type: "SHOW_TOAST",
-    //           payload: { type: "SUCCESS", message: error.message },
-    //         });
-    //       }
-    //     } else {
-    //       try {
-    //         const response = await POSTADMIN(
-    //           checkedItemsObj,
-    //           `${SERVER_ENDPOINT}/sadhana-form/generate`
-    //         );
-    //         dispatch({
-    //           type: "SHOW_TOAST",
-    //           payload: { type: "SUCCESS", message: "successfully generated form" },
-    //         });
-    //       } catch (error: any) {
-    //         dispatch({
-    //           type: "SHOW_TOAST",
-    //           payload: { type: "ERROR", message: error.message },
-    //         });
-    //       }
-    //     }
+    if (Object.keys(checkedItemsObj).length <= 1) {
+      dispatch({
+        type: "SHOW_TOAST",
+        payload: { type: "ERROR", message: "you haven't selected any field" },
+      });
+      return;
+    }
+
+    if (sadhanaResponse > 0) {
+      checkedItemsObj.id = sadhanaResponse.sadhanaForm;
+      try {
+        const response = await PROTECTED_POST(
+          checkedItemsObj,
+          `${SERVER_URL}/sadhana/configure/${counselorData.id}`
+        );
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "SUCCESS", message: response.message },
+        });
+      } catch (error: any) {
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "ERROR", message: error.message },
+        });
+      }
+    } else {
+      try {
+        const response = await PROTECTED_POST(
+          checkedItemsObj,
+          `${SERVER_URL}/sadhana-form/generate`
+        );
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "SUCCESS", message: "successfully generated form" },
+        });
+      } catch (error: any) {
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "ERROR", message: error.message },
+        });
+      }
+    }
   }
 
   return (

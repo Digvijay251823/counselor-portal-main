@@ -25,7 +25,7 @@ function CounseleeActivities({ activities }: { activities: Activities[] }) {
   const [onFocusPhone, setOnFocusPhone] = useState(false);
   const [counseleeDetails, setCounseleeDetails] = useState<any>({});
   const router = useRouter();
-  const [isSuccess, setIsSuccess] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(false);
   async function handleSubmitCounselor(e: FormData) {
     const phonenumber = e.get("phonenumber")?.valueOf();
     if (!phonenumber) {

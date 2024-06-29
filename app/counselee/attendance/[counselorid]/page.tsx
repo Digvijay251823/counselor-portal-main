@@ -1,5 +1,6 @@
 import { SERVER_URL } from "@/Components/config/config";
 import CounseleeAttendance from "@/Components/counselee/attendance/CounseleeAttendance";
+import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
 import React from "react";
 
@@ -13,6 +14,9 @@ async function getScheduledSessions(counselorid: string) {
       const responseData = await response.json();
       return responseData;
     } else {
+      if (response.status === 404) {
+        return null;
+      }
       const errorData = await response.json();
       throw errorData;
     }
@@ -23,6 +27,12 @@ async function getScheduledSessions(counselorid: string) {
 
 async function page({ params }: { params: { counselorid: string } }) {
   const response = await getScheduledSessions(params.counselorid);
+  if (!response) {
+    return <NotExistsResource message="Counselor Might Not Exist" />;
+  }
+  if (response.content.length === 0) {
+    return <NotExistsResource message="NO Sessions To Show" />;
+  }
   return (
     <div className="w-full">
       <CounseleeAttendance response={response.content} />
