@@ -63,15 +63,27 @@ function ScheduleSession({
       courseId: courseId,
       counselorId: counselorId,
     };
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
     try {
-      const response = await PROTECTED_POST(
-        formData,
-        `${SERVER_URL}/session/create`
-      );
-      dispatch({
-        type: "SHOW_TOAST",
-        payload: { type: "SUCCESS", message: response.message },
+      const response = await fetch(`/api/counselor/schedulesession`, {
+        headers: header,
+        method: "POST",
+        body: JSON.stringify(formData),
       });
+      if (response.ok) {
+        const responseData = await response.json();
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "SUCCESS", message: responseData.message },
+        });
+      } else {
+        const responseData = await response.json();
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "ERROR", message: responseData.message },
+        });
+      }
     } catch (error: any) {
       dispatch({
         type: "SHOW_TOAST",
