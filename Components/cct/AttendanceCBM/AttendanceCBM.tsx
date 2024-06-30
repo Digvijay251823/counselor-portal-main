@@ -63,9 +63,13 @@ function CBMAttendance({ response }: { response: Attendance[] }) {
                     )}
                   </td>
 
-                  <td
-                    className={`px-6 py-4`}
-                  >{`${item?.counselor.firstName} ${item?.counselor.lastName}`}</td>
+                  <td className={`px-6 py-4`}>
+                    {item?.counselor.initiatedName ? (
+                      <p>{`${item?.counselor.initiatedName}`}</p>
+                    ) : (
+                      <p>{`${item?.counselor.firstName} ${item?.counselor.lastName}`}</p>
+                    )}
+                  </td>
                   <td className={`px-6 py-4`}>
                     {item?.counselor?.phoneNumber}
                   </td>
