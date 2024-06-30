@@ -147,10 +147,14 @@ function MarkCBMAttendance({
     }
   }
   return (
-    <div className="w-full">
-      <div className="md:px-10 md:pt-20 md:pb-10 px-5 pt-10 pb-5">
-        <h1 className="text-4xl font-bold">Attendance</h1>
-        <p>Looks like you have not marked your attendance yet, please do so</p>
+    <div className="w-full flex flex-col items-center">
+      <div className="md:px-10 md:pt-20 md:pb-10 px-5 pt-10 pb-5 ">
+        <h1 className="md:text-4xl text-2xl font-bold">
+          CBM Meeting Attendance
+        </h1>
+        <p className="text-gray-500">
+          Select One Values Each as we are tracking the family details
+        </p>
       </div>
       <div className="w-full">
         <div className="flex items-center justify-center w-full">
@@ -186,8 +190,8 @@ function MarkCBMAttendance({
         {Object.keys(counseleeDetails).length > 0 && (
           <>
             <div className="flex flex-col items-center my-5">
-              <h1 className="font-bold text-3xl">Hare Krishna!!</h1>
-              <div className="flex items-center gap-2">
+              <h1 className="font-bold md:text-3xl text-2xl">Hare Krishna!!</h1>
+              <div className="flex items-center gap-2 px-5">
                 <p
                   className={`rounded-full p-1.5 ${
                     state.theme.theme === "LIGHT"
@@ -199,11 +203,11 @@ function MarkCBMAttendance({
                 </p>
                 {selectedCounselor.PrabhujiName &&
                 selectedCounselor.MatajiName ? (
-                  <p className="text-gray-500 text-xl font-bold">
+                  <p className="text-gray-500 text-lg font-bold">
                     {`${selectedCounselor.PrabhujiName} & ${selectedCounselor.MatajiName}`}
                   </p>
                 ) : (
-                  <p className="text-purple-500 text-xl font-bold">{`${selectedCounselor.PrabhujiName} ${selectedCounselor.MatajiName}`}</p>
+                  <p className="text-purple-500 text-lg font-bold">{`${selectedCounselor.PrabhujiName} ${selectedCounselor.MatajiName}`}</p>
                 )}
                 {/* {counseleeDetails?.initiatedName ? (
                   <p className="text-gray-500 text-xl font-bold">
@@ -221,7 +225,7 @@ function MarkCBMAttendance({
       {Object.keys(counseleeDetails).length > 0 && (
         <div className="flex justify-center w-full">
           <div
-            className={`md:mx-10 mx-3 mb-20 md:w-[80vw] w-[90vw] p-5 rounded-2xl shadow-xl ${
+            className={`md:mx-10 mx-3 mb-20 md:w-[50vw] w-[90vw] p-5 rounded-2xl shadow-xl ${
               state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
             }`}
           >
@@ -237,7 +241,7 @@ function MarkCBMAttendance({
                   >
                     {response?.name}
                   </p>
-                  <div className="flex items-center gap-2 font-bold">
+                  <div className="flex items-center gap-2 font-bold md:w-[400px] ">
                     <p>Scheduled At - </p>
                     <div>
                       {response && (
@@ -245,7 +249,7 @@ function MarkCBMAttendance({
                       )}
                     </div>
                   </div>
-                  <div>
+                  <div className="md:w-[400px] w-full">
                     <p className="font-bold text-xl">Mode Of Attendance</p>
                     <div className="flex items-center gap-5">
                       <div className="flex items-center gap-2">
@@ -558,7 +562,9 @@ function MenuIconAndDropDownDevotees({
         <div
           className={`origin-top-left absolute ${
             position === "up" ? "bottom-0 mb-12" : "mt-2 right-0"
-          } w-full rounded-lg shadow-lg z-[1000] bg-white border-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none py-1 px-1`}
+          } w-full rounded-lg shadow-lg z-[1000] ${
+            state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
+          } border-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none py-1 px-1`}
           role="menu"
           aria-orientation="vertical"
           aria-labelledby="options-menu"
