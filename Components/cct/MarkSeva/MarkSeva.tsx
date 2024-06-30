@@ -18,6 +18,7 @@ import React, {
   useState,
 } from "react";
 import { useFormStatus } from "react-dom";
+import { FaMagnifyingGlass } from "react-icons/fa6";
 
 const sevas = [
   { name: "Mangal Arthi", type: "mangalAarti" },
@@ -32,6 +33,7 @@ function MarkCCTSeva() {
   const [onFocusPhone, setOnFocusPhone] = useState(false);
   const [counselorDetails, setCounselorDetails] = useState<any>({});
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [selectedCounselor, setSelectedCounselor] = useState<any>({});
   const [formData, setFormData] = useState({
     mangalAarti: false,
     morningJapa: false,

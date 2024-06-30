@@ -11,7 +11,6 @@ export async function POST(req: NextRequest, res: NextResponse) {
   const header = new Headers();
   header.append("Content-Type", "application/json");
   try {
-    console.log(formData);
     const response = await fetch(`${SERVER_URL}/cbmattendance/mark`, {
       method: "POST",
       headers: header,
