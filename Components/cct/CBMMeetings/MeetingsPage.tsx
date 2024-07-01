@@ -131,7 +131,7 @@ function MeetingsPage({ response }: { response: sessions[] }) {
                                 </p>
                               </Link>
                               <QRCodeSmall
-                                url={`${linksActivator}/seva/cct`}
+                                url={`${linksActivator}/markattendance/cct/${session.id}`}
                                 content="CBM Meetings Attendance"
                               />
                             </div>
