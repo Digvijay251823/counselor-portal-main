@@ -32,7 +32,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
       }
       if (response.status === 409) {
         return NextResponse.json(
-          { message: "devotee already exists" },
+          { message: "You Already Marked Attendance" },
           { status: response.status }
         );
       }

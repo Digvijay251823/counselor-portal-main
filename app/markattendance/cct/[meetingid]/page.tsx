@@ -62,6 +62,7 @@ async function page({
       }
       return false;
     });
+
     return (
       <div className="w-full">
         <MarkCBMAttendance

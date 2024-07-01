@@ -96,9 +96,13 @@ function MeetingsPage({ response }: { response: sessions[] }) {
                         )}
                       </td>
                       <td className={`px-4 py-1.5`}>
-                        <div className="p-2 flex justify-center">
-                          <Reschedule session={session} />
-                        </div>
+                        {!session.expired ? (
+                          <div className="p-2 flex justify-center">
+                            <Reschedule session={session} />
+                          </div>
+                        ) : (
+                          <div className="text-gray-500">Expired</div>
+                        )}
                       </td>
                       <td className={`px-4 py-1.5`}>
                         <div className="p-2 flex justify-center ">
