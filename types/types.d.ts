@@ -70,6 +70,7 @@ interface sessions {
   name: string;
   description: string;
   startTime: string;
+  expired: boolean;
   modeOfAttendance: string;
   createdAt: string;
   updatedAt: string;

@@ -1,11 +1,18 @@
 "use client";
 import { SERVER_URL } from "@/Components/config/config";
 import { useGlobalState } from "@/Components/context/state";
+import CopyClipBoard from "@/Components/utils/CopyToClipBoard";
 import DateFormatter from "@/Components/utils/DateFormatter";
 import { LinksActivator } from "@/Components/utils/LinksActivator";
 import Modal from "@/Components/utils/Modal";
+import QRCodeOverlay from "@/Components/utils/QRCodeOverlay";
+import QRCodeSmall from "@/Components/utils/QRCodeSmall";
 import { PUT } from "@/actions/POSTREQUESTS";
 import { ClockIcon } from "@heroicons/react/16/solid";
+import {
+  ClipboardDocumentCheckIcon,
+  ClipboardDocumentIcon,
+} from "@heroicons/react/24/outline";
 import Link from "next/link";
 import React, { useState } from "react";
 import Calendar from "react-calendar";
@@ -94,12 +101,43 @@ function MeetingsPage({ response }: { response: sessions[] }) {
                         </div>
                       </td>
                       <td className={`px-4 py-1.5`}>
-                        <div className="p-2 flex justify-center underline text-blue-500">
-                          <Link
-                            href={`${linksActivator}/markattendance/cct/${session.id}`}
-                          >
-                            Attendance
-                          </Link>
+                        <div className="p-2 flex justify-center ">
+                          {!session.expired ? (
+                            <div className="flex gap-5">
+                              <CopyClipBoard
+                                url={`${linksActivator}/markattendance/cct/${session.id}`}
+                                NotCopied={
+                                  <div className="flex items-center">
+                                    <i>Copy</i>
+                                    <i>
+                                      <ClipboardDocumentCheckIcon className="h-5 w-5" />
+                                    </i>
+                                  </div>
+                                }
+                                whenCopied={
+                                  <div className="flex items-center">
+                                    <i>Copy</i>
+                                    <i>
+                                      <ClipboardDocumentIcon className="h-5 w-5" />
+                                    </i>
+                                  </div>
+                                }
+                              />
+                              <Link
+                                href={`${linksActivator}/markattendance/cct/${session.id}`}
+                              >
+                                <p className="underline text-blue-500 text-lg">
+                                  Link
+                                </p>
+                              </Link>
+                              <QRCodeSmall
+                                url={`${linksActivator}/seva/cct`}
+                                content="CBM Meetings Attendance"
+                              />
+                            </div>
+                          ) : (
+                            <div className="text-gray-500">Expired</div>
+                          )}
                         </div>
                       </td>
                     </tr>
@@ -119,21 +157,52 @@ export default MeetingsPage;
 function Reschedule({ session }: { session: sessions }) {
   const [isOpen, setIsOpen] = useState(false);
   const [startTime, setStartTime] = useState<any>("");
+  const [startTimeDate, setStartTimeDate] = useState<any>("");
   const { state, dispatch } = useGlobalState();
 
-  async function updateDetails(e: FormData) {
-    const formData: any = {
-      startTime: new Date(startTime).toISOString(),
-    };
-    try {
-      const response = await PUT(
-        formData,
-        `${SERVER_URL}/session/update/${session.id}`
-      );
+  const handleDateTimeConcat = () => {
+    if (startTimeDate !== "" && startTime !== "") {
+      const selectedDate = new Date(startTimeDate);
+      const [hours, minutes] = startTime.split(":").map(Number);
+      selectedDate.setHours(hours);
+      selectedDate.setMinutes(minutes);
+
+      return selectedDate.toISOString();
+    } else {
       dispatch({
         type: "SHOW_TOAST",
-        payload: { type: "SUCCESS", message: response.message },
+        payload: { type: "ERROR", message: "please select date and time" },
       });
+      return null;
+    }
+  };
+
+  async function updateDetails(e: FormData) {
+    const concatenatedStartTime = handleDateTimeConcat();
+    const formData: any = {
+      startTime:
+        concatenatedStartTime && new Date(concatenatedStartTime).toISOString(),
+    };
+    try {
+      const Header = new Headers();
+      const response = await fetch(`/api/cct/reschedulemeeting/${session.id}`, {
+        method: "PUT",
+        headers: Header,
+        body: JSON.stringify(formData),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "SUCCESS", message: responseData.message },
+        });
+      } else {
+        const responseData = await response.json();
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "ERROR", message: responseData.message },
+        });
+      }
     } catch (error: any) {
       dispatch({
         type: "SHOW_TOAST",
@@ -142,11 +211,6 @@ function Reschedule({ session }: { session: sessions }) {
     }
   }
 
-  async function toggleAutoApprove() {
-    try {
-      const response = await fetch(`${SERVER_URL}/api/autoapprove`);
-    } catch (error) {}
-  }
   return (
     <div>
       <button
@@ -159,8 +223,10 @@ function Reschedule({ session }: { session: sessions }) {
       </button>
       <Modal isOpen={isOpen} onClose={() => setIsOpen(false)}>
         <div
-          className={`md:p-10 rounded-xl ${
-            state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
+          className={`md:p-10 rounded-xl shadow-lg ${
+            state.theme.theme === "LIGHT"
+              ? "bg-white"
+              : "bg-stone-900 shadow-black"
           }`}
         >
           <div className="md:py-0 py-10">
@@ -170,12 +236,28 @@ function Reschedule({ session }: { session: sessions }) {
                   StartTime
                 </div>
                 <Calendar
-                  value={startTime}
-                  onChange={(e) => setStartTime(e?.toString())}
+                  value={startTimeDate}
+                  onChange={(e) => setStartTimeDate(e?.toString())}
                   className={` rounded-lg ${
                     state.theme.theme === "LIGHT"
                       ? "bg-white border"
-                      : "bg-stone-900 text-white border border-stone-800"
+                      : "bg-stone-900 text-black border border-stone-800"
+                  }`}
+                />
+              </div>
+              <div className="flex flex-col items-center justify-center gap-5">
+                <label htmlFor="Time" className="text-lg font-bold">
+                  Time
+                </label>
+                <input
+                  type="time"
+                  id="Time"
+                  value={startTime}
+                  onChange={(e) => setStartTime(e.target.value)}
+                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between  ${
+                    state.theme.theme === "LIGHT"
+                      ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
+                      : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
                   }`}
                 />
               </div>
@@ -188,7 +270,7 @@ function Reschedule({ session }: { session: sessions }) {
                 </button>
                 <div className="flex items-center w-[200px] gap-3">
                   <p
-                    className={`border h-0.5 w-full ${
+                    className={`border border-dashed h-0.5 w-full ${
                       state.theme.theme === "LIGHT"
                         ? "border-gray-400"
                         : "border-stone-600"
@@ -196,7 +278,7 @@ function Reschedule({ session }: { session: sessions }) {
                   ></p>
                   <p>OR</p>
                   <p
-                    className={`border h-0.5 w-full ${
+                    className={`border border-dashed h-0.5 w-full ${
                       state.theme.theme === "LIGHT"
                         ? "border-gray-400"
                         : "border-stone-600"
