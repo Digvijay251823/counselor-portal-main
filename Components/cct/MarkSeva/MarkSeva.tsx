@@ -83,7 +83,7 @@ function MarkCCTSeva() {
         }
       })();
     }
-  }, [phoneNumber]);
+  }, [phoneNumber, dispatch]);
 
   useEffect(() => {
     const date = new Date().toISOString();

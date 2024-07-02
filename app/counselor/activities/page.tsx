@@ -30,7 +30,6 @@ async function page() {
   try {
     const authcontent = cookies().get("AUTH")?.value;
     const authparsed = authcontent && JSON.parse(authcontent);
-    console.log(authparsed);
     if (!authparsed) {
       throw new Error("Sign in to access the resource");
     }
