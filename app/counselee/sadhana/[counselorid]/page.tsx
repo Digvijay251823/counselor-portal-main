@@ -27,15 +27,15 @@ async function getSadhana(id: string) {
 
 async function page({ params }: { params: { counselorid: string } }) {
   try {
-    const response = await getSadhana(params.counselorid);
-    if (!response) {
-      return <NotExistsResource message="Sadhana Form Not Configured Yet" />;
-    }
+    // const response = await getSadhana(params.counselorid);
+    // if (!response) {
+    //   return <NotExistsResource message="Sadhana Form Not Configured Yet" />;
+    // }
     return (
       <div className="w-full">
         <SadhanaForm
           counselorId={params.counselorid}
-          sadhanaForm={response?.content[0]}
+          // sadhanaForm={response?.content[0]}
         />
       </div>
     );

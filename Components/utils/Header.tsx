@@ -4,8 +4,15 @@ import { useGlobalState } from "../context/state";
 import { Bars3Icon, MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { VscThreeBars } from "react-icons/vsc";
+import { BsActivity } from "react-icons/bs";
 import Drawer from "./MenuDrawer";
+import LogoComponent from "./icons/Logo";
+import { TbClock } from "react-icons/tb";
+import { HiOutlineAcademicCap } from "react-icons/hi2";
+import { GoChecklist } from "react-icons/go";
+import { HiOutlineSparkles } from "react-icons/hi2";
+import { IoAnalyticsSharp } from "react-icons/io5";
+import { BsQrCodeScan } from "react-icons/bs";
 
 function Header() {
   const pathname = usePathname();
@@ -13,39 +20,46 @@ function Header() {
   const [isOpenDrawer, setIsOpenDrawer] = useState(false);
   return (
     <header
-      className={`w-full shadow-lg ${
+      className={`w-screen border-b ${
         state.theme.theme === "LIGHT"
-          ? "bg-white"
-          : "bg-stone-900 shadow-stone-950 bg-opacity-20"
-      }  px-4 py-1.5`}
+          ? "bg-white border-b-gray-200"
+          : "bg-stone-900 bg-opacity-20 border-stone-800"
+      }  py-1.5 pr-10`}
     >
       <div className="flex items-center justify-between">
-        <div className=" flex flex-col items-center">
-          <h1 className="text-xl font-extrabold">PORTAL</h1>
-          <span
-            className={`font-semibold italic ${
-              state.theme.theme === "LIGHT" ? "text-gray-500" : "text-stone-600"
-            }`}
-          >
-            Counselor
-          </span>
-        </div>
-        <nav className="md:flex items-center gap-5  hidden">
+        <LogoComponent />
+        <nav className="md:flex items-center gap-1  hidden">
           <p
-            className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+            className={`font-semibold px-5 py-2.5 rounded-lg ${
+              pathname === "/counselor"
+                ? `${
+                    state.theme.theme === "LIGHT"
+                      ? "bg-purple-100 text-purple-500"
+                      : "bg-purple-400 text-purple-500"
+                  }`
+                : ``
+            } ${
               state.theme.theme === "LIGHT"
                 ? "hover:bg-gray-100"
-                : "hover:bg-stone-800"
+                : "hover:bg-purple-950 bg-opacity-10"
             }`}
           >
             Analytics
           </p>
           <Link href="/counselor/counselee">
             <p
-              className={`font-semibold px-1.5 py-1.5 rounded-lg ${pathname} ${
+              className={`font-semibold px-5 py-2.5 rounded-lg ${pathname} ${
+                pathname === "/counselor/counselee"
+                  ? `${
+                      state.theme.theme === "LIGHT"
+                        ? "bg-purple-100 text-purple-500"
+                        : "bg-purple-400 text-purple-500"
+                    }`
+                  : ``
+              } ${
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-100"
-                  : "hover:bg-stone-800"
+                  : "hover:bg-purple-950 bg-opacity-10"
               }`}
             >
               counselee
@@ -53,10 +67,18 @@ function Header() {
           </Link>
           <Link href={"/counselor/sessions"}>
             <p
-              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              className={`font-semibold px-5 py-2.5 rounded-lg ${
+                pathname === "/counselor/sessions"
+                  ? `${
+                      state.theme.theme === "LIGHT"
+                        ? "bg-purple-100 text-purple-500"
+                        : "bg-purple-400 text-purple-500"
+                    }`
+                  : ``
+              } ${
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-100"
-                  : "hover:bg-stone-800"
+                  : "hover:bg-purple-950 bg-opacity-10"
               }`}
             >
               sessions
@@ -64,10 +86,18 @@ function Header() {
           </Link>
           <Link href={"/counselor/activities"}>
             <p
-              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              className={`font-semibold px-5 py-2.5 rounded-lg ${
+                pathname === "/counselor/activities"
+                  ? `${
+                      state.theme.theme === "LIGHT"
+                        ? "bg-purple-100 text-purple-500"
+                        : "bg-purple-400 text-purple-500"
+                    }`
+                  : ``
+              } ${
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-100"
-                  : "hover:bg-stone-800"
+                  : "hover:bg-purple-950 bg-opacity-10"
               }`}
             >
               activities
@@ -75,10 +105,18 @@ function Header() {
           </Link>
           <Link href={"/counselor/attendance"}>
             <p
-              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              className={`font-semibold px-5 py-2.5 rounded-lg ${
+                pathname === "/counselor/attendance"
+                  ? `${
+                      state.theme.theme === "LIGHT"
+                        ? "bg-purple-100 text-purple-500"
+                        : "bg-purple-400 text-purple-500"
+                    }`
+                  : ``
+              } ${
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-100"
-                  : "hover:bg-stone-800"
+                  : "hover:bg-purple-950 bg-opacity-10"
               }`}
             >
               attendance
@@ -86,10 +124,18 @@ function Header() {
           </Link>
           <Link href={"/counselor/sadhana"}>
             <p
-              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              className={`font-semibold px-5 py-2.5 rounded-lg ${
+                pathname === "/counselor/sadhana"
+                  ? `${
+                      state.theme.theme === "LIGHT"
+                        ? "bg-purple-100 text-purple-500"
+                        : "bg-purple-400 text-purple-500"
+                    }`
+                  : ``
+              } ${
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-100"
-                  : "hover:bg-stone-800"
+                  : "hover:bg-purple-950 bg-opacity-10"
               }`}
             >
               sadhana
@@ -97,10 +143,18 @@ function Header() {
           </Link>
           <Link href={"/counselor/scan"}>
             <p
-              className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              className={`font-semibold px-5 py-2.5 rounded-lg ${
+                pathname === "/counselor/scan"
+                  ? `${
+                      state.theme.theme === "LIGHT"
+                        ? "bg-purple-100 text-purple-500"
+                        : "bg-purple-400 text-purple-500"
+                    }`
+                  : ``
+              } ${
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-100"
-                  : "hover:bg-stone-800"
+                  : "hover:bg-purple-950 bg-opacity-[0.2]"
               }`}
             >
               scan
@@ -137,99 +191,157 @@ function Header() {
               isOpen={isOpenDrawer}
               onClose={() => setIsOpenDrawer(false)}
             >
-              <nav className="flex flex-col gap-5">
-                <p
-                  className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              <nav className="flex flex-col gap-4">
+                <div
+                  className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                    pathname === ""
+                  } ${
                     state.theme.theme === "LIGHT"
                       ? "hover:bg-gray-100"
-                      : "hover:bg-stone-800"
+                      : "hover:bg-purple-950 bg-opacity-10"
                   }`}
                 >
-                  Analytics
-                </p>
+                  <IoAnalyticsSharp className="h-6 w-6" />
+                  <p className={`text-lg font-semibold`}>Analytics</p>
+                </div>
+
                 <Link
                   href="/counselor/counselee"
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${pathname} ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/counselee"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    counselee
-                  </p>
+                    <HiOutlineAcademicCap className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>counselee</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/counselor/sessions"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/sessions"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    sessions
-                  </p>
+                    <TbClock className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>sessions</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/counselor/activities"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/activities"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    activities
-                  </p>
+                    <BsActivity className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>activities</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/counselor/attendance"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/attendance"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    attendance
-                  </p>
+                    <GoChecklist className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>attendance</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/counselor/sadhana"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/sadhana"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    sadhana
-                  </p>
+                    <HiOutlineSparkles className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>sadhana</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/counselor/scan"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/scan"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
-                        ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        ? "hover:bg-purple-100"
+                        : "hover:bg-purple-950 bg-opacity-15"
                     }`}
                   >
-                    scan
-                  </p>
+                    <BsQrCodeScan className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>scan</p>
+                  </div>
                 </Link>
               </nav>
             </Drawer>

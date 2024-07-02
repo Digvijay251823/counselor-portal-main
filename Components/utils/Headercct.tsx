@@ -7,8 +7,15 @@ import Link from "next/link";
 import { FaUserFriends } from "react-icons/fa";
 import { GrTask } from "react-icons/gr";
 import { IoMdCheckmarkCircleOutline } from "react-icons/io";
+import { FaRegUser } from "react-icons/fa6";
 import { Bars3Icon } from "@heroicons/react/24/outline";
 import Drawer from "./MenuDrawer";
+import LogoComponent from "./icons/Logo";
+import { BsActivity, BsQrCodeScan } from "react-icons/bs";
+import { HiOutlineAcademicCap, HiOutlineSparkles } from "react-icons/hi";
+import { GoChecklist } from "react-icons/go";
+import { TbClock } from "react-icons/tb";
+import { IoAnalyticsSharp } from "react-icons/io5";
 
 function Headercct() {
   const { state, dispatch } = useGlobalState();
@@ -17,51 +24,102 @@ function Headercct() {
 
   return (
     <header
-      className={`w-full ${
+      className={`w-full px-5 py-2 ${
         state.theme.theme === "LIGHT"
-          ? "bg-white"
-          : "bg-stone-900 shadow-stone-950 bg-opacity-20"
-      }  px-5 pt-5`}
+          ? "border-b-gray-200"
+          : "border-b-stone-800"
+      } border-b`}
     >
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-5">
           <div className="flex flex-col items-center gap-0">
-            <p className="font-extrabold text-xl">PORTAL</p>
-            <p
-              className={`font-semibold italic ${
-                state.theme.theme === "LIGHT"
-                  ? "text-gray-500"
-                  : "text-stone-600"
-              }`}
-            >
-              CCT
-            </p>
+            <LogoComponent />
           </div>
           <div className="md:block hidden">
             <nav
-              className={`flex items-center gap-5 ${
+              className={`flex items-center gap-2 border ${
                 state.theme.theme === "LIGHT"
-                  ? "bg-black text-white rounded-full px-5 py-2"
-                  : "bg-white text-black rounded-full px-5 py-2"
+                  ? "rounded-lg p-1 bg-purple-100 border-purple-200"
+                  : "bg-stone-800 rounded-lg p-1 bg-opacity-40 border-stone-800"
               }`}
             >
               <Link href={"/cct/analytics"}>
-                <p className="font-bold text-lg">Analytics</p>
+                <p
+                  className={`font-semibold text-lg ${
+                    pathname === "/cct/analytics"
+                      ? `${
+                          state.theme.theme === "LIGHT"
+                            ? "bg-purple-900 px-3 rounded-lg text-purple-50 p-1 border border-purple-200 hover:bg-purple-950 hover:text-white"
+                            : "bg-purple-950 bg-opacity-25 p-1 px-3 rounded-lg border border-purple-950 text-purple-400 hover:bg-purple-900"
+                        }`
+                      : "hover:bg-purple-900 p-1 px-3 rounded-lg hover:text-white"
+                  }`}
+                >
+                  Analytics
+                </p>
               </Link>
               <Link href={"/cct/counselee"}>
-                <p className="font-bold text-lg">Counselees</p>
+                <p
+                  className={`font-semibold text-lg ${
+                    pathname === "/cct/counselee"
+                      ? `${
+                          state.theme.theme === "LIGHT"
+                            ? "bg-purple-900 px-3 rounded-lg text-purple-50 p-1 border border-purple-200 hover:bg-purple-950 hover:text-white"
+                            : "bg-purple-950 bg-opacity-25 p-1 px-3 rounded-lg border border-purple-950 text-purple-400 hover:bg-purple-900"
+                        }`
+                      : "hover:bg-purple-900 p-1 px-3 rounded-lg hover:text-white"
+                  }`}
+                >
+                  Counselees
+                </p>
               </Link>
               <Link href="/cct/counselors">
-                <p className="font-bold text-lg">Counselors</p>
+                <p
+                  className={`font-semibold text-lg ${
+                    pathname === "/cct/counselors"
+                      ? `${
+                          state.theme.theme === "LIGHT"
+                            ? "bg-purple-900 px-3 rounded-lg text-purple-50 p-1 border border-purple-200 hover:bg-purple-950 hover:text-white"
+                            : "bg-purple-950 bg-opacity-25 p-1 px-3 rounded-lg border border-purple-950 text-purple-400 hover:bg-purple-900"
+                        }`
+                      : "hover:bg-purple-900 p-1 px-3 rounded-lg hover:text-white"
+                  }`}
+                >
+                  Counselors
+                </p>
               </Link>
               <div>
                 <MenuCBM />
               </div>
               <Link href="/cct/scan">
-                <p className="font-bold text-lg">Scan</p>
+                <p
+                  className={`font-semibold text-lg ${
+                    pathname === "/cct/scan"
+                      ? `${
+                          state.theme.theme === "LIGHT"
+                            ? "bg-purple-900 px-3 rounded-lg text-purple-50 p-1 border border-purple-200 hover:bg-purple-950 hover:text-white"
+                            : "bg-purple-950 bg-opacity-25 p-1 px-3 rounded-lg border border-purple-950 text-purple-400 hover:bg-purple-900"
+                        }`
+                      : "hover:bg-purple-900 p-1 px-3 rounded-lg hover:text-white"
+                  }`}
+                >
+                  Scan
+                </p>
               </Link>
               <Link href="/cct/changecounselor">
-                <p className="font-bold text-lg">ChangeCounselor</p>
+                <p
+                  className={`font-semibold text-lg ${
+                    pathname === "/cct/changecounselor"
+                      ? `${
+                          state.theme.theme === "LIGHT"
+                            ? "bg-purple-900 px-3 rounded-lg text-purple-50 p-1 border border-purple-200 hover:bg-purple-950 hover:text-white"
+                            : "bg-purple-950 bg-opacity-25 p-1 px-3 rounded-lg border border-purple-950 text-purple-400 hover:bg-purple-900"
+                        }`
+                      : "hover:bg-purple-900 p-1 px-3 rounded-lg hover:text-white"
+                  }`}
+                >
+                  ChangeCounselor
+                </p>
               </Link>
             </nav>
           </div>
@@ -90,111 +148,181 @@ function Headercct() {
               isOpen={isOpenDrawer}
               onClose={() => setIsOpenDrawer(false)}
             >
-              <nav className="flex flex-col gap-5">
-                <p
-                  className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+              <nav className="flex flex-col gap-4">
+                <div
+                  className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                    pathname === ""
+                  } ${
                     state.theme.theme === "LIGHT"
                       ? "hover:bg-gray-100"
-                      : "hover:bg-stone-800"
+                      : "hover:bg-purple-950 bg-opacity-10"
                   }`}
                 >
-                  Analytics
-                </p>
+                  <IoAnalyticsSharp className="h-6 w-6" />
+                  <p className={`text-lg font-semibold`}>Analytics</p>
+                </div>
+
+                <Link
+                  href="/cct/counselors"
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/cct/counselors"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-purple-950 bg-opacity-10"
+                    }`}
+                  >
+                    <FaRegUser className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>counselor</p>
+                  </div>
+                </Link>
                 <Link
                   href="/cct/counselee"
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${pathname} ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/cct/counselee"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    counselee
-                  </p>
-                </Link>
-                <Link
-                  href={"/cct/counselors"}
-                  onClick={() => setIsOpenDrawer(false)}
-                >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
-                      state.theme.theme === "LIGHT"
-                        ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
-                    }`}
-                  >
-                    counselor
-                  </p>
-                </Link>
-                <Link
-                  href={"/cct/sevas"}
-                  onClick={() => setIsOpenDrawer(false)}
-                >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
-                      state.theme.theme === "LIGHT"
-                        ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
-                    }`}
-                  >
-                    sevas
-                  </p>
+                    <HiOutlineAcademicCap className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>counselee</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/cct/cbmmeetings"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/cct/cbmmeetings"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    CBM Meetings
-                  </p>
+                    <TbClock className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>Cbm Meetings</p>
+                  </div>
                 </Link>
                 <Link
                   href={"/cct/cbmattendance"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/cct/cbmattendance"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    CBMattendance
-                  </p>
+                    <GoChecklist className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>Cbm Attendance</p>
+                  </div>
                 </Link>
+                <Link
+                  href={"/cct/sevas"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/cct/sevas"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
+                      state.theme.theme === "LIGHT"
+                        ? "hover:bg-gray-100"
+                        : "hover:bg-purple-950 bg-opacity-10"
+                    }`}
+                  >
+                    <BsActivity className="h-6 w-6" />
 
+                    <p className={`text-lg font-semibold`}>Sevas</p>
+                  </div>
+                </Link>
                 <Link
                   href={"/cct/changecounselor"}
                   onClick={() => setIsOpenDrawer(false)}
                 >
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/cct/changecounselor"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
                         ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        : "hover:bg-purple-950 bg-opacity-10"
                     }`}
                   >
-                    Change Counselor
-                  </p>
+                    <HiOutlineSparkles className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>Change Counselor</p>
+                  </div>
                 </Link>
-                <Link href={"/cct/scan"} onClick={() => setIsOpenDrawer(false)}>
-                  <p
-                    className={`font-semibold px-1.5 py-1.5 rounded-lg ${
+                <Link
+                  href={"/counselor/scan"}
+                  onClick={() => setIsOpenDrawer(false)}
+                >
+                  <div
+                    className={`px-5 py-2.5 rounded-lg flex items-center gap-5 ${
+                      pathname === "/counselor/scan"
+                        ? `${
+                            state.theme.theme === "LIGHT"
+                              ? "bg-purple-100 text-purple-600"
+                              : "bg-purple-800 text-purple-400"
+                          }`
+                        : ""
+                    } ${
                       state.theme.theme === "LIGHT"
-                        ? "hover:bg-gray-100"
-                        : "hover:bg-stone-800"
+                        ? "hover:bg-purple-100"
+                        : "hover:bg-purple-950 bg-opacity-15"
                     }`}
                   >
-                    scan
-                  </p>
+                    <BsQrCodeScan className="h-6 w-6" />
+                    <p className={`text-lg font-semibold`}>scan</p>
+                  </div>
                 </Link>
               </nav>
             </Drawer>
@@ -252,7 +380,7 @@ function MenuCBM() {
         onMouseEnter={handleMouseEnter}
         ref={menuRef}
       >
-        <span className="font-bold text-lg flex items-center">
+        <span className="font-semibold text-lg flex items-center">
           <p>CBM</p>
 
           <ChevronDownIcon
@@ -280,7 +408,7 @@ function MenuCBM() {
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-50"
                   : "hover:bg-stone-950"
-              } rounded-[30px]`}
+              } rounded-[20px]`}
             >
               <Link href="/cct/cbmmeetings">
                 <div>
@@ -307,7 +435,7 @@ function MenuCBM() {
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-50"
                   : "hover:bg-stone-950"
-              } rounded-[30px]`}
+              } rounded-[20px]`}
             >
               <Link href="/cct/cbmattendance">
                 <div>
@@ -337,7 +465,7 @@ function MenuCBM() {
                 state.theme.theme === "LIGHT"
                   ? "hover:bg-gray-50"
                   : "hover:bg-stone-950"
-              } rounded-[30px]`}
+              } rounded-[20px]`}
             >
               <Link href="/cct/sevas">
                 <div>

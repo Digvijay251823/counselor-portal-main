@@ -34,7 +34,7 @@ function ApproveAttendance({ item }: { item: Attendance }) {
   return (
     <div>
       {item?.scheduledSession?.startTime ? (
-        <div onClick={() => console.log(item.approved)}>
+        <div>
           {isApproved ? (
             <div className="bg-purple-600 text-white px-3 py-1 rounded-lg flex items-center gap-2">
               <CheckCircleIcon className="h-5 w-5" />

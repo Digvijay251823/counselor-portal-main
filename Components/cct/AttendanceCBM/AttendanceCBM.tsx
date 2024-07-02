@@ -30,9 +30,9 @@ function CBMAttendance({ response }: { response: Attendance[] }) {
                     : "border-b-stone-700"
                 }`}
               >
-                <th className={`px-6 py-3`}>MODE OF ATTENDANCE</th>
                 <th className={`px-6 py-3`}>NAME</th>
                 <th className={`px-6 py-3`}>CONTACT NUMBER</th>
+                <th className={`px-6 py-3`}>MODE OF ATTENDANCE</th>
                 <th className={`px-6 py-3`}>SESSION NAME</th>
                 <th className={`px-6 py-3`}>DESCRIPTION</th>
                 <th className={`px-6 py-3`}>ATTENDED ON</th>
@@ -50,6 +50,16 @@ function CBMAttendance({ response }: { response: Attendance[] }) {
                   }
                 >
                   <td className={`px-6 py-4`}>
+                    {item?.counselor.initiatedName ? (
+                      <p>{`${item?.counselor.initiatedName}`}</p>
+                    ) : (
+                      <p>{`${item?.counselor.firstName} ${item?.counselor.lastName}`}</p>
+                    )}
+                  </td>
+                  <td className={`px-6 py-4`}>
+                    {item?.counselor?.phoneNumber}
+                  </td>
+                  <td className={`px-6 py-4`}>
                     {item?.modeOfAttendance === "ONLINE" ? (
                       <div className="text-red-500">ONLINE</div>
                     ) : item?.modeOfAttendance == "OFFLINE" ? (
@@ -61,17 +71,6 @@ function CBMAttendance({ response }: { response: Attendance[] }) {
                         HYBRID
                       </div>
                     )}
-                  </td>
-
-                  <td className={`px-6 py-4`}>
-                    {item?.counselor.initiatedName ? (
-                      <p>{`${item?.counselor.initiatedName}`}</p>
-                    ) : (
-                      <p>{`${item?.counselor.firstName} ${item?.counselor.lastName}`}</p>
-                    )}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    {item?.counselor?.phoneNumber}
                   </td>
                   <td className={`px-6 py-4`}>{item?.cbmMeeting?.name}</td>
                   <td className={`px-6 py-4`}>

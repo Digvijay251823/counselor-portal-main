@@ -1,7 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
 import { ChevronDownIcon } from "@heroicons/react/24/solid";
-import { useParams, usePathname } from "next/navigation";
 import { useGlobalState } from "@/Components/context/state";
 
 export function NOR({ label }: { label: string }) {

@@ -3,13 +3,17 @@ import CounseleePage from "@/Components/counselor/counselee/CounseleePage";
 import ErrorComponent from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
+import { cookies } from "next/headers";
 import React from "react";
 
-async function getCounselees() {
+async function getCounselees(counselorid: string) {
   unstable_noStore();
-  const response = await fetch(`${SERVER_URL}/counselee`);
+  const response = await fetch(
+    `${SERVER_URL}/Counselor/counselees/${counselorid}`
+  );
   if (response.ok) {
     const responseData = await response.json();
+    console.log(responseData);
     return responseData;
   } else {
     const errorData = await response.json();
@@ -19,7 +23,14 @@ async function getCounselees() {
 
 async function page() {
   try {
-    const response = await getCounselees();
+    const authcontent = cookies().get("AUTH")?.value;
+    const authparsed = authcontent && JSON.parse(authcontent);
+    if (!authparsed) {
+      return (
+        <ErrorComponent message="Pleas Authenticate to access the resource" />
+      );
+    }
+    const response = await getCounselees(authparsed.counselor.id);
     if (!response || response.content.length === 0) {
       return <NotExistsResource message="No counselee to show" />;
     }

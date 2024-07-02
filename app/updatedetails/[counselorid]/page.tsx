@@ -1,7 +1,6 @@
 import UpdateDetails from "@/Components/auth/updateDetails/UpdateDetails";
 import { SERVER_URL } from "@/Components/config/config";
 import ErrorComponent from "@/Components/utils/ErrorPage";
-import ErrorPage from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
 
 async function getCounselorDetails(counselorid: string) {

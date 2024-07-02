@@ -2,7 +2,13 @@ import React from "react";
 import { useGlobalState } from "../context/state";
 import { useFormStatus } from "react-dom";
 
-function SubmitHandlerButton({ btnStyles }: { btnStyles: string }) {
+function SubmitHandlerButton({
+  btnStyles,
+  text,
+}: {
+  btnStyles: string;
+  text?: string;
+}) {
   const { pending } = useFormStatus();
   const { state } = useGlobalState();
   return (
@@ -64,7 +70,7 @@ function SubmitHandlerButton({ btnStyles }: { btnStyles: string }) {
       ) : (
         <div className="flex justify-end">
           <button type="submit" className={btnStyles}>
-            Submit
+            {text ? text : "Submit"}
           </button>
         </div>
       )}

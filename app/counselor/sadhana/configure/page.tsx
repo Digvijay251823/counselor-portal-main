@@ -17,7 +17,7 @@ async function getSadhana(counselorId: string) {
         console.log("no sadhana form found");
       }
       const errorData = await response.json();
-      throw new Error(errorData.message);
+      console.log(errorData.message);
     }
   } catch (error) {
     throw error;
@@ -34,12 +34,11 @@ async function page() {
       );
     }
     const response = await getSadhana(authparsed.counselor.id);
-
     return (
       <div>
         <ConfigureSadhana
           counselorData={authparsed?.counselor}
-          sadhanaResponse={response}
+          sadhanaResponse={response.content}
         />
       </div>
     );

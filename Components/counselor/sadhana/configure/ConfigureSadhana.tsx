@@ -21,10 +21,10 @@ import {
 } from "@/Components/counselor/sadhana/configure/ConfigSadhanaForm";
 
 import { usePathname, useRouter } from "next/navigation";
-import { ChevronLeftIcon, XMarkIcon } from "@heroicons/react/16/solid";
 import { useGlobalState } from "@/Components/context/state";
 import { PROTECTED_POST } from "@/actions/ADMINREQUESTS";
 import { SERVER_URL } from "@/Components/config/config";
+import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
 
 function ConfigureSadhana({
   sadhanaResponse,
@@ -117,7 +117,7 @@ function ConfigureSadhana({
     });
   }, [checkedItems]);
 
-  async function handleSubmit() {
+  async function handleSubmit(e: FormData) {
     if (Object.keys(checkedItemsObj).length <= 1) {
       dispatch({
         type: "SHOW_TOAST",
@@ -125,18 +125,38 @@ function ConfigureSadhana({
       });
       return;
     }
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
 
     if (sadhanaResponse > 0) {
       checkedItemsObj.id = sadhanaResponse.sadhanaForm;
       try {
-        const response = await PROTECTED_POST(
-          checkedItemsObj,
-          `${SERVER_URL}/sadhana/configure/${counselorData.id}`
+        const response = await fetch(
+          `/api/counselor/sadhana/${counselorData.id}`,
+          {
+            method: "POST",
+            headers: header,
+            body: JSON.stringify(checkedItemsObj),
+          }
         );
-        dispatch({
-          type: "SHOW_TOAST",
-          payload: { type: "SUCCESS", message: response.message },
-        });
+        if (response.ok) {
+          dispatch({
+            type: "SHOW_TOAST",
+            payload: {
+              type: "SUCCESS",
+              message: "successfully updated form",
+            },
+          });
+        } else {
+          const responseData = await response.json();
+          dispatch({
+            type: "SHOW_TOAST",
+            payload: {
+              type: "ERROR",
+              message: responseData.message,
+            },
+          });
+        }
       } catch (error: any) {
         dispatch({
           type: "SHOW_TOAST",
@@ -145,14 +165,32 @@ function ConfigureSadhana({
       }
     } else {
       try {
-        const response = await PROTECTED_POST(
-          checkedItemsObj,
-          `${SERVER_URL}/sadhana-form/generate`
+        const response = await fetch(
+          `/api/counselor/sadhana/${counselorData.id}`,
+          {
+            method: "POST",
+            headers: header,
+            body: JSON.stringify(checkedItemsObj),
+          }
         );
-        dispatch({
-          type: "SHOW_TOAST",
-          payload: { type: "SUCCESS", message: "successfully generated form" },
-        });
+        if (response.ok) {
+          dispatch({
+            type: "SHOW_TOAST",
+            payload: {
+              type: "SUCCESS",
+              message: "successfully generated form",
+            },
+          });
+        } else {
+          const responseData = await response.json();
+          dispatch({
+            type: "SHOW_TOAST",
+            payload: {
+              type: "ERROR",
+              message: responseData.message,
+            },
+          });
+        }
       } catch (error: any) {
         dispatch({
           type: "SHOW_TOAST",
@@ -164,7 +202,7 @@ function ConfigureSadhana({
 
   return (
     <div className="flex items-center ">
-      <div>
+      <form action={handleSubmit}>
         <div className="px-5 py-5">
           <p className="text-gray-500">
             select some fields below to customize the sadhana form
@@ -189,17 +227,16 @@ function ConfigureSadhana({
             </div>
           ))}
         </div>
-        <button
-          onClick={handleSubmit}
-          className={`flex items-center justify-between text-lg font-bold m-3 ml-6 px-5 py-2 rounded-lg ${
+
+        <SubmitHandlerButton
+          btnStyles={`flex items-center justify-between text-lg font-bold m-3 ml-6 px-5 py-2 rounded-lg ${
             state.theme.theme === "LIGHT"
               ? "bg-purple-600 text-white"
               : " bg-purple-700 text-white"
           }`}
-        >
-          Generate Form
-        </button>
-      </div>
+          text="Generate Form"
+        />
+      </form>
       <div className="pt-20 w-[45vw] ml-auto h-screen overflow-y-scroll md:block hidden">
         <div
           className={`px-5 rounded drop-shadow-lg  ml-auto mx-10 ${

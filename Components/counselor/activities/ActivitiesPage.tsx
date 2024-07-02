@@ -49,18 +49,20 @@ function ActivitiesPage({ response }: { response: counseleeActivities[] }) {
                         : `border-b hover:bg-stone-600 bg-stone-800 border-stone-700`
                     }
                   >
-                    <td className={`px-6 py-4`}>{item.activity.name}</td>
+                    <td className={`px-6 py-4`}>{item?.activity?.name}</td>
                     <td className={`px-6 py-4`}>
-                      {item.counselor.initiatedName}
+                      {item?.counselor?.initiatedName}
                     </td>
-                    <td className={`px-6 py-4`}>{item.counselee.firstName}</td>
-                    <td className={`px-6 py-4`}>{item.counselee.lastName}</td>
                     <td className={`px-6 py-4`}>
-                      {item.counselee.phoneNumber}
+                      {item?.counselee?.firstName}
+                    </td>
+                    <td className={`px-6 py-4`}>{item?.counselee?.lastName}</td>
+                    <td className={`px-6 py-4`}>
+                      {item?.counselee?.phoneNumber}
                     </td>
                     <td className={`px-6 py-4`}>
                       {item.activityDate && (
-                        <DateFormatter dateString={item.activityDate} />
+                        <DateFormatter dateString={item?.activityDate} />
                       )}
                     </td>
                   </tr>

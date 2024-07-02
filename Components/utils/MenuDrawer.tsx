@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import { useGlobalState } from "../context/state";
+import { usePathname } from "next/navigation";
 
 interface DrawerProps {
   isOpen: boolean;
@@ -10,6 +11,7 @@ interface DrawerProps {
 
 const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, children }) => {
   const { state } = useGlobalState();
+  const pathname = usePathname();
   return (
     <div
       className={`fixed inset-0 overflow-hidden z-[2500] ${
@@ -30,11 +32,23 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, children }) => {
         <div className="relative w-screen max-w-md">
           <div
             className={`h-full flex flex-col ${
-              state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-950"
+              state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
             } shadow-2xl rounded-r-2xl overflow-hidden`}
           >
-            <div className="p-6 flex justify-between items-center border-b border-gray-200">
-              <h2 className="text-xl font-semibold ">Counselor Menu</h2>
+            <div
+              className={`p-6 flex justify-between items-center border-b ${
+                state.theme.theme === "LIGHT"
+                  ? "border-b-gray-300"
+                  : "border-b-stone-700"
+              }`}
+            >
+              {pathname.startsWith("/counselor") ? (
+                <h2 className="text-xl font-semibold ">Counselor Menu</h2>
+              ) : pathname.startsWith("/cct") ? (
+                <h2 className="text-xl font-semibold ">CCT Menu</h2>
+              ) : (
+                ""
+              )}
               <button
                 onClick={onClose}
                 className="text-gray-500 hover:text-gray-700 transition-colors duration-200"

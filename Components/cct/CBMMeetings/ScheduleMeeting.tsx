@@ -1,21 +1,31 @@
 "use client";
-import { SERVER_URL } from "@/Components/config/config";
 import { useGlobalState } from "@/Components/context/state";
 import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
-import { PROTECTED_POST } from "@/actions/ADMINREQUESTS";
 import { ChevronDownIcon } from "@heroicons/react/16/solid";
 import { useRouter } from "next/navigation";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import Calendar from "react-calendar";
 import "react-calendar/dist/Calendar.css";
+import "react-datepicker/dist/react-datepicker.css";
+import ReactDatePicker from "react-datepicker";
+import TimePicker from "react-time-picker";
+import "react-time-picker/dist/TimePicker.css";
+import "react-clock/dist/Clock.css";
 
 function ScheduleMeeting({ counselorId }: { counselorId: string }) {
   const router = useRouter();
   const { state, dispatch } = useGlobalState();
   const [ModeofAttendance, setModeofAttendance] = useState("");
   const [startTimeDate, setStartTimeDate] = useState<any>("");
-  const [startTime, setStartTime] = useState("");
+  const [startTime, setStartTime] = useState<any>("");
   const [selectedCourse, setSelectedCourse] = useState("");
+  console.log(startTime);
   const handleDateTimeConcat = () => {
     if (startTimeDate !== "" && startTime !== "") {
       const selectedDate = new Date(startTimeDate);
@@ -109,6 +119,7 @@ function ScheduleMeeting({ counselorId }: { counselorId: string }) {
                       ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
                       : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
                   }`}
+                  placeholder="Krishna Janmashtami Planning"
                 />
               </div>
               <div className={`flex flex-col gap-3`}>
@@ -123,6 +134,7 @@ function ScheduleMeeting({ counselorId }: { counselorId: string }) {
                       ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
                       : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
                   }`}
+                  placeholder="short description for this session"
                 />
               </div>
               <div className={`flex flex-col gap-5`}>
@@ -138,6 +150,7 @@ function ScheduleMeeting({ counselorId }: { counselorId: string }) {
                       type="checkbox"
                       checked={ModeofAttendance === "ONLINE"}
                       onChange={() => setModeofAttendance("ONLINE")}
+                      className="h-5 w-5"
                     />
                     <label className="font-bold text-lg">ONLINE</label>
                   </div>
@@ -146,6 +159,7 @@ function ScheduleMeeting({ counselorId }: { counselorId: string }) {
                       type="checkbox"
                       checked={ModeofAttendance === "OFFLINE"}
                       onChange={() => setModeofAttendance("OFFLINE")}
+                      className="h-5 w-5"
                     />
                     <label className="text-lg font-bold">OFFLINE</label>
                   </div>
@@ -154,6 +168,7 @@ function ScheduleMeeting({ counselorId }: { counselorId: string }) {
                       type="checkbox"
                       checked={ModeofAttendance === "HYBRID"}
                       onChange={() => setModeofAttendance("HYBRID")}
+                      className="h-5 w-5"
                     />
                     <div className="text-lg font-bold flex items-center">
                       HYBRID
@@ -164,37 +179,45 @@ function ScheduleMeeting({ counselorId }: { counselorId: string }) {
                   </div>
                 </div>
               </div>
-              <div className={`flex flex-col gap-3`}>
-                <label htmlFor="" className="font-bold text-lg">
-                  Schedule At
-                </label>
-                <div className={`text-black font-bold`}>
-                  <Calendar
-                    onChange={(e) => setStartTimeDate(e?.toString())}
-                    className={` rounded-lg ${
-                      state.theme.theme === "LIGHT"
-                        ? "bg-white border-2 focus:ring-4"
-                        : "bg-stone-900 text-white border-2 border-stone-800 focus:ring-4"
-                    }`}
-                    value={startTimeDate}
-                  />
+              <div className="flex md:flex-row flex-col items-center gap-10">
+                <div className={`flex flex-col gap-3`}>
+                  <label htmlFor="" className="font-bold text-lg">
+                    Schedule At
+                  </label>
+                  <div className={`text-black font-bold`}>
+                    <Calendar
+                      onChange={(e) => setStartTimeDate(e?.toString())}
+                      className={` rounded-lg ${
+                        state.theme.theme === "LIGHT"
+                          ? "bg-white border-2 focus:ring-4"
+                          : "bg-stone-900  border-2 border-stone-800 focus:ring-4"
+                      }`}
+                      value={startTimeDate}
+                    />
+                  </div>
                 </div>
-              </div>
-              <div className="flex items-center gap-5">
-                <label htmlFor="Time" className="text-lg font-bold">
-                  Time
-                </label>
-                <input
-                  type="time"
-                  id="Time"
-                  value={startTime}
-                  onChange={(e) => setStartTime(e.target.value)}
-                  className={`border px-4 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between  ${
-                    state.theme.theme === "LIGHT"
-                      ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
-                      : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
-                  }`}
-                />
+                <div className="flex flex-col gap-5">
+                  <label htmlFor="Time" className="text-lg font-bold">
+                    Time(24 hours)
+                  </label>
+                  <TimePicker
+                    onChange={setStartTime}
+                    value={startTime}
+                    className={"bg-white text-black  px-5 border-none"}
+                  />
+
+                  {/* <input
+                    type="time"
+                    id="Time"
+                    value={startTime}
+                    onChange={(e) => setStartTime(e.target.value)}
+                    className={`border px-6 py-2 text-lg outline-none focus:ring-4 flex items-center justify-between rounded-lg ${
+                      state.theme.theme === "LIGHT"
+                        ? "focus:ring-purple-100 focus:border-purple-500 border-stone-300 bg-white"
+                        : "focus:ring-purple-950 focus:border-purple-300 border-stone-700 bg-stone-900 bg-opacity-10"
+                    }`}
+                  /> */}
+                </div>
               </div>
             </div>
 

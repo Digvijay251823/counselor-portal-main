@@ -13,16 +13,22 @@ interface Props {
 
 function AutoApprove() {
   const [autoApprove, setAutoApprove] = useState(false);
+
   useEffect(() => {
     const autoapprove = localStorage.getItem("autoApprove");
-    if (autoapprove) {
+    if (autoapprove === "true") {
       setAutoApprove(JSON.parse(autoapprove));
     }
   }, []);
   const { state, dispatch } = useGlobalState();
   async function handleAutoApprove() {
     try {
-      const response = await fetch(`/api/autoapprove`);
+      const headers = new Headers();
+      headers.append("Content-Type", "application/json");
+      const response = await fetch(`/api/autoapprove`, {
+        method: "POST",
+        headers: headers,
+      });
       if (response.ok) {
         const responseData = await response.json();
         dispatch({
@@ -47,20 +53,23 @@ function AutoApprove() {
   }
   return (
     <div>
-      <button
-        type="button"
-        className={`inline-flex flex-col px-5 py-2.5 font-medium text-center rounded-lg border focus:ring-4 ${
-          state.theme.theme === "LIGHT" ? "ring-gray-300" : ""
+      <div
+        className={`inline-flex items-center md:gap-4 gap-2 md:px-2 px-1 py-2 font-medium text-center rounded-lg border focus:ring-4 ${
+          state.theme.theme === "LIGHT"
+            ? "border-stone-200"
+            : "border-stone-800 "
         }`}
-        onClick={handleAutoApprove}
       >
-        <p className="font-bold text-md">Autoapprove</p>
-        {autoApprove ? (
-          <p className="text-xs text-green-500">ON</p>
-        ) : (
-          <p className="text-xs text-gray-400">OFF</p>
-        )}
-      </button>
+        <input
+          type="checkbox"
+          name="AutoApprove"
+          id="AutoApprove"
+          onChange={handleAutoApprove}
+          className="h-5 w-5"
+          checked={autoApprove}
+        />
+        <label htmlFor="AutoApprove">AutoApprove</label>
+      </div>
     </div>
   );
 }

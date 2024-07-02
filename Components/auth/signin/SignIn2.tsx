@@ -1,15 +1,32 @@
 "use client";
 import { useGlobalState } from "@/Components/context/state";
 import Link from "next/link";
-import React, { useState } from "react";
+import React, {
+  ChangeEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import PasswordToggleComp from "./PasswordToggle";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useFormStatus } from "react-dom";
+import LogoComponent from "@/Components/utils/icons/Logo";
+import { FaMagnifyingGlass } from "react-icons/fa6";
+interface Counseler {
+  PrabhujiName: any;
+  PrabhujiPhone: any;
+  MatajiName: any;
+  MatajiPhone: any;
+}
 
-const Signin: React.FC = () => {
-  const [email, setEmail] = useState("");
+const Signin: React.FC<{ response: Counseler[] }> = ({ response }) => {
+  const [phoneNumber, setPhoneNumber] = useState("");
+  // const [email, setEmail] = useState("");
+  const [selectedCounselor, setSelectedCounselor] = useState({});
   const [password, setPassword] = useState("");
   const [remembered, setRemembered] = useState(false);
+  const [formData, setFormData] = useState<any>({});
 
   const router = useRouter();
 
@@ -18,7 +35,7 @@ const Signin: React.FC = () => {
   const handleSubmit = async (e: FormData) => {
     // const email = e.get("email")?.toString();
     // const passwordInput = e.get("password")?.toString();
-    const phoneNumber = e.get("phoneNumber")?.toString();
+
     try {
       //   const formData: any = { email, password: passwordInput };
       const formData: any = { phoneNumber };
@@ -58,13 +75,16 @@ const Signin: React.FC = () => {
   return (
     <section
       className={
-        state.theme.theme === "LIGHT" ? `bg-stone-50` : ` bg-stone-900`
+        state.theme.theme === "LIGHT"
+          ? `bg-stone-50 w-full`
+          : ` bg-stone-900 w-full`
       }
     >
       <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
         <div className="mb-6 flex flex-col items-center">
-          <h1 className={`flex items-center text-2xl font-bold `}>Portal</h1>
-          <p className="text-lg">Counselor</p>
+          {/* <h1 className={`flex items-center text-2xl font-bold `}>Portal</h1>
+          <p className="text-lg">Counselor</p> */}
+          <LogoComponent />
         </div>
         <div
           className={`w-full  rounded-lg shadow  md:mt-0 sm:max-w-md xl:p-0 ${
@@ -80,27 +100,51 @@ const Signin: React.FC = () => {
               Sign in to your account
             </h1>
             <form className="space-y-4 md:space-y-6" action={handleSubmit}>
-              <div>
+              <div className="flex flex-col w-full">
                 <label
-                  htmlFor="email"
+                  htmlFor="phoneNumber"
                   className={`block mb-2 text-sm font-medium `}
                 >
                   Your PhoneNumber
                 </label>
-                <input
+                <MenuIconAndDropDownDevotees
+                  DataArr={response}
+                  setSelected={(value) => {
+                    setSelectedCounselor(value);
+                    setPhoneNumber(
+                      value.PrabhujiPhone
+                        ? value.PrabhujiPhone
+                        : value.MatajiPhone
+                        ? value.MatajiPhone
+                        : ""
+                    );
+
+                    setFormData((prev: any) => {
+                      const updatedFormData: any = { ...prev }; // Make a copy of previous form data
+                      if (value) {
+                        updatedFormData.prabhujiName = value.PrabhujiName;
+                        updatedFormData.prabhujiPhone = value.PrabhujiPhone;
+                        updatedFormData.matajiName = value.MatajiName;
+                        updatedFormData.matajiPhone = value.MatajiPhone;
+                      }
+                      return updatedFormData;
+                    });
+                  }}
+                />
+                {/* <input
                   type="tel"
                   name="phoneNumber"
-                  id="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  id="phoneNumber"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                   className={`border sm:text-sm rounded-lg block w-full p-2.5 focus:ring-4 outline-none ${
                     state.theme.theme === "LIGHT"
                       ? "bg-stone-50 border-stone-300 text-stone-900 focus:ring-purple-100 focus:border-purple-500"
                       : "bg-stone-700 border-stone-600 placeholder-stone-400  focus:ring-purple-950 focus:border-purple-500"
                   }`}
-                  placeholder="name@company.com"
+                  placeholder="8080359815"
                   required
-                />
+                /> */}
                 {/* <input
                   type="email"
                   name="email"
@@ -237,6 +281,165 @@ function SubmitHandlerButton() {
         >
           Sign in
         </button>
+      )}
+    </div>
+  );
+}
+
+type PropsMenu = {
+  setSelected: (value: any) => void;
+  DataArr: any[];
+  defaultVal?: string;
+  position?: string;
+};
+
+function MenuIconAndDropDownDevotees({
+  setSelected,
+  DataArr,
+  defaultVal,
+  position,
+}: PropsMenu) {
+  const [isSelectionOpen, toggleSelection] = useState(false);
+  const [onFocusPhone, setOnFocusPhone] = useState(false);
+  const menuRef: any = useRef();
+  const params = useParams();
+  const [selectedOption, setSelectedOption] = useState("");
+  const [modalStyle, setModalStyle] = useState({
+    transform: "scale(0.95)",
+    opacity: 0,
+  });
+  useEffect(() => {
+    if (defaultVal) {
+      setSelectedOption(defaultVal);
+    }
+  }, [defaultVal]);
+  const [isClosing, setIsClosing] = useState(false);
+  const { state } = useGlobalState();
+
+  useEffect(() => {
+    if (isSelectionOpen) {
+      // Open modal animation
+      setTimeout(() => {
+        setModalStyle({
+          transform: "scale(1)",
+          opacity: 1,
+        });
+      }, 50); // Delay the transition slightly for better visual effect
+    } else {
+      // Close modal animation
+      setModalStyle({
+        transform: "scale(0.95)",
+        opacity: 0,
+      });
+      setTimeout(() => {
+        setIsClosing(false);
+      }, 3000); // Adjust this duration according to your transition duration
+    }
+  }, [isSelectionOpen]);
+
+  const closeModal = useCallback(() => {
+    setIsClosing(true);
+    toggleSelection(false);
+  }, [toggleSelection]);
+
+  // Attach click outside listener
+  useEffect(() => {
+    const handleClickOutside = (event: any) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        closeModal();
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [toggleSelection, closeModal]);
+  const router = useRouter();
+
+  function handleChange(e: ChangeEvent<HTMLInputElement>) {
+    toggleSelection(true);
+    setSelectedOption(e.target.value);
+    if (isNaN(Number(e.target.value))) {
+      router.push(`/auth/signin?query=${e.target.value}`);
+    } else {
+      router.push(`/auth/signin?query=${Number(e.target.value)}`);
+    }
+  }
+  return (
+    <div className="relative inline-block text-left" ref={menuRef}>
+      <div
+        className={`flex items-center gap-5 border sm:text-sm rounded-lg w-full p-2.5 focus:ring-4 outline-none ${
+          state.theme.theme === "LIGHT"
+            ? "bg-stone-50 border-stone-300 text-stone-900 focus:ring-purple-100 focus:border-purple-500"
+            : "bg-stone-700 border-stone-600 placeholder-stone-400  focus:ring-purple-950 focus:border-purple-500"
+        }`}
+      >
+        <FaMagnifyingGlass />
+        <input
+          type="text"
+          className={`w-full outline-none ${
+            state.theme.theme === "LIGHT" ? "bg-white " : "bg-stone-700 "
+          }`}
+          onFocus={() => setOnFocusPhone(true)}
+          onBlur={() => setOnFocusPhone(false)}
+          onChange={handleChange}
+          value={selectedOption}
+          placeholder="Search . . . "
+        />
+      </div>
+      {isSelectionOpen && (
+        <div
+          className={`origin-top-left absolute ${
+            position === "up" ? "bottom-0 mb-12" : "mt-2 right-0"
+          } w-full rounded-lg shadow-lg z-[1000] ${
+            state.theme.theme === "LIGHT" ? "bg-white" : "bg-stone-900"
+          } border-gray-300 ring-1 ring-black ring-opacity-5 focus:outline-none py-1 px-1`}
+          role="menu"
+          aria-orientation="vertical"
+          aria-labelledby="options-menu"
+          style={{
+            ...modalStyle,
+            transition: "transform 0.2s ease-out, opacity 0.2s ease-out",
+          }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          {DataArr?.length > 0 ? (
+            <ul
+              className={`flex flex-col gap-3 overflow-y-auto custom-scrollbar ${
+                DataArr.length > 10 ? "md:h-[30vh] h-[40vh]" : "h-full"
+              }`}
+              role="none"
+            >
+              {DataArr?.map((item, index) => (
+                <li
+                  key={index}
+                  onClick={() => {
+                    setSelectedOption(
+                      `${item.PrabhujiName} & ${item.MatajiName}`
+                    );
+                    setSelected(item);
+                    toggleSelection(false);
+                  }}
+                  className={`px-2 py-1.5 rounded-lg ${
+                    item.name === selectedOption && "bg-blue-300"
+                  } ${
+                    state.theme.theme === "LIGHT"
+                      ? "hover:bg-gray-100"
+                      : "hover:bg-stone-800"
+                  }`}
+                >
+                  {item.PrabhujiName && item.MatajiName
+                    ? `${item.PrabhujiName} & ${item.MatajiName}`
+                    : `${item.PrabhujiName} ${item.MatajiName}`}
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <ul>
+              <p>No data to show</p>
+            </ul>
+          )}
+        </div>
       )}
     </div>
   );

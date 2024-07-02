@@ -10,10 +10,10 @@ function SadhanaPage({ response }: { response: Sadhana[] }) {
   const { state } = useGlobalState();
   return (
     <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
-      <div className="w-full flex justify-end">
+      <div className="w-full flex justify-end mb-5">
         <Link href={"/counselor/sadhana/configure"}>
           <button
-            className={`px-4 py-2 rounded text-lg text-white bg-purple-600 flex items-center gap-1`}
+            className={`px-3 py-1.5 rounded text-white bg-purple-600 flex items-center gap-1 font-semibold`}
           >
             <PencilSquareIcon className="h-5 w-5" />
             Configure

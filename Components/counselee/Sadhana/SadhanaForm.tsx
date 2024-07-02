@@ -25,7 +25,6 @@ import {
   AA as AAComponent,
   MIU as MIUComponent,
 } from "@/Components/counselor/sadhana/configure/ConfigSadhanaForm";
-
 import { HiUsers } from "react-icons/hi";
 import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
 import { POST } from "@/actions/POSTREQUESTS";
@@ -45,18 +44,52 @@ function SadhanaForm({
   sadhanaForm,
 }: {
   counselorId: string;
-  sadhanaForm: any;
+  sadhanaForm?: any;
 }) {
   const [onFocusPhone, setOnFocusPhone] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const { state, dispatch } = useGlobalState();
   const [counseleeDetails, setCounseleeDetails] = useState<any>({});
   const router = useRouter();
-  const [SubmittedSuccess, setSubmittedSuccess] = useState(false);
+
   const [formData, setFormData] = useState<any>({});
   const [checkedItems, setCheckedItems] = useState<any[]>([]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const [sadhanaFormData, setSadhanaFormData] = useState("");
+
+  useEffect(() => {
+    (async () => {
+      if (!phoneNumber) {
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "ERROR", message: "please enter you phone number" },
+        });
+        return null;
+      }
+      try {
+        const response = await fetch(`/api/counslee/${phoneNumber}`);
+        if (response.ok) {
+          const responseData = await response.json();
+          setCounseleeDetails(responseData.content.content);
+        } else {
+          if (response.status === 404) {
+            localStorage.setItem("PHONE_NUMBER", phoneNumber.toString());
+            router.push("/counselee/registeration");
+          }
+          const errorData = await response.json();
+          dispatch({
+            type: "SHOW_TOAST",
+            payload: { type: "ERROR", message: errorData.message },
+          });
+        }
+      } catch (error: any) {
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { type: "ERROR", message: error.message },
+        });
+      }
+    })();
+  }, [phoneNumber]);
 
   useEffect(() => {
     const phoneNumber = localStorage.getItem("PHONE_NUMBER");
@@ -65,12 +98,12 @@ function SadhanaForm({
     }
   }, []);
 
-  useEffect(() => {
-    const filteredArrForChecked = FormListItems.filter(
-      (item) => sadhanaForm[item?.databaseField] === true
-    );
-    setCheckedItems(filteredArrForChecked);
-  }, [sadhanaForm]);
+  // useEffect(() => {
+  //   const filteredArrForChecked = FormListItems.filter(
+  //     (item) => sadhanaForm[item?.databaseField] === true
+  //   );
+  //   setCheckedItems(filteredArrForChecked);
+  // }, [sadhanaForm]);
 
   const handleShare = (text: any) => {
     // Encode the message for URL
@@ -87,45 +120,44 @@ function SadhanaForm({
     setSadhanaFormData(message);
   };
 
-  async function handleSubmitCounselor(e: FormData) {
-    const phonenumber = e.get("phonenumber")?.valueOf();
-    if (!phonenumber) {
-      dispatch({
-        type: "SHOW_TOAST",
-        payload: { type: "ERROR", message: "please enter you phone number" },
-      });
-      return null;
-    }
-    try {
-      const response = await fetch(`/api/counslee/${phonenumber}`);
-      if (response.ok) {
-        const responseData = await response.json();
-        setCounseleeDetails(responseData.content.content);
-      } else {
-        if (response.status === 404) {
-          localStorage.setItem("PHONE_NUMBER", phonenumber.toString());
-          router.push("/counselee/registeration");
-        }
-        const errorData = await response.json();
-        dispatch({
-          type: "SHOW_TOAST",
-          payload: { type: "ERROR", message: errorData.message },
-        });
-      }
-    } catch (error: any) {
-      dispatch({
-        type: "SHOW_TOAST",
-        payload: { type: "ERROR", message: error.message },
-      });
-    }
-  }
+  // async function handleSubmitCounselor(e: FormData) {
+  //   const phonenumber = e.get("phonenumber")?.valueOf();
+  //   if (!phonenumber) {
+  //     dispatch({
+  //       type: "SHOW_TOAST",
+  //       payload: { type: "ERROR", message: "please enter you phone number" },
+  //     });
+  //     return null;
+  //   }
+  //   try {
+  //     const response = await fetch(`/api/counslee/${phonenumber}`);
+  //     if (response.ok) {
+  //       const responseData = await response.json();
+  //       setCounseleeDetails(responseData.content.content);
+  //     } else {
+  //       if (response.status === 404) {
+  //         localStorage.setItem("PHONE_NUMBER", phonenumber.toString());
+  //         router.push("/counselee/registeration");
+  //       }
+  //       const errorData = await response.json();
+  //       dispatch({
+  //         type: "SHOW_TOAST",
+  //         payload: { type: "ERROR", message: errorData.message },
+  //       });
+  //     }
+  //   } catch (error: any) {
+  //     dispatch({
+  //       type: "SHOW_TOAST",
+  //       payload: { type: "ERROR", message: error.message },
+  //     });
+  //   }
+  // }
   async function handleSubmitSadhana(e: FormData) {
     const formDataObject: any = {
       counselorId: counselorId,
       counseleeId: counseleeDetails.id,
       sadhanaDate: new Date(),
     };
-
     checkedItems.forEach((value: FieldTypeFormList) => {
       if (value.valueType === "Time") {
         formDataObject[value.databaseField] =
@@ -140,23 +172,30 @@ function SadhanaForm({
           ?.toString();
       }
     });
-    setFormData(formDataObject);
-    handleShare(formDataObject);
-    setSubmittedSuccess(true);
-    console.log(formDataObject);
-    try {
-      const response = await POST(
-        formDataObject,
-        `${SERVER_URL}/counselee-sadhana/register`
-      );
-      dispatch({
-        type: "SHOW_TOAST",
-        payload: { message: response.message, type: "SUCCESS" },
-      });
 
-      handleShare(formDataObject);
-      setFormData(formDataObject);
-      setSubmittedSuccess(true);
+    const header = new Headers();
+    header.append("Content-Type", "application/json");
+    try {
+      const response = await fetch(`/api/counslee/sadhana`, {
+        method: "POST",
+        headers: header,
+        body: JSON.stringify(formDataObject),
+      });
+      if (response.ok) {
+        const responseData = await response.json();
+        setFormData(formDataObject);
+        handleShare(formDataObject);
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { message: responseData.message, type: "SUCCESS" },
+        });
+      } else {
+        const responseData = await response.json();
+        dispatch({
+          type: "SHOW_TOAST",
+          payload: { message: responseData.message, type: "ERROR" },
+        });
+      }
     } catch (error: any) {
       dispatch({
         type: "SHOW_TOAST",
@@ -177,10 +216,7 @@ function SadhanaForm({
       </div>
       <div className="w-full">
         <div className="flex items-center justify-center w-full">
-          <form
-            action={handleSubmitCounselor}
-            className="md:w-[500px] mx-2 mb-10 "
-          >
+          <form className="md:w-[500px] mx-2 mb-10 ">
             <label htmlFor="phonenumber" className="font-bold text-xl">
               Phone Number
             </label>
@@ -212,7 +248,6 @@ function SadhanaForm({
                   state.theme.theme === "LIGHT" ? "bg-white " : "bg-stone-950 "
                 }`}
               />
-              <SubmitHandlerButtonCounselor />
             </div>
           </form>
         </div>

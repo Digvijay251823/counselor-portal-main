@@ -3,29 +3,40 @@ import ActivitiesPage from "@/Components/counselor/activities/ActivitiesPage";
 import ErrorComponent from "@/Components/utils/ErrorPage";
 import NotExistsResource from "@/Components/utils/NotFoundComponent";
 import { unstable_noStore } from "next/cache";
+import { cookies } from "next/headers";
 import React from "react";
-async function getActivities() {
+async function getActivities(counselorid: string) {
   unstable_noStore();
   try {
-    const response = await fetch(`${SERVER_URL}/counselee-activity`);
+    const response = await fetch(
+      `${SERVER_URL}/counselee-activity/counselor/${counselorid}`
+    );
     if (response.ok) {
       const responseData = await response.json();
       return responseData;
     } else {
       if (response.status === 404) {
-        return;
+        throw new Error("Counselor might not exist");
       }
+      console.log(counselorid);
       const errorData = await response.json();
-      throw errorData;
+      return new Error(errorData.message);
     }
-  } catch (error) {
-    throw error;
+  } catch (error: any) {
+    return new Error(error.message || error.title);
   }
 }
 async function page() {
   try {
-    const response = await getActivities();
-    if (!response) {
+    const authcontent = cookies().get("AUTH")?.value;
+    const authparsed = authcontent && JSON.parse(authcontent);
+    console.log(authparsed);
+    if (!authparsed) {
+      throw new Error("Sign in to access the resource");
+    }
+    const response = await getActivities(authparsed.counselor.id);
+
+    if (!response || response.length === 0) {
       return <NotExistsResource message="No Activities to show" />;
     }
     return (

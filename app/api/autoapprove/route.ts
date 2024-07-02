@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-export async function GET(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest, res: NextResponse) {
   const cookiesvalue = req.cookies.get("AUTH")?.value;
   const cookiesparsed = cookiesvalue && JSON.parse(cookiesvalue);
   if (!cookiesparsed) {
@@ -18,7 +18,7 @@ export async function GET(req: NextRequest, res: NextResponse) {
   try {
     const response = await fetch(
       `${SERVER_URL}/counselee-attendance/autoapprove/toggle/${counselorid}`,
-      { method: "GET", headers }
+      { method: "POST", headers }
     );
     if (response.ok) {
       const responseData = await response.json();

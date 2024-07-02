@@ -2,16 +2,81 @@
 import { useGlobalState } from "@/Components/context/state";
 import DateFormatter from "@/Components/utils/DateFormatter";
 import { CheckCircleIcon, ClockIcon } from "@heroicons/react/16/solid";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ApproveAttendance from "./ApproveAttendance";
 import AutoApprove from "./AutoApprove";
+import { useRouter, useSearchParams } from "next/navigation";
 
 function AttendancePage({ response }: { response: Attendance[] }) {
   const { state } = useGlobalState();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const [ApprovedState, setApprovedState] = useState<boolean>();
+
+  useEffect(() => {
+    if (searchParams.size !== 0) {
+      const approvedState = searchParams.get("approved");
+      if (approvedState?.valueOf() === "true") {
+        setApprovedState(true);
+      } else {
+        setApprovedState(true);
+      }
+    }
+  }, [searchParams]);
+  console.log();
   return (
     <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
-      <div className="flex justify-between">
-        <div></div>
+      <div className="flex justify-between mb-5 ">
+        <div
+          className={`flex items-center gap-2 px-2 md:px-1 rounded-lg ${
+            state.theme.theme === "LIGHT" ? "bg-gray-100" : "bg-stone-900"
+          }`}
+        >
+          <div
+            className={`w-[90px] text-center py-1.5 rounded-lg font-semibold flex items-center justify-center px-0.5 ${
+              ApprovedState === true
+                ? ` shadow ${
+                    state.theme.theme === "LIGHT"
+                      ? "text-purple-500 bg-white"
+                      : "bg-purple-900 bg-opacity-30 text-purple-500"
+                  }`
+                : `${
+                    state.theme.theme === "LIGHT"
+                      ? "text-black"
+                      : "text-gray-400"
+                  }`
+            }`}
+            onClick={() => {
+              setApprovedState(true);
+              router.push("/counselor/attendance?approved=true");
+            }}
+          >
+            <p>0</p>
+            Approved
+          </div>
+          <div
+            className={`w-[90px] text-center py-1.5 rounded-lg font-semibold flex items-center justify-center px-0.5 ${
+              ApprovedState === false
+                ? `${
+                    state.theme.theme === "LIGHT"
+                      ? "text-purple-500 bg-white shadow "
+                      : "text-purple-400 bg-purple-900 bg-opacity-30"
+                  }`
+                : `${
+                    state.theme.theme === "LIGHT"
+                      ? "text-black"
+                      : "text-gray-400"
+                  }`
+            }`}
+            onClick={() => {
+              setApprovedState(false);
+              router.push("/counselor/attendance?approved=false");
+            }}
+          >
+            <p>0</p>
+            Pending
+          </div>
+        </div>
         <AutoApprove />
       </div>
       <div>

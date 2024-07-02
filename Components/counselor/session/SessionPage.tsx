@@ -18,7 +18,7 @@ function SessionPage({ response }: { response: sessions[] }) {
       <div>
         <div className="flex justify-end">
           <Link href={"sessions/schedule"}>
-            <button className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2 gap-2 md:mx-10">
+            <button className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text px-3 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2 gap-2 md:mx-10">
               <p>
                 <AiFillSchedule className="h-5 w-5" />
               </p>
@@ -49,7 +49,7 @@ function SessionPage({ response }: { response: sessions[] }) {
                     <th className={`px-6 py-3`}>STARTTIME</th>
                     <th className={`px-6 py-3`}>CREATED DATE</th>
                     <th className={`px-6 py-3`}>LAST UPDATED</th>
-                    <th className={`px-6 py-3`}></th>
+                    <th className={`px-6 py-3`}>ACTIONS</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -139,7 +139,7 @@ function Reschedule({ session }: { session: sessions }) {
     <div>
       <button
         type="button"
-        className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2 gap-2"
+        className="text-white bg-[#FF9119] hover:bg-[#FF9119]/80 focus:ring-4 focus:outline-none focus:ring-[#FF9119]/50 font-medium rounded-lg px-2 py-2 text-center inline-flex items-center dark:hover:bg-[#FF9119]/80 dark:focus:ring-[#FF9119]/40 me-2 mb-2 gap-2"
         onClick={() => setIsOpen(true)}
       >
         <AiFillSchedule className="w-5 h-5" />
