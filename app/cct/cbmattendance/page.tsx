@@ -34,6 +34,7 @@ async function page() {
       throw new Error("Sign in to access the resource");
     }
     const response = await getAttendance();
+
     return (
       <div>
         <CBMAttendance response={response?.content} />

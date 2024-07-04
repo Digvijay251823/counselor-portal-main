@@ -39,7 +39,7 @@ async function page() {
       return <NotExistsResource message="No Activities to show" />;
     }
     return (
-      <div>
+      <div className="w-screen justify-center">
         <ActivitiesPage response={response.content} />
       </div>
     );

@@ -31,7 +31,7 @@ async function page() {
     }
     const response = await getScheduledSessions(parsedauth?.counselor?.id);
     return (
-      <div>
+      <div className="w-screen justify-center">
         <SessionPage response={response.content} />
       </div>
     );

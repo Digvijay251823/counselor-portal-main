@@ -7,7 +7,15 @@ import ApproveAttendance from "./ApproveAttendance";
 import AutoApprove from "./AutoApprove";
 import { useRouter, useSearchParams } from "next/navigation";
 
-function AttendancePage({ response }: { response: Attendance[] }) {
+function AttendancePage({
+  pendingRecordsCount,
+  response,
+  approvedRecordsCount,
+}: {
+  response: Attendance[];
+  pendingRecordsCount: number;
+  approvedRecordsCount: number;
+}) {
   const { state } = useGlobalState();
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -23,7 +31,7 @@ function AttendancePage({ response }: { response: Attendance[] }) {
       }
     }
   }, [searchParams]);
-  console.log();
+
   return (
     <div className="lg:px-10 md:w-[98vw] w-[98vw] px-2">
       <div className="flex justify-between mb-5 ">
@@ -51,7 +59,7 @@ function AttendancePage({ response }: { response: Attendance[] }) {
               router.push("/counselor/attendance?approved=true");
             }}
           >
-            <p>0</p>
+            <p>{approvedRecordsCount?.toString()}</p>
             Approved
           </div>
           <div
@@ -73,7 +81,7 @@ function AttendancePage({ response }: { response: Attendance[] }) {
               router.push("/counselor/attendance?approved=false");
             }}
           >
-            <p>0</p>
+            <p>{pendingRecordsCount?.toString()}</p>
             Pending
           </div>
         </div>
@@ -112,57 +120,65 @@ function AttendancePage({ response }: { response: Attendance[] }) {
               </tr>
             </thead>
             <tbody>
-              {response?.map((item, index) => (
-                <tr
-                  key={index}
-                  className={
-                    state.theme.theme === "LIGHT"
-                      ? `bg-white border-b  hover:bg-stone-50`
-                      : `border-b hover:bg-stone-600 bg-stone-800 border-stone-700`
-                  }
-                >
-                  <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.modeOfAttendance === "ONLINE" ? (
-                      <div className="text-red-500">ONLINE</div>
-                    ) : item?.scheduledSession?.modeOfAttendance ==
-                      "OFFLINE" ? (
-                      <div className="text-green-600 border border-green-600 rounded-lg w-max px-3 py-1">
-                        OFFLINE
-                      </div>
-                    ) : (
-                      <div className="text-yellow-600 border border-yellow-600 rounded-lg w-max px-3 py-1">
-                        HYBRID
-                      </div>
-                    )}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    <ApproveAttendance item={item} />
-                  </td>
-                  <td
-                    className={`px-6 py-4`}
-                  >{`${item?.counselee.firstName} ${item?.counselee.lastName}`}</td>
-                  <td className={`px-6 py-4`}>
-                    {item?.counselee?.phoneNumber}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.name}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.description}
-                  </td>
-                  <td className={`px-6 py-4`}>
-                    {item?.scheduledSession?.startTime ? (
-                      <div>
-                        <DateFormatter
-                          dateString={item?.scheduledSession?.startTime}
-                        />
-                      </div>
-                    ) : (
-                      <p>null</p>
-                    )}
+              {response && response.length > 0 ? (
+                response?.map((item, index) => (
+                  <tr
+                    key={index}
+                    className={
+                      state.theme.theme === "LIGHT"
+                        ? `bg-white border-b  hover:bg-stone-50`
+                        : `border-b hover:bg-stone-600 bg-stone-800 border-stone-700`
+                    }
+                  >
+                    <td className={`px-6 py-4`}>
+                      {item?.scheduledSession?.modeOfAttendance === "ONLINE" ? (
+                        <div className="text-red-500">ONLINE</div>
+                      ) : item?.scheduledSession?.modeOfAttendance ==
+                        "OFFLINE" ? (
+                        <div className="text-green-600 border border-green-600 rounded-lg w-max px-3 py-1">
+                          OFFLINE
+                        </div>
+                      ) : (
+                        <div className="text-yellow-600 border border-yellow-600 rounded-lg w-max px-3 py-1">
+                          HYBRID
+                        </div>
+                      )}
+                    </td>
+                    <td className={`px-6 py-4`}>
+                      <ApproveAttendance item={item} />
+                    </td>
+                    <td
+                      className={`px-6 py-4`}
+                    >{`${item?.counselee.firstName} ${item?.counselee.lastName}`}</td>
+                    <td className={`px-6 py-4`}>
+                      {item?.counselee?.phoneNumber}
+                    </td>
+                    <td className={`px-6 py-4`}>
+                      {item?.scheduledSession?.name}
+                    </td>
+                    <td className={`px-6 py-4`}>
+                      {item?.scheduledSession?.description}
+                    </td>
+                    <td className={`px-6 py-4`}>
+                      {item?.scheduledSession?.startTime ? (
+                        <div>
+                          <DateFormatter
+                            dateString={item?.scheduledSession?.startTime}
+                          />
+                        </div>
+                      ) : (
+                        <p>null</p>
+                      )}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan={10} className="text-center py-10">
+                    No Data To Show
                   </td>
                 </tr>
-              ))}
+              )}
             </tbody>
           </table>
         </div>

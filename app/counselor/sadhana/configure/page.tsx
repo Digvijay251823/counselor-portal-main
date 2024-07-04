@@ -14,10 +14,10 @@ async function getSadhana(counselorId: string) {
       return ResponseData;
     } else {
       if (response.status === 404) {
-        console.log("no sadhana form found");
+        return;
       }
       const errorData = await response.json();
-      console.log(errorData.message);
+      throw new Error(errorData.message);
     }
   } catch (error) {
     throw error;
@@ -30,7 +30,7 @@ async function page() {
     const authparsed = authcontent && JSON.parse(authcontent);
     if (!authparsed) {
       return (
-        <ErrorComponent message="Pleas Authenticate to access the resource" />
+        <ErrorComponent message="Please Authenticate to access the resource" />
       );
     }
     const response = await getSadhana(authparsed.counselor.id);
@@ -38,7 +38,7 @@ async function page() {
       <div>
         <ConfigureSadhana
           counselorData={authparsed?.counselor}
-          sadhanaResponse={response.content}
+          sadhanaResponse={response?.content}
         />
       </div>
     );

@@ -22,8 +22,6 @@ import {
 
 import { usePathname, useRouter } from "next/navigation";
 import { useGlobalState } from "@/Components/context/state";
-import { PROTECTED_POST } from "@/actions/ADMINREQUESTS";
-import { SERVER_URL } from "@/Components/config/config";
 import SubmitHandlerButton from "@/Components/utils/SubmitHandlerButton";
 
 function ConfigureSadhana({

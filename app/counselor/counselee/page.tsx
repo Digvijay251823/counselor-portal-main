@@ -13,7 +13,6 @@ async function getCounselees(counselorid: string) {
   );
   if (response.ok) {
     const responseData = await response.json();
-    console.log(responseData);
     return responseData;
   } else {
     const errorData = await response.json();
@@ -35,7 +34,7 @@ async function page() {
       return <NotExistsResource message="No counselee to show" />;
     }
     return (
-      <div>
+      <div className="w-screen justify-center">
         <CounseleePage data={response.content} />
       </div>
     );

@@ -31,7 +31,7 @@ async function page() {
       return <NotExistsResource message="Nobody entered sadhana yet" />;
     }
     return (
-      <div>
+      <div className="w-screen justify-center">
         <SadhanaPage response={response.content} />
       </div>
     );

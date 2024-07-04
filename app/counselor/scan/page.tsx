@@ -7,7 +7,7 @@ function page() {
   const authparsed = authcontent && JSON.parse(authcontent);
 
   return (
-    <div>
+    <div className="w-screen justify-center">
       <Scanner response={authparsed && authparsed.counselor} />
     </div>
   );

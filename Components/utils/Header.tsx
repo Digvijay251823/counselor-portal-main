@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useGlobalState } from "../context/state";
 import { Bars3Icon, MoonIcon, SunIcon } from "@heroicons/react/16/solid";
 import Link from "next/link";
@@ -24,7 +24,7 @@ function Header() {
         state.theme.theme === "LIGHT"
           ? "bg-white border-b-gray-200"
           : "bg-stone-900 bg-opacity-20 border-stone-800"
-      }  py-1.5 pr-10`}
+      }  py-1.5 px-5`}
     >
       <div className="flex items-center justify-between">
         <LogoComponent />
