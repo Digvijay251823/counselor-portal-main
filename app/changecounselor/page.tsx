@@ -2,9 +2,11 @@ import ChangeForm from "@/Components/counselee/ChangeForm";
 import React from "react";
 import { SERVER_URL } from "@/Components/config/config";
 import ErrorComponent from "@/Components/utils/ErrorPage";
+import { unstable_noStore } from "next/cache";
 
 async function getCounselors() {
-  const response = await fetch(`${SERVER_URL}/counselor`);
+  unstable_noStore();
+  const response = await fetch(`${SERVER_URL}/Counselor`);
   try {
     if (response.ok) {
       const responseData = await response.json();
